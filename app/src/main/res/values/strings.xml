@@ -17,6 +17,10 @@
    <string name="tooltip_cook_time">Cooking</string>
    <string name="tooltip_total_time">Total</string>
 
+   <!-- recipe cooking timer -->
+   <string name="timer_title">Cooking timer (%1$s)</string>
+   <string name="stop_and_close_btn">Stop &amp; close timer</string>
+
    <!-- tab titles -->
    <string name="tab_info_title">Info</string>
    <string name="tab_ingredients_title">Ingredients</string>

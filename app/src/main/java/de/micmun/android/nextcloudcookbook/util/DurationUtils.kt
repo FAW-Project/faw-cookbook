@@ -5,9 +5,7 @@
  */
 package de.micmun.android.nextcloudcookbook.util
 
-import android.content.Context
 import android.os.Build
-import android.text.format.DateFormat
 import androidx.annotation.RequiresApi
 import java.time.Duration
 import java.util.*
@@ -50,8 +48,26 @@ class DurationUtils {
          return hours * 60 + minutes
       }
 
-      fun formatDate(context: Context, publishedDate: Date): String {
-         return DateFormat.getDateFormat(context).format(publishedDate)
+      fun getDurationInMillis(isoString: String) = Duration.parse(isoString).toMillis()
+
+      fun getCurrentMillisDisplay(millis: Long): String {
+         var display = ""
+         var sec = millis / 1000
+         var min = 0L
+         var std = 0L
+         if (sec >= 60) {
+            min = sec / 60
+            sec %= 60
+         }
+         if (min >= 60) {
+            std = min / 60
+            min %= 60
+         }
+         display = if (std > 0) String.format(Locale.getDefault(), "%02d:", std) else ""
+         display += if (min > 0) String.format(Locale.getDefault(), "%02d:", min) else ""
+         display += String.format(Locale.getDefault(), "%02d", sec)
+
+         return display
       }
 
       /**

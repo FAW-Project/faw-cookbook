@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="de.micmun.android.nextcloudcookbook.ui.timer.TimerFragment">
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+         android:id="@+id/fragmentTimerLayout"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+
+      <com.github.guilhe.views.CircularProgressView
+            android:id="@+id/cookingTimeProgress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_control"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_max="300sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:progressBackgroundAlphaEnabled="true"
+            app:progressBarColor="?android:attr/colorPrimary"
+            app:progressBarThickness="8dp"
+            app:progressThumb="true"
+            app:reverse="true"
+            app:shadow="false" />
+
+      <TextView
+            android:id="@+id/timeDisplay"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/margin1x"
+            android:paddingEnd="@dimen/margin1x"
+            android:textSize="@dimen/text_resultLarge"
+            app:layout_constraintBottom_toTopOf="@id/btn_control"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+      <Button
+            android:id="@+id/btn_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:text="@string/stop_and_close_btn"
+            app:layout_constraintBottom_toTopOf="@id/btn_control"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cookingTimeProgress" />
+
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin2x"
+            android:src="@drawable/ic_play"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="ContentDescription" />
+   </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

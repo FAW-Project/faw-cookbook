@@ -9,6 +9,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import de.micmun.android.nextcloudcookbook.R
 import de.micmun.android.nextcloudcookbook.databinding.*
 import de.micmun.android.nextcloudcookbook.db.model.DbNutrition
 import de.micmun.android.nextcloudcookbook.db.model.DbRecipe
+import de.micmun.android.nextcloudcookbook.util.DurationUtils
 
 /**
  * Adapter for the ViewPager2 to present tabs.
@@ -89,6 +91,11 @@ class ViewPagerAdapter(private val recipe: DbRecipe, private val orientation: In
        */
       fun bind(recipe: DbRecipe) {
          binding.recipe = recipe
+         binding.cookTimeTxt.setOnClickListener {
+            val cookTime = DurationUtils.getDurationInMillis(recipe.recipeCore.cookTime)
+            it.findNavController()
+               .navigate(RecipeDetailFragmentDirections.actionRecipeDetailFragmentToTimerFragment(cookTime))
+         }
          binding.executePendingBindings()
       }
 

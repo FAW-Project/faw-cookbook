@@ -39,6 +39,9 @@ android {
       jvmTarget = JavaVersion.VERSION_1_8.toString()
       useIR = true
    }
+   lintOptions {
+      disable 'MissingTranslation'
+   }
    buildFeatures {
       viewBinding = true
       dataBinding = true
@@ -85,4 +88,7 @@ dependencies {
    implementation 'com.karumi:dexter:6.2.2'
    // simple storage
    implementation "com.anggrayudi:storage:0.5.2"
+
+   // Circular progress view
+   implementation 'com.github.guilhe:circular-progress-view:2.0.0'
 }

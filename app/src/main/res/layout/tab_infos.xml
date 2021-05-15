@@ -30,7 +30,8 @@
                app:layout_constraintEnd_toEndOf="parent"
                app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintTop_toTopOf="parent"
-               app:recipeHeaderImage="@{recipe}" />
+               app:recipeHeaderImage="@{recipe}"
+               tools:ignore="HardcodedText" />
 
          <TextView
                android:id="@+id/headerText"
@@ -141,9 +142,12 @@
                   android:layout_marginStart="1dp"
                   android:layout_marginEnd="8dp"
                   android:layout_weight="1"
+                  android:background="?attr/selectableItemBackgroundBorderless"
                   android:textAlignment="center"
                   android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                   android:textSize="@dimen/tab_info_text_size"
+                  app:drawableEndCompat="@drawable/ic_play"
+                  app:drawableStartCompat="@drawable/ic_timer"
                   app:recipeCookTime="@{recipe}" />
 
             <TextView

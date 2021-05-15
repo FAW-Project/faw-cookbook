@@ -28,6 +28,9 @@
             android:name="recipeName"
             android:defaultValue="-"
             app:argType="string" />
+      <action
+            android:id="@+id/action_recipeDetailFragment_to_timerFragment"
+            app:destination="@id/timerFragment" />
    </fragment>
    <fragment
          android:id="@+id/recipeSearchFragment"
@@ -54,5 +57,13 @@
        android:id="@+id/downloadFormFragment"
        android:name="de.micmun.android.nextcloudcookbook.ui.downloadform.DownloadFormFragment"
        android:label="DownloadFormFragment">
+   </fragment>
+   <fragment
+         android:id="@+id/timerFragment"
+         android:name="de.micmun.android.nextcloudcookbook.ui.timer.TimerFragment"
+         android:label="TimerFragment" >
+      <argument
+            android:name="cookTime"
+            app:argType="long" />
    </fragment>
 </navigation>

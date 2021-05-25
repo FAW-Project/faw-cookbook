@@ -94,7 +94,7 @@ class ViewPagerAdapter(private val recipe: DbRecipe, private val orientation: In
          binding.cookTimeTxt.setOnClickListener {
             val cookTime = DurationUtils.getDurationInMillis(recipe.recipeCore.cookTime)
             it.findNavController()
-               .navigate(RecipeDetailFragmentDirections.actionRecipeDetailFragmentToTimerFragment(cookTime))
+               .navigate(RecipeDetailFragmentDirections.actionRecipeDetailFragmentToTimerFragment(cookTime, recipe.recipeCore.name))
          }
          binding.executePendingBindings()
       }

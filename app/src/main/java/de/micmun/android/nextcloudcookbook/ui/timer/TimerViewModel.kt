@@ -14,9 +14,9 @@ import java.util.concurrent.TimeUnit
  * ViewModel for cook timer.
  *
  * @author MicMun
- * @version 1.0, 15.05.21
+ * @version 1.1, 18.05.21
  */
-class TimerViewModel(private val cookTime: Long, application: Application) : AndroidViewModel(application) {
+class TimerViewModel(application: Application) : AndroidViewModel(application) {
    var totalTime: Long? = null
    private val _currentTime = MutableLiveData<Long>()
    val currentTime: LiveData<Long>
@@ -48,6 +48,10 @@ class TimerViewModel(private val cookTime: Long, application: Application) : And
       executor.shutdownNow()
    }
 
+   internal fun updateTimer(remain: Long) {
+      _currentTime.value = totalTime!! - remain
+   }
+
    internal fun stopTimer() {
       _state.value = State.FINISHED
       _currentTime.value = 0L
@@ -65,12 +69,12 @@ class TimerViewModel(private val cookTime: Long, application: Application) : And
    }
 }
 
-class TimerViewModelFactory(private val cookTime: Long, private val application: Application)
+class TimerViewModelFactory(private val application: Application)
    : ViewModelProvider.Factory {
    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
       if (modelClass.isAssignableFrom(TimerViewModel::class.java)) {
          @Suppress("UNCHECKED_CAST")
-         return TimerViewModel(cookTime, application) as T
+         return TimerViewModel(application) as T
       }
       throw IllegalArgumentException("Unknown ViewModel class")
    }

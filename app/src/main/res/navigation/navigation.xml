@@ -65,5 +65,8 @@
       <argument
             android:name="cookTime"
             app:argType="long" />
+      <argument
+            android:name="recipeName"
+            app:argType="string" />
    </fragment>
 </navigation>

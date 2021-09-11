@@ -61,7 +61,11 @@ data class Recipe(
    val url: String? = null,
    @Serializable(with = ListStringSerializer::class)
    val yield: String? = null,
-   val estimatedCost: String? = null
+   val estimatedCost: String? = null,
+   @Transient
+   val fileLocation: String = "",
+   @Transient
+   val fileModified: Long = 0,
 )
 
 @Serializable

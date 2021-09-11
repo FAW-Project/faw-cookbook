@@ -36,7 +36,10 @@ class Recipe2DbRecipeConverter(private val recipe: Recipe) {
          estimatedCost = cns(recipe.estimatedCost),
          aggregateRating = getAggregatRating(recipe.aggregateRating),
          author = getAuthor(recipe.author),
-         nutrition = getNutrition(recipe.nutrition)
+         nutrition = getNutrition(recipe.nutrition),
+         fileSystem = DbFilesystemRecipe(
+            filePath = recipe.fileLocation,
+            lastModified = recipe.fileModified),
       )
 
       return DbRecipe(

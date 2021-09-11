@@ -8,8 +8,6 @@ package de.micmun.android.nextcloudcookbook.json
 import android.content.Context
 import android.os.Build
 import androidx.documentfile.provider.DocumentFile
-import com.anggrayudi.storage.file.DocumentFileType
-import com.anggrayudi.storage.file.findFiles
 import com.anggrayudi.storage.file.openInputStream
 import de.micmun.android.nextcloudcookbook.json.model.Recipe
 import de.micmun.android.nextcloudcookbook.util.StorageManager
@@ -54,16 +52,20 @@ class JsonRecipeRepository {
          val subDirs = recipeDir.listFiles()
 
          subDirs.forEach { sd ->
-            if (sd.exists() && sd.isDirectory) {
-               val jsonFiles = sd.listFiles().filter { f -> f.name?.endsWith(".json") ?: false }
-               val thumbFiles = sd.findFiles(arrayOf("thumb.jpg"), DocumentFileType.FILE)
-               val fullFiles = sd.findFiles(arrayOf("full.jpg"), DocumentFileType.FILE)
+            if (sd.isDirectory) {
+               var jsonFile: DocumentFile? = null
+               var thumbFile: DocumentFile? = null
+               var fullFile: DocumentFile? = null
+               val files = sd.listFiles()
+               for (file in files) {
+                  when (file.name) {
+                     "thumb.jpg" -> thumbFile = file
+                     "full.jpg" -> fullFile = file
+                     "recipe.json" -> jsonFile = file
+                  }
+               }
 
-               val jsonFile = if (jsonFiles.isNotEmpty()) jsonFiles.first() else null
-               val thumbFile = if (thumbFiles.isNotEmpty()) thumbFiles.first() else null
-               val fullFile = if (fullFiles.isNotEmpty()) fullFiles.first() else null
-
-               if (jsonFile != null && jsonFile.exists() && jsonFile.canRead()) {
+               if (jsonFile != null && jsonFile.canRead()) {
                   val recipe = readRecipe(context, jsonFile)
 
                   if (recipe != null) {

@@ -8,7 +8,9 @@ package de.micmun.android.nextcloudcookbook.json
 import android.content.Context
 import android.os.Build
 import androidx.documentfile.provider.DocumentFile
+import com.anggrayudi.storage.file.getAbsolutePath
 import com.anggrayudi.storage.file.openInputStream
+import de.micmun.android.nextcloudcookbook.db.model.DbFilesystemRecipe
 import de.micmun.android.nextcloudcookbook.json.model.Recipe
 import de.micmun.android.nextcloudcookbook.util.StorageManager
 import de.micmun.android.nextcloudcookbook.util.json.RecipeJsonConverter
@@ -44,7 +46,7 @@ class JsonRecipeRepository {
    /**
     * Reads all recipes from directory.
     */
-   fun getAllRecipes(context: Context, path: String): List<Recipe> {
+   fun getAllRecipes(context: Context, path: String, allFileInfos: List<DbFilesystemRecipe>): List<Recipe> {
       val recipeDir = StorageManager.getDocumentFromString(context, path) ?: return emptyList()
       val recipeList = mutableListOf<Recipe>()
 
@@ -65,7 +67,8 @@ class JsonRecipeRepository {
                   }
                }
 
-               if (jsonFile != null && jsonFile.canRead()) {
+               if (jsonFile != null && jsonFile.canRead()
+                  && isModified(context, allFileInfos, jsonFile)) {
                   val recipe = readRecipe(context, jsonFile)
 
                   if (recipe != null) {
@@ -89,6 +92,12 @@ class JsonRecipeRepository {
       }
 
       return recipeList
+   }
+
+   // check whether the file has been modified since the last scan (or is completely new)
+   private fun isModified(context: Context, infos: List<DbFilesystemRecipe>, doc:DocumentFile): Boolean {
+      val docAbsPath = doc.getAbsolutePath(context)
+      return doc.lastModified() > (infos.find { it.filePath == docAbsPath }?.lastModified ?: 0)
    }
 
    /**
@@ -117,6 +126,8 @@ class JsonRecipeRepository {
          json = strBuilder.toString()
       }
 
-      return RecipeJsonConverter.parse(json)
+      return RecipeJsonConverter.parse(json)?.copy(
+            fileLocation = file.getAbsolutePath(context),
+            fileModified = file.lastModified())
    }
 }

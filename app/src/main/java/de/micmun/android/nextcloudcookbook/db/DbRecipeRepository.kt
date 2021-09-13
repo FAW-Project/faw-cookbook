@@ -10,10 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.sqlite.db.SimpleSQLiteQuery
 import de.micmun.android.nextcloudcookbook.data.RecipeFilter
 import de.micmun.android.nextcloudcookbook.data.SortValue
-import de.micmun.android.nextcloudcookbook.db.model.DbRecipe
-import de.micmun.android.nextcloudcookbook.db.model.DbRecipeKeywordRelation
-import de.micmun.android.nextcloudcookbook.db.model.DbRecipePreview
-import de.micmun.android.nextcloudcookbook.db.model.DbRecipeStar
+import de.micmun.android.nextcloudcookbook.db.model.*
 
 /**
  * Repository for recipes.
@@ -102,6 +99,8 @@ class DbRecipeRepository private constructor(application: Application) {
       val query = SimpleSQLiteQuery(select, args)
       return mRecipeDao.filterRecipes(query)
    }
+
+   fun getAllFileInfos(): List<DbFilesystemRecipe> = mRecipeDao.getAllFileInfos()
 
    fun getKeywords() = mRecipeDao.getAllKeywords()
 

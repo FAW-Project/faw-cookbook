@@ -49,6 +49,10 @@ interface RecipeDataDao {
    fun findByName(n: String): DbRecipe?
 
    @Transaction
+   @Query("SELECT fs_filePath AS filePath, fs_lastModified AS lastModified FROM recipes")
+   fun getAllFileInfos(): List<DbFilesystemRecipe>
+
+   @Transaction
    @Query("SELECT * FROM keywords WHERE keyword IN(:n)")
    fun findKeywords(n: List<String>): List<DbKeyword>?
 

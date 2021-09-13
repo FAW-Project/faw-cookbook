@@ -8,9 +8,9 @@ package de.micmun.android.nextcloudcookbook.json
 import android.content.Context
 import android.os.Build
 import androidx.documentfile.provider.DocumentFile
-import com.anggrayudi.storage.file.DocumentFileType
-import com.anggrayudi.storage.file.findFiles
+import com.anggrayudi.storage.file.getAbsolutePath
 import com.anggrayudi.storage.file.openInputStream
+import de.micmun.android.nextcloudcookbook.db.model.DbFilesystemRecipe
 import de.micmun.android.nextcloudcookbook.json.model.Recipe
 import de.micmun.android.nextcloudcookbook.util.StorageManager
 import de.micmun.android.nextcloudcookbook.util.json.RecipeJsonConverter
@@ -46,7 +46,7 @@ class JsonRecipeRepository {
    /**
     * Reads all recipes from directory.
     */
-   fun getAllRecipes(context: Context, path: String): List<Recipe> {
+   fun getAllRecipes(context: Context, path: String, allFileInfos: List<DbFilesystemRecipe>): List<Recipe> {
       val recipeDir = StorageManager.getDocumentFromString(context, path) ?: return emptyList()
       val recipeList = mutableListOf<Recipe>()
 
@@ -54,16 +54,21 @@ class JsonRecipeRepository {
          val subDirs = recipeDir.listFiles()
 
          subDirs.forEach { sd ->
-            if (sd.exists() && sd.isDirectory) {
-               val jsonFiles = sd.listFiles().filter { f -> f.name?.endsWith(".json") ?: false }
-               val thumbFiles = sd.findFiles(arrayOf("thumb.jpg"), DocumentFileType.FILE)
-               val fullFiles = sd.findFiles(arrayOf("full.jpg"), DocumentFileType.FILE)
+            if (sd.isDirectory) {
+               var jsonFile: DocumentFile? = null
+               var thumbFile: DocumentFile? = null
+               var fullFile: DocumentFile? = null
+               val files = sd.listFiles()
+               for (file in files) {
+                  when (file.name) {
+                     "thumb.jpg" -> thumbFile = file
+                     "full.jpg" -> fullFile = file
+                     "recipe.json" -> jsonFile = file
+                  }
+               }
 
-               val jsonFile = if (jsonFiles.isNotEmpty()) jsonFiles.first() else null
-               val thumbFile = if (thumbFiles.isNotEmpty()) thumbFiles.first() else null
-               val fullFile = if (fullFiles.isNotEmpty()) fullFiles.first() else null
-
-               if (jsonFile != null && jsonFile.exists() && jsonFile.canRead()) {
+               if (jsonFile != null && jsonFile.canRead()
+                  && isModified(context, allFileInfos, jsonFile)) {
                   val recipe = readRecipe(context, jsonFile)
 
                   if (recipe != null) {
@@ -87,6 +92,12 @@ class JsonRecipeRepository {
       }
 
       return recipeList
+   }
+
+   // check whether the file has been modified since the last scan (or is completely new)
+   private fun isModified(context: Context, infos: List<DbFilesystemRecipe>, doc:DocumentFile): Boolean {
+      val docAbsPath = doc.getAbsolutePath(context)
+      return doc.lastModified() > (infos.find { it.filePath == docAbsPath }?.lastModified ?: 0)
    }
 
    /**
@@ -115,6 +126,8 @@ class JsonRecipeRepository {
          json = strBuilder.toString()
       }
 
-      return RecipeJsonConverter.parse(json)
+      return RecipeJsonConverter.parse(json)?.copy(
+            fileLocation = file.getAbsolutePath(context),
+            fileModified = file.lastModified())
    }
 }

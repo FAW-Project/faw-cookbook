@@ -98,7 +98,7 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
 
    private suspend fun getRecipesFromRepo(path: String): List<Recipe> {
       return withContext(Dispatchers.IO) {
-         JsonRecipeRepository.getInstance().getAllRecipes(app, path)
+         JsonRecipeRepository.getInstance().getAllRecipes(app, path, recipeRepository.getAllFileInfos())
       }
    }
 

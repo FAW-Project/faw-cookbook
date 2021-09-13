@@ -48,15 +48,9 @@ class RecipeIngredientsAdapter(
       if (factor != 1f) {
          // Replaces the first decimal found with a scaled value. This is usually the amount,
          // but there may be exceptions. We highlight it in bold print to make the user aware.
-         "\\d+([.,]\\d+)?".toRegex().find(ingredient)?.let {
-            val newValue = (it.value.replace(',', '.').toFloat() * factor)
-            ingredient = ingredient.replaceRange(it.range, "<b>${prettyString(newValue)}</b>")
-         }
+         ingredient = scaleIngredientAmount(amountRegexString, ingredient, factor)
          // Replace the decimal after a '-' with a scaled value, if there is a range of amounts.
-         "-\\d+([.,]\\d+)?".toRegex().find(ingredient)?.let {
-            val newValue = (it.value.replace(',', '.').toFloat() * factor)
-            ingredient = ingredient.replaceRange(it.range, "<b>${prettyString(newValue)}</b>")
-         }
+         ingredient = scaleIngredientAmount("-\\s?$amountRegexString", ingredient, factor)
       }
       holder.bind(ingredient)
    }
@@ -105,5 +99,49 @@ class RecipeIngredientsAdapter(
       // 1f.toString() -> "1.0", but just "1" looks better in the ingredient list and rounded to two decimals, too
       val tmp = "%.2f".format(f).replace(',', '.').toFloat()
       return if (tmp.toInt().toFloat() == tmp) tmp.toInt().toString() else tmp.toString()
+   }
+
+   private fun scaleIngredientAmount(regexStr: String, ingredient: String, factor: Float) : String {
+      return regexStr.toRegex().find(ingredient)?.let {
+         val amount = it.groups[1]!! // don't include the "-\s?" on the second replace
+         val fraction = it.groups[4]?.value // unicode fraction
+         val newValue = factor *
+                 if (fraction != null && fraction.isNotEmpty()) { // e.g. "1 ½", "¾"
+                    val integer = it.groups[3]?.value ?: ""
+                    amount.value.replace(fraction, fractionsMap[fraction]!!)
+                       .replace(integer, integer.trim())
+                 } else { // e.g. "4.5", "2,7"
+                    amount.value.replace(',', '.')
+                 }.toFloat()
+         ingredient.replaceRange(amount.range, "<b>${prettyString(newValue)}</b>")
+      } ?: ingredient
+   }
+
+   companion object
+   {
+      private val fractionsMap = mapOf(
+         "½" to ".5",
+         "⅓" to ".3333",
+         "⅕" to ".2",
+         "⅙" to ".1666",
+         "⅛" to ".125",
+         "⅔" to ".6666",
+         "⅖" to ".4",
+         "⅚" to ".8333",
+         "⅜" to ".375",
+         "¾" to ".75",
+         "⅗" to ".6",
+         "⅝" to ".625",
+         "⅞" to ".875",
+         "⅘" to ".8",
+         "¼" to ".25",
+         "⅐" to ".1429",
+         "⅑" to ".1111",
+         "⅒" to ".1"
+      )
+
+      // e.g. "4.5", "2,7", "1 ½", "¾"
+      private val amountRegexString =
+         "(((\\d+\\s?)?([${fractionsMap.keys.joinToString(separator = "")}]))|(\\d+([.,]\\d+)?))"
    }
 }

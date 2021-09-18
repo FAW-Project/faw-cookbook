@@ -20,8 +20,8 @@ android {
       applicationId "de.micmun.android.nextcloudcookbook"
       minSdkVersion 23
       targetSdkVersion 31
-      versionCode 242
-      versionName "2.4.2"
+      versionCode 250
+      versionName "2.5.0"
 
       testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
       vectorDrawables.useSupportLibrary = true

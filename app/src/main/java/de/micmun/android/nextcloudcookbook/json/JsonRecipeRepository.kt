@@ -7,6 +7,7 @@ package de.micmun.android.nextcloudcookbook.json
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.documentfile.provider.DocumentFile
 import com.anggrayudi.storage.file.getAbsolutePath
 import com.anggrayudi.storage.file.openInputStream
@@ -22,7 +23,7 @@ import java.util.stream.Collectors
  * Repository with the recipe data.
  *
  * @author MicMun
- * @version 2.0, 11.07.21
+ * @version 2.1, 19.09.21
  */
 class JsonRecipeRepository {
    companion object {
@@ -65,10 +66,13 @@ class JsonRecipeRepository {
                      "full.jpg" -> fullFile = file
                      "recipe.json" -> jsonFile = file
                   }
+                  if (jsonFile == null && file.name?.endsWith(".json") == true) {
+                     jsonFile = file
+                  }
                }
 
                if (jsonFile != null && jsonFile.canRead()
-                  && isModified(context, allFileInfos, jsonFile)) {
+                   && isModified(context, allFileInfos, jsonFile)) {
                   val recipe = readRecipe(context, jsonFile)
 
                   if (recipe != null) {
@@ -95,7 +99,7 @@ class JsonRecipeRepository {
    }
 
    // check whether the file has been modified since the last scan (or is completely new)
-   private fun isModified(context: Context, infos: List<DbFilesystemRecipe>, doc:DocumentFile): Boolean {
+   private fun isModified(context: Context, infos: List<DbFilesystemRecipe>, doc: DocumentFile): Boolean {
       val docAbsPath = doc.getAbsolutePath(context)
       return doc.lastModified() > (infos.find { it.filePath == docAbsPath }?.lastModified ?: 0)
    }
@@ -127,7 +131,7 @@ class JsonRecipeRepository {
       }
 
       return RecipeJsonConverter.parse(json)?.copy(
-            fileLocation = file.getAbsolutePath(context),
-            fileModified = file.lastModified())
+         fileLocation = file.getAbsolutePath(context),
+         fileModified = file.lastModified())
    }
 }

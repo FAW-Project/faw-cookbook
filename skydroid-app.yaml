@@ -22,8 +22,7 @@ localized:
       Therefore it is better to use the above mentioned path on the SD card (see First steps).
     summary: View the recipes from your Nextcloud Cookbook
     whatsNew: |-
-      + Optimize scanning of the recipe directory (thanks to leafar)
-      + Handle unicode fraction codepoints in ingredient scaling (thanks to leafar)
+      + Bugfix: Read json files whith other name than recipe.json
     phoneScreenshotsBaseUrl: https://codeberg.org/MicMun/nextcloud-cookbook/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/
     phoneScreenshots:
       - screenshot_start.png
@@ -46,8 +45,7 @@ localized:
       Deshalb bitte besser den oben genannten Pfad auf der SD-Karte nutzen (siehe Erste Schritte).
     summary: Zeige die Rezepte aus Deinem Nextcloud Kochbuch an
     whatsNew: |-
-      + Optimiert das Laden des Rezeptverzeichnis (Danke an leafar)
-      + Unterstützung für Unicode Fractional Codepoints in der Skalierung der Zutaten (Danke an leafar)
+      + Bugfix: Lese auch JSON-Dateien mit einem anderen Namen als recipe.json
     phoneScreenshotsBaseUrl: https://codeberg.org/MicMun/nextcloud-cookbook/raw/branch/master/fastlane/metadata/android/de/images/phoneScreenshots/
     phoneScreenshots:
       - screenshot_start.png
@@ -58,6 +56,10 @@ localized:
       - screenshot_settings.png
 
 builds:
+  - versionName: 2.5.1
+    versionCode: 251
+    sha256: 2a96fd2a6e7e59fe63a98cb5d42b3a04c973587528b74f33b2279ddb702106bd
+    apkLink: sia://_BXKuqQukBWr7xSvNNkv7ZMU9lgXu7JDHWLhAiWPerqalQ
   - versionName: 2.5.0
     versionCode: 250
     sha256: 864816d40cf3ca0284c757713623a3e10c11ba53cd56d5c8278d01d2536bc521
@@ -103,8 +105,8 @@ builds:
     sha256: ab98ebfffc1cbbd15f1d7cb48644ae68733ca4669d39ebaf9817679bfc989912
     apkLink: sia://_Bka9tS-fiGpHIjylx-yjr1caGY_w7p-2vhm5rU9gqhG-w
 
-currentVersionName: 2.5.0
-currentVersionCode: 250
+currentVersionName: 2.5.1
+currentVersionCode: 251
 
 added: 1618153205273
-lastUpdated: 1631957654954
+lastUpdated: 1632061511998

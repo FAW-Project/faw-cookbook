@@ -40,6 +40,8 @@ class RecipeJsonConverter {
             getParser().decodeFromJsonElement(Recipe.serializer(), json)
          } catch (e: SerializationException) {
             null
+         } catch (e: IllegalArgumentException) {
+            null
          }
       }
 

@@ -20,8 +20,8 @@ android {
       applicationId "de.micmun.android.nextcloudcookbook"
       minSdkVersion 23
       targetSdkVersion 31
-      versionCode 251
-      versionName "2.5.1"
+      versionCode 260
+      versionName "2.6.0"
 
       testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
       vectorDrawables.useSupportLibrary = true
@@ -63,7 +63,7 @@ dependencies {
 
    implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
 
-   implementation "androidx.core:core-ktx:1.6.0"
+   implementation "androidx.core:core-ktx:1.7.0"
    implementation "androidx.legacy:legacy-support-v4:1.0.0"
    implementation "androidx.appcompat:appcompat:$version_appcompat"
    implementation "androidx.constraintlayout:constraintlayout:$version_constraintlayout"

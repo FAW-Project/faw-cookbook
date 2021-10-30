@@ -40,6 +40,8 @@ class RecipeJsonConverter {
             getParser().decodeFromJsonElement(Recipe.serializer(), json)
          } catch (e: SerializationException) {
             null
+         } catch (e: IllegalArgumentException) {
+            null
          }
       }
 
@@ -55,6 +57,21 @@ class RecipeJsonConverter {
                }
             }
             return null
+         } catch (e: Exception) {
+         }
+
+         // others provide a root object with an "@graph" array
+         try {
+            val graph = getParser().parseToJsonElement(json).jsonObject["@graph"]
+            val arr = graph?.jsonArray
+                  arr?.let { jsArray ->
+               for (obj in jsArray) {
+                  if (obj is JsonObject && obj.jsonObject["@type"]?.jsonPrimitive?.content ?: "" == "Recipe") {
+                     return obj
+                  }
+               }
+               return null
+            }
          } catch (e: Exception) {
          }
 

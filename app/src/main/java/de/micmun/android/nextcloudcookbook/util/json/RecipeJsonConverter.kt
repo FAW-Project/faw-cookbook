@@ -64,7 +64,7 @@ class RecipeJsonConverter {
          try {
             val graph = getParser().parseToJsonElement(json).jsonObject["@graph"]
             val arr = graph?.jsonArray
-                  arr?.let { jsArray ->
+            arr?.let { jsArray ->
                for (obj in jsArray) {
                   if (obj is JsonObject && obj.jsonObject["@type"]?.jsonPrimitive?.content ?: "" == "Recipe") {
                      return obj

@@ -49,7 +49,7 @@ data class Recipe(
    var recipeCategory: List<String>? = null,
    @Serializable(with = StringListSerializer::class)
    val recipeIngredient: List<String>? = null,
-   @Serializable(with = StringListSerializer::class)
+   @Serializable(with = InstructionSerializer::class)
    val recipeInstructions: List<String>? = null,
    @Serializable(with = ListStringSerializer::class)
    val recipeYield: String? = null,
@@ -61,7 +61,11 @@ data class Recipe(
    val url: String? = null,
    @Serializable(with = ListStringSerializer::class)
    val yield: String? = null,
-   val estimatedCost: String? = null
+   val estimatedCost: String? = null,
+   @Transient
+   val fileLocation: String = "",
+   @Transient
+   val fileModified: Long = 0,
 )
 
 @Serializable

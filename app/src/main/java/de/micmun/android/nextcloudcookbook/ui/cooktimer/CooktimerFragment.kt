@@ -5,6 +5,9 @@
  */
 package de.micmun.android.nextcloudcookbook.ui.cooktimer
 
+import android.Manifest
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,12 +18,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.listener.multi.BaseMultiplePermissionsListener
+import de.micmun.android.nextcloudcookbook.MainApplication
 import de.micmun.android.nextcloudcookbook.R
 import de.micmun.android.nextcloudcookbook.databinding.FragmentCooktimerBinding
 import de.micmun.android.nextcloudcookbook.db.model.DbRecipe
+import de.micmun.android.nextcloudcookbook.services.CooktimerService
+import de.micmun.android.nextcloudcookbook.services.RemainReceiver
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
-import de.micmun.android.nextcloudcookbook.ui.MainActivity
 import de.micmun.android.nextcloudcookbook.ui.widget.BlinkAnimation
 import de.micmun.android.nextcloudcookbook.util.DurationUtils
 import de.micmun.android.nextcloudcookbook.util.ManagedAlarmPlayer
@@ -32,7 +41,7 @@ import java.util.concurrent.TimeUnit
  * Fragment for cook timer.
  *
  * @author MicMun
- * @version 1.0, 31.07.21
+ * @version 1.1, 28.08.21
  */
 class CooktimerFragment : Fragment() {
    private lateinit var binding: FragmentCooktimerBinding
@@ -44,6 +53,7 @@ class CooktimerFragment : Fragment() {
    private lateinit var vibrator: ManagedVibrator
 
    private lateinit var currentRecipe: DbRecipe
+   private var remains: Long = -1L
 
    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
       binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cooktimer, container, false)
@@ -56,9 +66,9 @@ class CooktimerFragment : Fragment() {
       val factory = CooktimeViewModelFactory(recipeId, requireActivity().application)
       viewModel = ViewModelProvider(this, factory).get(CooktimeViewModel::class.java)
       binding.lifecycleOwner = viewLifecycleOwner
-      val settingFactory = CurrentSettingViewModelFactory(MainActivity.mainApplication)
+      val settingFactory = CurrentSettingViewModelFactory(MainApplication.AppContext)
       settingViewModel =
-         ViewModelProvider(MainActivity.mainApplication, settingFactory).get(CurrentSettingViewModel::class.java)
+         ViewModelProvider(MainApplication.AppContext, settingFactory).get(CurrentSettingViewModel::class.java)
 
       // initialize alarm and vibration
       alarmPlayer = ManagedAlarmPlayer(requireContext())
@@ -71,43 +81,6 @@ class CooktimerFragment : Fragment() {
          viewModel.resetTimer()
       }
       setTooltip(binding.resetTimerBtn, R.string.cooktime_reset_btn)
-
-      // observe recipe
-      viewModel.recipe.observe(viewLifecycleOwner, { dbRecipe ->
-         dbRecipe?.let { recipe ->
-            binding.recipe = recipe
-            if (viewModel.total == null) {
-               viewModel.total = DurationUtils.durationInSeconds(recipe.recipeCore.cookTime) * 1000
-               refreshUi(0L)
-
-               // start button
-               binding.startTimerBtn.setOnClickListener {
-                  viewModel.startTimer()
-               }
-            }
-            currentRecipe = recipe
-            setTitle()
-
-            if (args.remains != -1L) {
-               viewModel.setCurrentMillis(viewModel.total!! - args.remains)
-               viewModel.startTimer()
-            }
-         }
-      })
-
-      // update current remaining time
-      viewModel.currentMillis.observe(viewLifecycleOwner, {
-         it?.let { millis ->
-            refreshUi(millis)
-         }
-      })
-
-      // observe state of timer
-      viewModel.state.observe(viewLifecycleOwner, {
-         it?.let { state ->
-            handleState(state)
-         }
-      })
 
       return binding.root
    }
@@ -126,12 +99,115 @@ class CooktimerFragment : Fragment() {
       if (savedInstanceState?.getBoolean("VIBRATOR_VIBRATING") == true) vibrate()
    }
 
-   override fun onDestroy() {
+   override fun onPause() {
       if (viewModel.state.value == CooktimeViewModel.CooktimeState.RUNNING) {
-         settingViewModel.setRemains(viewModel.total!! - viewModel.currentMillis.value!!)
+         startService(viewModel.total!! - viewModel.currentMillis.value!!)
       }
-      super.onDestroy()
+      super.onPause()
    }
+
+   override fun onResume() {
+      super.onResume()
+
+      // if service started, take value and stop service
+      if (MainApplication.AppContext.receiver != null) {
+         remains = MainApplication.AppContext.receiver!!.remains ?: -1
+         stopService()
+      }
+      observeTimerValues()
+   }
+
+   /**
+    * Observes the recipe, current remaining time and state of the timer.
+    */
+   private fun observeTimerValues() {
+      // observe recipe
+      viewModel.recipe.observe(viewLifecycleOwner, { dbRecipe ->
+         dbRecipe?.let { recipe ->
+            binding.recipe = recipe
+            if (viewModel.total == null) {
+               viewModel.total = DurationUtils.durationInSeconds(recipe.recipeCore.cookTime) * 1000
+               refreshUi(0L)
+
+               // start button
+               binding.startTimerBtn.setOnClickListener {
+                  viewModel.startTimer()
+               }
+            }
+            currentRecipe = recipe
+            setTitle()
+
+            // if it is not the first start, starting with current value again
+            if (remains != -1L) {
+               viewModel.setCurrentMillis(viewModel.total!! - remains)
+               viewModel.startTimer()
+            }
+         }
+      })
+
+      // update current remaining time
+      viewModel.currentMillis.observe(viewLifecycleOwner, {
+         it?.let { millis ->
+            refreshUi(millis)
+         }
+      })
+
+      // observe state of timer
+      viewModel.state.observe(viewLifecycleOwner, {
+         it?.let { state ->
+            handleState(state)
+         }
+      })
+   }
+
+   private fun startService(remains: Long) {
+      if (checkServicePermission()) {
+         MainApplication.AppContext.receiver = RemainReceiver()
+         LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(MainApplication.AppContext.receiver!!, IntentFilter(RemainReceiver.REMAIN_ACTION))
+         val intent = cooktimeService()
+         intent.putExtra("RECIPE_ID", currentRecipe.recipeCore.id)
+         intent.putExtra("COOK_TIME", remains)
+         requireActivity().startService(intent)
+      }
+   }
+
+   private fun stopService() {
+      requireActivity().stopService(cooktimeService())
+      MainApplication.AppContext.receiver?.let {
+         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(it)
+         MainApplication.AppContext.receiver = null
+      }
+   }
+
+   /**
+    * Returns <code>true</code>, if the app has the permission to start an foreground service.
+    *
+    * @return <code>true</code>, if the app has the permission to start an foreground service.
+    */
+   private fun checkServicePermission(): Boolean {
+      var result = true
+
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+         Dexter.withContext(requireContext())
+            .withPermissions(Manifest.permission.FOREGROUND_SERVICE)
+            .withListener(object : BaseMultiplePermissionsListener() {
+               override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                  result = report.areAllPermissionsGranted()
+               }
+            }).check()
+      } else
+         result = true
+
+      return result
+   }
+
+   /**
+    * Returns the intent for the countdown service.
+    *
+    * @return the intent for the countdown service.
+    */
+   private fun cooktimeService() = Intent(activity, CooktimerService::class.java)
 
    /**
     * Handle the current state.

@@ -43,7 +43,9 @@ class DbRecipe2RecipeConverter(private val recipe: DbRecipe) {
          tool = getTools(recipe.tool),
          recipeIngredient = getIngredients(recipe.recipeIngredient),
          recipeInstructions = getInstructions(recipe.recipeInstructions),
-         review = getReview(recipe.review)
+         review = getReview(recipe.review),
+         fileLocation = recipe.recipeCore.fileSystem.filePath,
+         fileModified = recipe.recipeCore.fileSystem.lastModified,
       )
    }
 

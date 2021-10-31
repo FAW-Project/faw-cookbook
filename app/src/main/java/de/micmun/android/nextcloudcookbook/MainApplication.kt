@@ -6,8 +6,10 @@
 package de.micmun.android.nextcloudcookbook
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
+import de.micmun.android.nextcloudcookbook.services.RemainReceiver
 
 /**
  * Application of the app.
@@ -21,4 +23,17 @@ class MainApplication : Application(), ViewModelStoreOwner {
    }
 
    override fun getViewModelStore(): ViewModelStore = appViewModelStore
+
+   override fun onCreate() {
+      super.onCreate()
+      Log.i(TAG, "Starting app")
+      AppContext = this
+   }
+
+   companion object {
+      private const val TAG = "MainApplication"
+      lateinit var AppContext: MainApplication
+   }
+
+   var receiver: RemainReceiver? = null
 }

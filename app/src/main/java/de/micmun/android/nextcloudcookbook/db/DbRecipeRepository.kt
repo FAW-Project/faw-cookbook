@@ -10,19 +10,17 @@ import androidx.lifecycle.LiveData
 import androidx.sqlite.db.SimpleSQLiteQuery
 import de.micmun.android.nextcloudcookbook.data.RecipeFilter
 import de.micmun.android.nextcloudcookbook.data.SortValue
-import de.micmun.android.nextcloudcookbook.db.model.DbRecipe
-import de.micmun.android.nextcloudcookbook.db.model.DbRecipeKeywordRelation
-import de.micmun.android.nextcloudcookbook.db.model.DbRecipePreview
-import de.micmun.android.nextcloudcookbook.db.model.DbRecipeStar
+import de.micmun.android.nextcloudcookbook.db.model.*
 
 /**
  * Repository for recipes.
  *
  * @author MicMun
- * @version 1.3, 24.04.21
+ * @version 1.5, 28.08.21
  */
 class DbRecipeRepository private constructor(application: Application) {
    private var mRecipeDao: RecipeDataDao = RecipeDatabase.getDatabase(application).recipeDataDao()
+
    // we prepend 'recipes.' to resolve name ambiguities (e.g. column 'id')
    private val dbPreviewFields = DbRecipePreview.DbFields.split(", ").joinToString(", ") { "recipes.$it" }
 
@@ -48,7 +46,8 @@ class DbRecipeRepository private constructor(application: Application) {
 
    fun getRecipe(id: Long) = mRecipeDao.getById(id)
 
-   fun filterCategory(sort: SortValue, category: String, recipeFilter: RecipeFilter? = null): LiveData<List<DbRecipePreview>> {
+   fun filterCategory(sort: SortValue, category: String,
+                      recipeFilter: RecipeFilter? = null): LiveData<List<DbRecipePreview>> {
       var select = "SELECT $dbPreviewFields FROM recipes WHERE recipeCategory = '${category}' "
       if (recipeFilter != null && recipeFilter.type != RecipeFilter.QueryType.QUERY_INGREDIENTS) {
          select += " AND " + getWhereClause(recipeFilter)
@@ -85,9 +84,9 @@ class DbRecipeRepository private constructor(application: Application) {
    fun filterAll(sort: SortValue, recipeFilter: RecipeFilter): LiveData<List<DbRecipePreview>> {
       var select = when (recipeFilter.type) {
          RecipeFilter.QueryType.QUERY_KEYWORD -> "SELECT $dbPreviewFields FROM recipes" +
-                                        " INNER JOIN recipeXKeywords x ON x.recipeId = recipes.id" +
-                                        " INNER JOIN keywords k ON k.id = x.keywordId" +
-                                        " WHERE " + getWhereClause(recipeFilter)
+                                                 " INNER JOIN recipeXKeywords x ON x.recipeId = recipes.id" +
+                                                 " INNER JOIN keywords k ON k.id = x.keywordId" +
+                                                 " WHERE " + getWhereClause(recipeFilter)
          RecipeFilter.QueryType.QUERY_INGREDIENTS -> "SELECT $dbPreviewFields FROM recipes INNER JOIN ingredients ON recipes.id = ingredients.recipeId" +
                                                      " WHERE " + getWhereClause(recipeFilter)
          else -> "SELECT $dbPreviewFields FROM recipes WHERE " + getWhereClause(recipeFilter)
@@ -100,6 +99,8 @@ class DbRecipeRepository private constructor(application: Application) {
       val query = SimpleSQLiteQuery(select, args)
       return mRecipeDao.filterRecipes(query)
    }
+
+   fun getAllFileInfos(): List<DbFilesystemRecipe> = mRecipeDao.getAllFileInfos()
 
    fun getKeywords() = mRecipeDao.getAllKeywords()
 
@@ -118,6 +119,10 @@ class DbRecipeRepository private constructor(application: Application) {
 
    fun insertAll(recipes: List<DbRecipe>) {
       RecipeDatabase.databaseWriteExecutor.execute {
+         if (recipes.isNotEmpty()) {
+            mRecipeDao.deleteAllKeywordRelations()
+            mRecipeDao.deleteAllKeywords()
+         }
          recipes.forEach { recipe ->
             val r = mRecipeDao.findByName(recipe.recipeCore.name)
 
@@ -137,51 +142,31 @@ class DbRecipeRepository private constructor(application: Application) {
 
                mRecipeDao.update(recipe.recipeCore)
                updateStar(recipe.recipeCore.id, r.recipeCore.starred)
-               recipe.tool?.let { mRecipeDao.updateTools(it) }
-               recipe.review?.let { mRecipeDao.updateReviews(it) }
-               recipe.recipeInstructions?.let { mRecipeDao.updateInstructions(it) }
-               recipe.recipeIngredient?.let { mRecipeDao.updateIngredients(it) }
+               recipe.tool?.let { tools ->
+                  r.tool?.let { mRecipeDao.deleteTools(it) }
+                  mRecipeDao.insertTools(tools)
+               }
+               recipe.review?.let { reviews ->
+                  r.review?.let { mRecipeDao.deleteReviews(it) }
+                  mRecipeDao.insertReviews(reviews)
+               }
+               recipe.recipeInstructions?.let { instructions ->
+                  r.recipeInstructions?.let { mRecipeDao.deleteInstructions(it) }
+                  mRecipeDao.insertInstructions(instructions)
+               }
+               recipe.recipeIngredient?.let { ingredients ->
+                  r.recipeIngredient?.let { mRecipeDao.deleteIngredients(it) }
+                  mRecipeDao.insertIngredients(ingredients)
+               }
                updateKeywords(recipe, id)
             }
          }
       }
    }
 
-   fun insert(recipe: DbRecipe) {
-      RecipeDatabase.databaseWriteExecutor.execute {
-         val identifier: Long = mRecipeDao.insert(recipe.recipeCore)
-         setIdInLists(recipe, identifier)
-
-         recipe.tool?.let { mRecipeDao.insertTools(it) }
-         recipe.review?.let { mRecipeDao.insertReviews(it) }
-         recipe.recipeInstructions?.let { mRecipeDao.insertInstructions(it) }
-         recipe.recipeIngredient?.let { mRecipeDao.insertIngredients(it) }
-      }
-   }
-
-   fun update(recipe: DbRecipe) {
-      RecipeDatabase.databaseWriteExecutor.execute {
-         mRecipeDao.update(recipe.recipeCore)
-         recipe.tool?.let { mRecipeDao.updateTools(it) }
-         recipe.review?.let { mRecipeDao.updateReviews(it) }
-         recipe.recipeInstructions?.let { mRecipeDao.updateInstructions(it) }
-         recipe.recipeIngredient?.let { mRecipeDao.updateIngredients(it) }
-      }
-   }
-
    fun updateStar(recipeId: Long, starred: Boolean) {
       RecipeDatabase.databaseWriteExecutor.execute {
          mRecipeDao.updateStar(DbRecipeStar(recipeId, starred))
-      }
-   }
-
-   fun delete(recipe: DbRecipe) {
-      RecipeDatabase.databaseWriteExecutor.execute {
-         recipe.tool?.let { mRecipeDao.deleteTools(it) }
-         recipe.review?.let { mRecipeDao.deleteReviews(it) }
-         recipe.recipeInstructions?.let { mRecipeDao.deleteInstructions(it) }
-         recipe.recipeIngredient?.let { mRecipeDao.deleteIngredients(it) }
-         mRecipeDao.delete(recipe.recipeCore)
       }
    }
 
@@ -236,10 +221,10 @@ class DbRecipeRepository private constructor(application: Application) {
    }
 
    private fun updateKeywords(recipe: DbRecipe, recipeId: Long) {
-      recipe.keywords?.let {
-         if (it.isNotEmpty()) {
-            mRecipeDao.insertKeywords(it)
-            mRecipeDao.findKeywords(it.map { kw -> kw.keyword })?.let {
+      recipe.keywords?.let { list ->
+         if (list.isNotEmpty()) {
+            mRecipeDao.insertKeywords(list)
+            mRecipeDao.findKeywords(list.map { kw -> kw.keyword })?.let {
                mRecipeDao.insertKeywordRefs(
                   it.map { kw -> DbRecipeKeywordRelation(recipeId = recipeId, keywordId = kw.id) })
             }

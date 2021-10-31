@@ -13,15 +13,15 @@ apply plugin: "kotlin-kapt"
 apply plugin: 'kotlinx-serialization'
 
 android {
-   compileSdkVersion 30
-   buildToolsVersion "30.0.3"
+   compileSdkVersion 31
+   buildToolsVersion "31.0.0"
 
    defaultConfig {
       applicationId "de.micmun.android.nextcloudcookbook"
       minSdkVersion 23
-      targetSdkVersion 30
-      versionCode 240
-      versionName "2.4.0"
+      targetSdkVersion 31
+      versionCode 260
+      versionName "2.6.0"
 
       testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
       vectorDrawables.useSupportLibrary = true
@@ -41,18 +41,18 @@ android {
    }
    compileOptions {
       coreLibraryDesugaringEnabled true
-      sourceCompatibility = 1.8
-      targetCompatibility = 1.8
+      sourceCompatibility = JavaVersion.VERSION_11
+      targetCompatibility = JavaVersion.VERSION_11
    }
    kotlinOptions {
-      jvmTarget = JavaVersion.VERSION_1_8.toString()
+      jvmTarget = JavaVersion.VERSION_11.toString()
       useIR = true
    }
    buildFeatures {
       viewBinding true
       dataBinding true
    }
-   lintOptions{
+   lintOptions {
       disable 'MissingTranslation'
    }
 }
@@ -63,7 +63,7 @@ dependencies {
 
    implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
 
-   implementation "androidx.core:core-ktx:1.6.0"
+   implementation "androidx.core:core-ktx:1.7.0"
    implementation "androidx.legacy:legacy-support-v4:1.0.0"
    implementation "androidx.appcompat:appcompat:$version_appcompat"
    implementation "androidx.constraintlayout:constraintlayout:$version_constraintlayout"
@@ -88,6 +88,8 @@ dependencies {
    kapt "androidx.room:room-compiler:$version_room"
    // optional - Kotlin Extensions and Coroutines support for Room
    implementation "androidx.room:room-ktx:$version_room"
+   // storage access framework (SAF)
+   implementation "androidx.documentfile:documentfile:$version_document"
 
    // Json parser
    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$version_serialization"
@@ -95,9 +97,10 @@ dependencies {
    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
    // permissions dexter
-   implementation 'com.karumi:dexter:6.2.2'
+   implementation 'com.karumi:dexter:6.2.3'
    // simple storage
-   implementation "com.anggrayudi:storage:0.5.2"
+   implementation "com.anggrayudi:storage:0.12.0"
+   implementation 'com.afollestad.material-dialogs:core:3.3.0'
 
    // timer view
    implementation 'com.github.guilhe:circular-progress-view:2.0.0'

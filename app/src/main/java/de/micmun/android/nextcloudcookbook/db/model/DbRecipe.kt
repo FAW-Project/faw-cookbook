@@ -69,6 +69,12 @@ data class DbRecipeCore(
    val yield: String = "",
    val estimatedCost: String = "",
    val starred: Boolean = false,
+   @Embedded(prefix = "fs_") val fileSystem: DbFilesystemRecipe,
+)
+
+data class DbFilesystemRecipe(
+   val filePath: String = "",
+   val lastModified: Long = 0,
 )
 
 data class DbAggregateRating(

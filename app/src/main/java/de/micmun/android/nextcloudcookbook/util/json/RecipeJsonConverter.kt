@@ -5,16 +5,16 @@
  */
 package de.micmun.android.nextcloudcookbook.util.json
 
+import android.util.Log
 import de.micmun.android.nextcloudcookbook.json.model.Recipe
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.*
-import java.lang.Exception
 
 /**
  * Convert between Recipe objects and their json representation.
  *
  * @author MicMun
- * @version 1.1, 11.07.21
+ * @version 1.2, 11.08.21
  */
 class RecipeJsonConverter {
    companion object {
@@ -26,6 +26,11 @@ class RecipeJsonConverter {
          return try {
             getParser().decodeFromString(Recipe.serializer(), json)
          } catch (e: SerializationException) {
+            Log.e("RecipeJsonConverter", "SerializationException: ${e.message} for json = {$json}")
+            null
+         } catch (e: Exception) {
+            Log.e("RecipeJsonConverter", "Exception: ${e.message} for json = {$json}")
+            e.printStackTrace()
             null
          }
       }
@@ -34,6 +39,8 @@ class RecipeJsonConverter {
          return try {
             getParser().decodeFromJsonElement(Recipe.serializer(), json)
          } catch (e: SerializationException) {
+            null
+         } catch (e: IllegalArgumentException) {
             null
          }
       }
@@ -50,6 +57,21 @@ class RecipeJsonConverter {
                }
             }
             return null
+         } catch (e: Exception) {
+         }
+
+         // others provide a root object with an "@graph" array
+         try {
+            val graph = getParser().parseToJsonElement(json).jsonObject["@graph"]
+            val arr = graph?.jsonArray
+            arr?.let { jsArray ->
+               for (obj in jsArray) {
+                  if (obj is JsonObject && obj.jsonObject["@type"]?.jsonPrimitive?.content ?: "" == "Recipe") {
+                     return obj
+                  }
+               }
+               return null
+            }
          } catch (e: Exception) {
          }
 

@@ -16,6 +16,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
 import de.micmun.android.nextcloudcookbook.MainApplication
 import de.micmun.android.nextcloudcookbook.R
@@ -25,7 +26,7 @@ import de.micmun.android.nextcloudcookbook.util.DurationUtils
  * Service for timer.
  *
  * @author MicMun
- * @version 1.0, 30.07.21
+ * @version 1.1, 28.08.21
  */
 class CooktimerService : LifecycleService() {
    private lateinit var viewModel: CooktimerServiceViewModel
@@ -44,7 +45,7 @@ class CooktimerService : LifecycleService() {
    override fun onCreate() {
       super.onCreate()
       val factory = CooktimerServiceViewModelFactory(application)
-      viewModel = ViewModelProvider(MainApplication(), factory).get(CooktimerServiceViewModel::class.java)
+      viewModel = ViewModelProvider(MainApplication.AppContext, factory).get(CooktimerServiceViewModel::class.java)
    }
 
    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -91,6 +92,8 @@ class CooktimerService : LifecycleService() {
                notificationBuilder.setContentText(
                   getString(R.string.notification_text, DurationUtils.formatDurationSeconds(remains / 1000)))
             }
+            LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(buildIntent(remains))
+
             pendingIntent = buildPendingIntent()
             notificationBuilder.setContentIntent(pendingIntent)
             notification = notificationBuilder.build()
@@ -145,13 +148,20 @@ class CooktimerService : LifecycleService() {
     */
    private fun buildPendingIntent(): PendingIntent {
       val bundle = Bundle()
-      bundle.putLong("remains", remains)
       bundle.putLong("recipeId", recipeId)
+      bundle.putBoolean("isServiceStarted", true)
 
       return NavDeepLinkBuilder(this)
          .setGraph(R.navigation.navigation)
          .setDestination(R.id.recipeDetailFragment)
          .setArguments(bundle)
          .createPendingIntent()
+   }
+
+   private fun buildIntent(remains: Long): Intent {
+      val intent = Intent()
+      intent.action = RemainReceiver.REMAIN_ACTION
+      intent.putExtra(RemainReceiver.KEY_REMAINS, remains)
+      return intent
    }
 }

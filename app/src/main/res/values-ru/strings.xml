@@ -81,7 +81,7 @@
     <string name="permission_warning_nowrite" tools:ignore="MissingTranslation">У вас нет доступа на запись в это хранилище, поэтому выбор этой папки бесполезен.
 \nВы хотите предоставить доступ к этой папке\?.</string>
     <string name="folder_pick_success" tools:ignore="MissingTranslation">Папка %1$s выбрана.</string>
-   <string name="form_download_folder">Отмена целевой папки</string>
+    <string name="form_download_folder">Отмена целевой папки</string>
     <string name="form_download_title">Скачать Рецепт</string>
     <string name="form_download_commit">Скачать</string>
     <string name="menu_download_title">Скачать</string>
@@ -100,4 +100,5 @@
     <string name="channel_description">Канал для уведомлений таймера</string>
     <string name="cooktime_title">Таймер готовки</string>
     <string name="cooktime_tooltip">Запустить таймер приготовления</string>
+    <string name="dir_chooser_error">Ошибка: Корневая папка запрещена!</string>
 </resources>

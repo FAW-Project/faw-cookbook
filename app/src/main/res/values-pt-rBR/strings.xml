@@ -90,7 +90,7 @@
     <string name="permission_warning_nowrite" tools:ignore="MissingTranslation">Você não tem acesso por escrito a este armazenamento, portanto, a seleção desta pasta é inútil.
 \nVocê gostaria de conceder acesso a esta pasta\?.</string>
     <string name="permission_canceled" tools:ignore="MissingTranslation">Cancelado pelo usuário</string>
-   <string name="form_download_folder">Substituir a pasta de destino</string>
+    <string name="form_download_folder">Substituir a pasta de destino</string>
     <string name="form_download_override_existing">Substituir a pasta de receitas existente</string>
     <string name="form_download_options">Opções</string>
     <string name="form_download_url_hint">URL da receita</string>
@@ -109,4 +109,5 @@
     <string name="notification_title">Nextcloud Cookbook Temporizador</string>
     <string name="cooktime_tooltip">Iniciar um temporizador de cozimento</string>
     <string name="list_recipe_star_desc">Ícone estrela indicando o status preferido da receita</string>
+    <string name="dir_chooser_error">Erro: Pasta de raiz não é permitida!</string>
 </resources>

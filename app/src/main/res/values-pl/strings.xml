@@ -90,7 +90,7 @@
 \nCzy chcesz przyznać dostęp do tego folderu\?.</string>
     <string name="header_image_desc">Zdjęcie nagłówka przepisu</string>
     <string name="text_tools"><strong>Potrzebne narzędzia:</strong><br/> %1$s</string>
-   <string name="form_download_folder">Zastąp folder docelowy</string>
+    <string name="form_download_folder">Zastąp folder docelowy</string>
     <string name="form_download_commit">Pobierz</string>
     <string name="menu_download_title">Pobierz</string>
     <string name="menu_download_tooltip">pobierz przepis</string>
@@ -109,4 +109,5 @@
     <string name="channel_name">Kanał timera</string>
     <string name="cooktime_tooltip">Uruchomić zegar do gotowania</string>
     <string name="list_recipe_star_desc">Ikona gwiazdki oznaczająca status ulubionego przepisu</string>
+    <string name="dir_chooser_error">Błąd: Folder główny jest niedozwolony!</string>
 </resources>

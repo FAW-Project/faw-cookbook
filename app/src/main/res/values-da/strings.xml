@@ -100,4 +100,5 @@
     <string name="cooktime_title">Kogetimer</string>
     <string name="cooktime_tooltip">Start en timer til madlavning</string>
     <string name="list_recipe_star_desc">Stjerneikon, der angiver opskriftens favoritstatus</string>
+    <string name="dir_chooser_error">Fejl: Root mappe er ikke tilladt!</string>
 </resources>

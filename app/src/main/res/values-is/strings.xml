@@ -81,7 +81,7 @@
 \nViltu veita aðgang að þessari möppu \?.</string>
     <string name="text_tools"><strong> Nauðsynleg verkfæri: </strong> <br/> %1$s</string>
     <string name="permission_select_root" tools:ignore="MissingTranslation">Veldu %1$s.</string>
-   <string name="form_download_folder">Hunsa miða möppu</string>
+    <string name="form_download_folder">Hunsa miða möppu</string>
     <string name="form_download_override_existing">Skipta núverandi uppskrift möppu</string>
     <string name="form_download_commit">Sækja</string>
     <string name="form_download_options">Valkosti</string>
@@ -100,4 +100,5 @@
     <string name="notification_title">Nextcloud Cookbook Myndatöku</string>
     <string name="list_recipe_star_desc">Stjörnu táknið sem gefur til kynna uppáhalds stöðu uppskrift</string>
     <string name="ingredients_yield">Afrakstur</string>
+    <string name="dir_chooser_error">Villa: Rótina er ekki leyft!</string>
 </resources>

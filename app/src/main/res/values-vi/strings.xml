@@ -81,7 +81,7 @@
     <string name="permission_warning_nowrite" tools:ignore="MissingTranslation">Bạn không có quyền truy cập ghi vào kho lưu trữ này, do đó việc chọn thư mục này là vô dụng.
 \nBạn có muốn cấp quyền truy cập vào thư mục này không\?.</string>
     <string name="header_image_desc">Hình ảnh tiêu đề của công thức</string>
-   <string name="menu_download_title">Tải xuống</string>
+    <string name="menu_download_title">Tải xuống</string>
     <string name="menu_download_tooltip">tải xuống công thức</string>
     <string name="form_download_title">Tải xuống công thức</string>
     <string name="form_download_url_hint">URL công thức</string>
@@ -100,4 +100,5 @@
     <string name="cooktime_reset_btn">Dừng lại và reset bộ đếm thời gian</string>
     <string name="cooktime_pause_btn">Dừng lại hẹn giờ</string>
     <string name="notification_title">Nextcloud Cookbook Giờ</string>
+    <string name="dir_chooser_error">Lỗi: mục Gốc không được phép!</string>
 </resources>

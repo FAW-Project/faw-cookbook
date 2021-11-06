@@ -109,4 +109,5 @@
    <string name="notification_title">Nextcloud Cookbook Časovač</string>
    <string name="notification_text">Zbývající čas: %1$s</string>
    <string name="list_recipe_star_desc">Ikona hvězdičky označující oblíbenost receptu</string>
+   <string name="dir_chooser_error">Chyba: Kořenová složka není povolena!</string>
 </resources>

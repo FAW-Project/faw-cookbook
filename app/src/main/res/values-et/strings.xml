@@ -81,7 +81,7 @@
 \nKas soovite sellele kaustale juurdepääsu anda\?.</string>
     <string name="permission_canceled" tools:ignore="MissingTranslation">Tühistatud kasutaja poolt</string>
     <string name="text_tools"><strong>Vajalikud tööriistad:</strong><br/> %1$s</string>
-   <string name="form_download_folder">Alista sihtkaust</string>
+    <string name="form_download_folder">Alista sihtkaust</string>
     <string name="menu_download_tooltip">lae retsept alla</string>
     <string name="menu_download_title">Lae alla</string>
     <string name="form_download_title">Laadige alla retsept</string>
@@ -100,4 +100,5 @@
     <string name="cooktime_pause_btn">Taimeri peatamine</string>
     <string name="channel_description">Taimeri märguannete kanal</string>
     <string name="list_recipe_star_desc">Tärniikoon, mis näitab retsepti lemmiku olekut</string>
+    <string name="dir_chooser_error">Viga: juurkataloog ei ole lubatud!</string>
 </resources>

@@ -23,7 +23,7 @@ import java.util.stream.Collectors
  * Repository with the recipe data.
  *
  * @author MicMun
- * @version 2.1, 19.09.21
+ * @version 2.2, 07.11.21
  */
 class JsonRecipeRepository {
    companion object {
@@ -112,6 +112,10 @@ class JsonRecipeRepository {
     */
    private fun readRecipe(context: Context, file: DocumentFile): Recipe? {
       val inputStream = file.openInputStream(context)
+      if (inputStream == null) {
+         Log.e("JsonRecipeRepository", "Reading (${file.name}) failed! ")
+         return null
+      }
       val reader = BufferedReader(InputStreamReader(inputStream))
 
       val json: String

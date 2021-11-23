@@ -101,4 +101,6 @@
     <string name="cooktime_tooltip">Käynnistä kypsennysajastin</string>
     <string name="list_recipe_star_desc">Tähtikuvake, joka ilmaisee reseptin suosikkitilan</string>
     <string name="dir_chooser_error">Virhe: Juurikansio ei ole sallittu!</string>
+    <string name="copy_ingredients">Kopioi ainesosat</string>
+    <string name="copy_ing_message">Ainesosat kopioitu leikepöydälle.</string>
 </resources>

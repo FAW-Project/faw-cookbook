@@ -6,12 +6,17 @@
 package de.micmun.android.nextcloudcookbook.ui.recipedetail
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Paint
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.textChanged
+import de.micmun.android.nextcloudcookbook.MainApplication
+import de.micmun.android.nextcloudcookbook.R
 import de.micmun.android.nextcloudcookbook.databinding.IngredientsItemBinding
 import de.micmun.android.nextcloudcookbook.databinding.TabIngredientsBinding
 import de.micmun.android.nextcloudcookbook.db.model.DbIngredient
@@ -20,7 +25,7 @@ import de.micmun.android.nextcloudcookbook.db.model.DbIngredient
  * Adapter for recipe ingredients.
  *
  * @author MicMun
- * @version 1.3, 23.11.21
+ * @version 1.4, 23.11.21
  */
 @SuppressLint("NotifyDataSetChanged")
 class RecipeIngredientsAdapter(
@@ -34,6 +39,9 @@ class RecipeIngredientsAdapter(
       tabBinding.yieldInput.textChanged { notifyDataSetChanged() }
       tabBinding.yieldMinus.setOnClickListener { setYieldInput((getYieldInput() - 1).coerceAtLeast(1f)) }
       tabBinding.yieldPlus.setOnClickListener { setYieldInput(getYieldInput() + 1) }
+      tabBinding.cpIngredientsBtn.setOnClickListener {
+         copy()
+      }
    }
 
    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientsViewHolder {
@@ -116,6 +124,14 @@ class RecipeIngredientsAdapter(
                         }.toFloat()
          ingredient.replaceRange(amount.range, "<b>${prettyString(newValue)}</b>")
       } ?: ingredient
+   }
+
+   private fun copy() {
+      val ingredientStr = ingredients.joinToString(separator = "\n") { it.ingredient }
+      val app = MainApplication.AppContext
+      val clipBoardManager = app.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+      val clipData = ClipData.newPlainText(app.getString(R.string.tab_ingredients_title), ingredientStr)
+      clipBoardManager.setPrimaryClip(clipData)
    }
 
    companion object {

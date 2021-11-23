@@ -112,4 +112,7 @@
    <string name="cooktime_pause_btn">Pausiere den Timer</string>
    <string name="cooktime_reset_btn">Stoppe den Timer und setze ihn zurück</string>
    <string name="cooktime_title">Kochtimer</string>
+
+   <!-- action buttons -->
+   <string name="copy_ingredients">Kopiere Zutaten</string>
 </resources>

@@ -149,4 +149,7 @@
    <string name="cooktime_reset_btn">Stops and resets the timer</string>
    <string name="cooktime_top_text" translatable="false">%1$s: %2$s</string>
    <string name="cooktime_title">Cooking timer</string>
+
+   <!-- action buttons -->
+   <string name="copy_ingredients">Copy ingredients</string>
 </resources>

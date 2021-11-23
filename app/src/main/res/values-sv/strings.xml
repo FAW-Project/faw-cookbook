@@ -101,4 +101,6 @@
     <string name="cooktime_tooltip">Starta en matlagningstimer</string>
     <string name="list_recipe_star_desc">Stjärnikonen som anger receptets favoritstatus</string>
     <string name="dir_chooser_error">Fel: Root folder är inte tillåten!</string>
+    <string name="copy_ingredients">Kopiera ingredienser</string>
+    <string name="copy_ing_message">Ingredienser kopieras till urklipp.</string>
 </resources>

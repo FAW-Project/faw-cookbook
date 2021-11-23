@@ -101,4 +101,6 @@
     <string name="channel_description">Taimeri märguannete kanal</string>
     <string name="list_recipe_star_desc">Tärniikoon, mis näitab retsepti lemmiku olekut</string>
     <string name="dir_chooser_error">Viga: juurkataloog ei ole lubatud!</string>
+    <string name="copy_ingredients">Koostisosade kopeerimine</string>
+    <string name="copy_ing_message">Koostisosad kopeeritakse lõikelauale.</string>
 </resources>

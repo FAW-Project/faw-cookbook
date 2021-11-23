@@ -10,7 +10,7 @@ object InstructionSerializer : JsonTransformingSerializer<List<String>>(ListSeri
          element
       else {
          require(element is JsonPrimitive)
-         element
+         JsonArray(listOf(element))
       }
    }
 }
@@ -23,12 +23,12 @@ object InstructionStepSerializer : JsonTransformingSerializer<String>(String.ser
       }
       if (element is JsonObject) {
          val type = element.jsonObject["@type"]?.toString()
-         require("\"HowToStep\"" == type) {"Unknown type '$type'"}
+         require("\"HowToStep\"" == type) { "Unknown type '$type'" }
          val text = element.jsonObject["text"]
-         require(text != null) {"Expected text element in HowToStep"}
+         require(text != null) { "Expected text element in HowToStep" }
          return text
       }
-      require(false) {"Unknown json type for instruction step:\n$element"}
+      require(false) { "Unknown json type for instruction step:\n$element" }
       return JsonPrimitive("")
    }
 }

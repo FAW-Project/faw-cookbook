@@ -13,7 +13,7 @@ import de.micmun.android.nextcloudcookbook.R.string.*
  * Database entity for recipe.
  *
  * @author MicMun
- * @version 1.1, 24.04.21
+ * @version 1.2, 23.11.21
  */
 data class DbRecipe(
    @Embedded val recipeCore: DbRecipeCore,
@@ -73,24 +73,24 @@ data class DbRecipeCore(
 )
 
 data class DbFilesystemRecipe(
-   val filePath: String = "",
+   val filePath: String,
    val lastModified: Long = 0,
 )
 
 data class DbAggregateRating(
-   val type: String = "",
-   val ratingCount: String = "",
-   val ratingValue: String = "",
-   val reviewCount: String = ""
+   val type: String,
+   val ratingCount: String,
+   val ratingValue: String,
+   val reviewCount: String
 )
 
 data class DbAuthor(
    val type: String = "Person",
-   val name: String = ""
+   val name: String
 )
 
 data class DbNutrition(
-   val type: String = "",
+   val type: String,
    val calories: String = "",
    val carbohydrateContent: String = "",
    val cholesterolContent: String = "",
@@ -151,15 +151,15 @@ data class DbReview(
    val id: Long = 0L,
    var recipeId: Long = -1,
    val type: String = "",
-   @Embedded(prefix = "author_") val author: DbAuthor? = null,
-   val dateCreated: String = "",
-   val description: String = "",
+   @Embedded(prefix = "author_") val author: DbAuthor?,
+   val dateCreated: String,
+   val description: String,
    @Embedded(prefix = "itrev_") val itemReviewed: DbItemReviewed? = null
 )
 
 data class DbItemReviewed(
    val type: String = "",
-   val name: String = ""
+   val name: String
 )
 
 @Entity(tableName = "tools", foreignKeys = [ForeignKey(entity = DbRecipeCore::class,
@@ -218,4 +218,7 @@ data class DbKeyword(
 data class DbRecipeKeywordRelation(
    var recipeId: Long = -1,
    var keywordId: Long = -1
-)
+) {
+   @Ignore
+   constructor() : this(-1, -1)
+}

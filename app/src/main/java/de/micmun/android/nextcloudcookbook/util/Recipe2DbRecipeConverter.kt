@@ -13,7 +13,7 @@ import java.util.stream.Collectors
  * Converter for recipe into database recipe pojo.
  *
  * @author MicMun
- * @version 1.3, 11.07.21
+ * @version 1.4, 23.11.21
  */
 class Recipe2DbRecipeConverter(private val recipe: Recipe) {
    fun convert(): DbRecipe {
@@ -93,7 +93,12 @@ class Recipe2DbRecipeConverter(private val recipe: Recipe) {
             cns(nutrition.fatContent),
             cns(nutrition.fiberContent),
             cns(nutrition.proteinContent),
-            cns(nutrition.sodiumContent)
+            cns(nutrition.sodiumContent),
+            cns(nutrition.saturatedFatContent),
+            cns(nutrition.servingSize),
+            cns(nutrition.sugarContent),
+            cns(nutrition.transFatContent),
+            cns(nutrition.unsaturatedFatContent)
          )
       }
 

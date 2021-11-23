@@ -27,7 +27,6 @@ import de.micmun.android.nextcloudcookbook.db.DbRecipeRepository
 import de.micmun.android.nextcloudcookbook.db.model.DbRecipePreview
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
-import de.micmun.android.nextcloudcookbook.ui.MainActivity
 import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeListAdapter
 import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeListListener
 
@@ -35,7 +34,7 @@ import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeListListener
  * Fragment for search result.
  *
  * @author MicMun
- * @version 1.6, 24.04.21
+ * @version 1.7, 23.11.21
  */
 class RecipeSearchFragment : Fragment() {
    private lateinit var binding: FragmentRecipesearchBinding
@@ -85,6 +84,7 @@ class RecipeSearchFragment : Fragment() {
    }
 
    override fun onActivityCreated(savedInstanceState: Bundle?) {
+      @Suppress("DEPRECATION")
       super.onActivityCreated(savedInstanceState)
       (requireActivity() as AppCompatActivity).supportActionBar?.title = filter.query
    }
@@ -97,21 +97,21 @@ class RecipeSearchFragment : Fragment() {
       // data adapter
       val adapter =
          RecipeListAdapter(RecipeListListener { recipeId -> recipeSearchViewModel.onRecipeClicked(recipeId) },
-            DbRecipeRepository.getInstance(requireActivity().application))
+                           DbRecipeRepository.getInstance(requireActivity().application))
       binding.recipeResultList.adapter = adapter
       adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
       recipeSearchViewModel.filter.observe(viewLifecycleOwner, {
-         it?.let {
-            recipeSearchViewModel.setSearchResult(it)
-            filter = it
+         it?.let { recipeFilter ->
+            recipeSearchViewModel.setSearchResult(recipeFilter)
+            filter = recipeFilter
 
             // observe live data
-            recipeSearchViewModel.getRecipes().observe(viewLifecycleOwner, {
-               it?.let {
-                  adapter.submitList(removeDuplicates(it))
+            recipeSearchViewModel.getRecipes().observe(viewLifecycleOwner, { prevs ->
+               prevs?.let { previews ->
+                  adapter.submitList(removeDuplicates(previews))
 
-                  if (it.isNotEmpty()) {
+                  if (previews.isNotEmpty()) {
                      if (R.id.titleConstraint == binding.switcher2.nextView.id) {
                         binding.switcher2.showNext()
                      }

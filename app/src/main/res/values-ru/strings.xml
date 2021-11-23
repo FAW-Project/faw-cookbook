@@ -101,4 +101,6 @@
     <string name="cooktime_title">Таймер готовки</string>
     <string name="cooktime_tooltip">Запустить таймер приготовления</string>
     <string name="dir_chooser_error">Ошибка: Корневая папка запрещена!</string>
+    <string name="copy_ingredients">Копировать ингредиенты</string>
+    <string name="copy_ing_message">Ингредиенты скопированы в буфер обмена.</string>
 </resources>

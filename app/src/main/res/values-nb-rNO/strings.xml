@@ -101,4 +101,6 @@
     <string name="cooktime_title">Timer for matlaging</string>
     <string name="notification_title">Nextcloud Cookbook Selvutløser</string>
     <string name="dir_chooser_error">Feil: Root-mappen er ikke tillatt!</string>
+    <string name="copy_ingredients">Kopier ingredienser</string>
+    <string name="copy_ing_message">Ingredienser kopiert til utklippstavlen.</string>
 </resources>

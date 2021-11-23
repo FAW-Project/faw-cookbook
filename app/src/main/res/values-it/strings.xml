@@ -110,4 +110,6 @@
     <string name="cooktime_title">Timer di cottura</string>
     <string name="list_recipe_star_desc">Icona a forma di stella che indica lo stato preferito della ricetta</string>
     <string name="dir_chooser_error">Errore: La cartella principale non è consentita!</string>
+    <string name="copy_ing_message">Ingredienti copiati negli appunti.</string>
+    <string name="copy_ingredients">Copiare gli ingredienti</string>
 </resources>

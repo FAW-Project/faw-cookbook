@@ -101,4 +101,6 @@
     <string name="cooktime_title">Sukaldaritza tenporizadorea</string>
     <string name="list_recipe_star_desc">Izar ikonoa adieraziz gogoko egoera errezeta</string>
     <string name="dir_chooser_error">Errorea: Erro karpeta ez dago baimenduta!</string>
+    <string name="copy_ing_message">Arbelean kopiatutako osagaiak.</string>
+    <string name="copy_ingredients">Kopiatu osagaiak</string>
 </resources>

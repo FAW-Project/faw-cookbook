@@ -101,4 +101,6 @@
     <string name="list_recipe_star_desc">Stjörnu táknið sem gefur til kynna uppáhalds stöðu uppskrift</string>
     <string name="ingredients_yield">Afrakstur</string>
     <string name="dir_chooser_error">Villa: Rótina er ekki leyft!</string>
+    <string name="copy_ing_message">Efni afrita að klemmuspjald.</string>
+    <string name="copy_ingredients">Afrit efni</string>
 </resources>

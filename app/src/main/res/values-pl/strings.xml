@@ -110,4 +110,6 @@
     <string name="cooktime_tooltip">Uruchomić zegar do gotowania</string>
     <string name="list_recipe_star_desc">Ikona gwiazdki oznaczająca status ulubionego przepisu</string>
     <string name="dir_chooser_error">Błąd: Folder główny jest niedozwolony!</string>
+    <string name="copy_ing_message">Składniki skopiowane do schowka.</string>
+    <string name="copy_ingredients">Składniki kopii</string>
 </resources>

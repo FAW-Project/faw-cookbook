@@ -110,4 +110,6 @@
     <string name="channel_description">Canal pour les notifications de la minuterie</string>
     <string name="list_recipe_star_desc">Icône étoile indiquant le statut de favori de la recette</string>
     <string name="dir_chooser_error">Erreur : Le dossier racine n\'est pas autorisé !</string>
+    <string name="copy_ing_message">Ingrédients copiés dans le presse-papiers.</string>
+    <string name="copy_ingredients">Copier les ingrédients</string>
 </resources>

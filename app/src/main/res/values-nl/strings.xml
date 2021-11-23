@@ -110,4 +110,6 @@
     <string name="channel_description">Kanaal voor timermeldingen</string>
     <string name="list_recipe_star_desc">Stericoon dat de favoriete status van het recept aangeeft</string>
     <string name="dir_chooser_error">Fout: Root folder is niet toegestaan!</string>
+    <string name="copy_ing_message">Ingrediënten gekopieerd naar klembord.</string>
+    <string name="copy_ingredients">Ingrediënten kopiëren</string>
 </resources>

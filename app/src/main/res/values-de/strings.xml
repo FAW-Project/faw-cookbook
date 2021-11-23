@@ -115,4 +115,5 @@
 
    <!-- action buttons -->
    <string name="copy_ingredients">Kopiere Zutaten</string>
+   <string name="copy_ing_message">Zutaten in Zwischenablage kopiert.</string>
 </resources>

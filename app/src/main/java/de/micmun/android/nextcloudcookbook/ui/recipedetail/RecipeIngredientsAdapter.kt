@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.textChanged
+import com.google.android.material.snackbar.Snackbar
 import de.micmun.android.nextcloudcookbook.MainApplication
 import de.micmun.android.nextcloudcookbook.R
 import de.micmun.android.nextcloudcookbook.databinding.IngredientsItemBinding
@@ -25,7 +26,7 @@ import de.micmun.android.nextcloudcookbook.db.model.DbIngredient
  * Adapter for recipe ingredients.
  *
  * @author MicMun
- * @version 1.4, 23.11.21
+ * @version 1.5, 23.11.21
  */
 @SuppressLint("NotifyDataSetChanged")
 class RecipeIngredientsAdapter(
@@ -132,6 +133,7 @@ class RecipeIngredientsAdapter(
       val clipBoardManager = app.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
       val clipData = ClipData.newPlainText(app.getString(R.string.tab_ingredients_title), ingredientStr)
       clipBoardManager.setPrimaryClip(clipData)
+      Snackbar.make(tabBinding.ingredientsView, app.getString(R.string.copy_ing_message), Snackbar.LENGTH_SHORT).show()
    }
 
    companion object {

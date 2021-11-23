@@ -152,4 +152,5 @@
 
    <!-- action buttons -->
    <string name="copy_ingredients">Copy ingredients</string>
+   <string name="copy_ing_message">Ingredients copied to clipboard.</string>
 </resources>

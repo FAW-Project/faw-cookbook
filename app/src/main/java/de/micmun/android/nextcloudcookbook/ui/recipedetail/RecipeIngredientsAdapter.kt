@@ -20,7 +20,7 @@ import de.micmun.android.nextcloudcookbook.db.model.DbIngredient
  * Adapter for recipe ingredients.
  *
  * @author MicMun
- * @version 1.2, 31.05.21
+ * @version 1.3, 23.11.21
  */
 @SuppressLint("NotifyDataSetChanged")
 class RecipeIngredientsAdapter(
@@ -63,6 +63,7 @@ class RecipeIngredientsAdapter(
        * @param ingredient Ingredient String to show in view.
        */
       fun bind(ingredient: String) {
+         @Suppress("DEPRECATION")
          binding.ingredientsItemText.text = Html.fromHtml(ingredient)
          binding.ingredientsItemText.setOnClickListener {
             binding.ingredientsItemText.paintFlags =
@@ -101,24 +102,23 @@ class RecipeIngredientsAdapter(
       return if (tmp.toInt().toFloat() == tmp) tmp.toInt().toString() else tmp.toString()
    }
 
-   private fun scaleIngredientAmount(regexStr: String, ingredient: String, factor: Float) : String {
+   private fun scaleIngredientAmount(regexStr: String, ingredient: String, factor: Float): String {
       return regexStr.toRegex().find(ingredient)?.let {
          val amount = it.groups[1]!! // don't include the "-\s?" on the second replace
          val fraction = it.groups[4]?.value // unicode fraction
          val newValue = factor *
-                 if (fraction != null && fraction.isNotEmpty()) { // e.g. "1 ½", "¾"
-                    val integer = it.groups[3]?.value ?: ""
-                    amount.value.replace(fraction, fractionsMap[fraction]!!)
-                       .replace(integer, integer.trim())
-                 } else { // e.g. "4.5", "2,7"
-                    amount.value.replace(',', '.')
-                 }.toFloat()
+                        if (fraction != null && fraction.isNotEmpty()) { // e.g. "1 ½", "¾"
+                           val integer = it.groups[3]?.value ?: ""
+                           amount.value.replace(fraction, fractionsMap[fraction]!!)
+                              .replace(integer, integer.trim())
+                        } else { // e.g. "4.5", "2,7"
+                           amount.value.replace(',', '.')
+                        }.toFloat()
          ingredient.replaceRange(amount.range, "<b>${prettyString(newValue)}</b>")
       } ?: ingredient
    }
 
-   companion object
-   {
+   companion object {
       private val fractionsMap = mapOf(
          "½" to ".5",
          "⅓" to ".3333",

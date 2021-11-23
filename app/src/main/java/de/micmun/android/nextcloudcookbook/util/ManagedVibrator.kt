@@ -4,16 +4,21 @@ import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.os.VibratorManager
 
 /**
  * Vibration for cooking timer.
  *
  * @author MicMun
- * @version 1.0, 28.07.21
+ * @version 1.1, 23.11.21
  */
 class ManagedVibrator constructor(context: Context) {
 
-   private val vibrator: Vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+   private val vibrator: Vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+      (context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
+   else
+      @Suppress("DEPRECATION")
+      context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
    var isVibrating = false
       private set

@@ -37,7 +37,7 @@ import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeListFragmentDirec
  * Main Activity of the app.
  *
  * @author MicMun
- * @version 1.6, 29.08.21
+ * @version 1.7, 23.11.21
  */
 class MainActivity : AppCompatActivity() {
    private lateinit var binding: ActivityMainBinding
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
       // prevent nav gesture if not on start destination
       navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, _: Bundle? ->
-         if (nd.id == nc.graph.startDestination) {
+         if (nd.id == nc.graph.startDestinationId) {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
          } else {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)

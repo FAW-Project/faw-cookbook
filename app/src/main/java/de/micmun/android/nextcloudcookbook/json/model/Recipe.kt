@@ -14,7 +14,7 @@ import kotlinx.serialization.Transient
  * Generated recipe data classes..
  *
  * @author MicMun
- * @version 1.1, 11.07.21
+ * @version 1.2, 23.11.21
  */
 @Serializable
 data class Recipe(
@@ -97,7 +97,12 @@ data class Nutrition(
    val fatContent: String? = null,
    val fiberContent: String? = null,
    val proteinContent: String? = null,
-   val sodiumContent: String? = null
+   val sodiumContent: String? = null,
+   val saturatedFatContent: String? = null,
+   val servingSize: String? = null,
+   val sugarContent: String? = null,
+   val transFatContent: String? = null,
+   val unsaturatedFatContent: String? = null
 )
 
 @Serializable

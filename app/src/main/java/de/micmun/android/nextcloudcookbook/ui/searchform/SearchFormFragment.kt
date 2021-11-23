@@ -15,7 +15,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import de.micmun.android.nextcloudcookbook.MainApplication
@@ -25,14 +24,13 @@ import de.micmun.android.nextcloudcookbook.data.RecipeFilter
 import de.micmun.android.nextcloudcookbook.databinding.FragmentSearchFormBinding
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
-import de.micmun.android.nextcloudcookbook.ui.MainActivity
 import java.util.stream.Collectors
 
 /**
  * Fragment for advanced search formular.
  *
  * @author MicMun
- * @version 1.4, 24.04.21
+ * @version 1.5, 23.11.21
  */
 class SearchFormFragment : Fragment(), SearchClickListener {
    private lateinit var binding: FragmentSearchFormBinding
@@ -53,7 +51,7 @@ class SearchFormFragment : Fragment(), SearchClickListener {
       })
 
       searchFormViewModel = ViewModelProvider(this).get(SearchFormViewModel::class.java)
-      searchFormViewModel.keywords.observe(viewLifecycleOwner, Observer {
+      searchFormViewModel.keywords.observe(viewLifecycleOwner, {
          it?.let { keywords ->
             val keywordsString = keywords.stream().map { k -> k.keyword }.collect(Collectors.toList())
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, keywordsString)
@@ -101,6 +99,7 @@ class SearchFormFragment : Fragment(), SearchClickListener {
    }
 
    override fun onActivityCreated(savedInstanceState: Bundle?) {
+      @Suppress("DEPRECATION")
       super.onActivityCreated(savedInstanceState)
       (requireActivity() as AppCompatActivity).supportActionBar?.title = resources.getString(R.string.form_search_title)
    }

@@ -110,4 +110,6 @@
     <string name="cooktime_tooltip">Iniciar um temporizador de cozimento</string>
     <string name="list_recipe_star_desc">Ícone estrela indicando o status preferido da receita</string>
     <string name="dir_chooser_error">Erro: Pasta de raiz não é permitida!</string>
+    <string name="copy_ingredients">Copiar ingredientes</string>
+    <string name="copy_ing_message">Ingredientes copiados para prancheta.</string>
 </resources>

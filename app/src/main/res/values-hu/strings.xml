@@ -110,4 +110,6 @@
     <string name="channel_name">Időzítő csatorna</string>
     <string name="list_recipe_star_desc">Csillag ikon, amely a recept kedvenc státuszát jelzi</string>
     <string name="dir_chooser_error">Hiba: Gyökérmappa nem engedélyezett!</string>
+    <string name="copy_ingredients">Másolja az összetevőket</string>
+    <string name="copy_ing_message">A vágólapra másolt összetevők.</string>
 </resources>

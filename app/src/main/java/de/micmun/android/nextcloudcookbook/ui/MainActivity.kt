@@ -15,12 +15,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -29,24 +31,43 @@ import de.micmun.android.nextcloudcookbook.MainApplication
 import de.micmun.android.nextcloudcookbook.R
 import de.micmun.android.nextcloudcookbook.data.CategoryFilter
 import de.micmun.android.nextcloudcookbook.data.RecipeFilter
+import de.micmun.android.nextcloudcookbook.data.SortValue
 import de.micmun.android.nextcloudcookbook.databinding.ActivityMainBinding
-import de.micmun.android.nextcloudcookbook.settings.PreferenceDao
+import de.micmun.android.nextcloudcookbook.settings.PreferenceData
 import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeListFragmentDirections
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * Main Activity of the app.
  *
  * @author MicMun
- * @version 1.7, 23.11.21
+ * @version 1.8, 27.11.21
  */
 class MainActivity : AppCompatActivity() {
    private lateinit var binding: ActivityMainBinding
    private lateinit var drawerLayout: DrawerLayout
    private lateinit var currentSettingViewModel: CurrentSettingViewModel
+   private lateinit var preferenceData: PreferenceData
 
    override fun onCreate(savedInstanceState: Bundle?) {
+      preferenceData = PreferenceData.getInstance()
+
+      if (!preferenceData.isInitializedSync()) {
+         lifecycleScope.launch(Dispatchers.Main) {
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
+            preferenceData.migrateSharedPreferences(sharedPreferences)
+            if (!preferenceData.isInitializedSync()) {
+               preferenceData.setSort(SortValue.NAME_A_Z.sort)
+               preferenceData.setTheme(2)
+               preferenceData.setStorageAccessed(false)
+            }
+         }
+      }
+
       // apply theme
-      when (PreferenceDao.getInstance(application).getThemeSync()) {
+      when (preferenceData.getThemeSync()) {
          0 -> setTheme(R.style.AppTheme_Light)
          1 -> setTheme(R.style.AppTheme_Dark)
          2 -> setTheme(systemTheme())
@@ -92,13 +113,13 @@ class MainActivity : AppCompatActivity() {
       }
 
       // permission for storage
-      currentSettingViewModel.storageAccessed.observe(this, {
-         it?.let { access ->
+      lifecycleScope.launchWhenCreated {
+         currentSettingViewModel.storageAccessed.collect { access ->
             if (!access) {
                storagePermissions()
             }
          }
-      })
+      }
 
       handleIntent(intent)
    }
@@ -151,16 +172,15 @@ class MainActivity : AppCompatActivity() {
          listOf(android.Manifest.permission.READ_EXTERNAL_STORAGE,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
       }
-      val preference = PreferenceDao.getInstance(MainApplication.AppContext)
 
       Dexter.withContext(this)
          .withPermissions(permissions)
          .withListener(object : BaseMultiplePermissionsListener() {
             override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                if (report?.areAllPermissionsGranted() == true) {
-                  preference.setStorageAccess(true)
+                  currentSettingViewModel.setStorageAccess(true)
                } else {
-                  preference.setStorageAccess(false)
+                  currentSettingViewModel.setStorageAccess(false)
                   Snackbar.make(binding.root, "No storage access!", Snackbar.LENGTH_LONG).show()
                }
             }

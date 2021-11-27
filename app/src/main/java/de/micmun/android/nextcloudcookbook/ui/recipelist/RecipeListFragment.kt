@@ -12,6 +12,7 @@ import androidx.core.view.postDelayed
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -28,12 +29,13 @@ import de.micmun.android.nextcloudcookbook.db.DbRecipeRepository
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
 import de.micmun.android.nextcloudcookbook.ui.MainActivity
+import kotlinx.coroutines.flow.collect
 
 /**
  * Fragment for list of recipes.
  *
  * @author MicMun
- * @version 2.4, 31.07.21
+ * @version 2.5, 27.11.21
  */
 class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
    private lateinit var binding: FragmentRecipelistBinding
@@ -60,8 +62,8 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
          ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
       binding.lifecycleOwner = viewLifecycleOwner
 
-      recipesViewModel.isUpdating.observe(viewLifecycleOwner, { isUpdating ->
-         isUpdating?.let {
+      recipesViewModel.isUpdating.observe(viewLifecycleOwner, { it ->
+         it?.let { isUpdating ->
             if (isUpdating) {
                // preparation for loading
                binding.swipeContainer.isRefreshing = true
@@ -145,11 +147,24 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
          }
       })
 
-      settingViewModel.sorting.observe(viewLifecycleOwner, { sort ->
-         currentSort = SortValue.getByValue(sort)
-         recipesViewModel.sortList(currentSort!!)
-         loadData()
-      })
+      lifecycleScope.launchWhenResumed {
+         settingViewModel.sorting.collect { sort ->
+            currentSort = SortValue.getByValue(sort)
+            recipesViewModel.sortList(currentSort!!)
+            loadData()
+         }
+      }
+      lifecycleScope.launchWhenResumed {
+         settingViewModel.storageAccessed.collect { storageAccessed ->
+            if (storageAccessed) {
+               settingViewModel.recipeDirectory.collect { dir ->
+                  if (!isLoaded) {
+                     recipesViewModel.initRecipes(dir)
+                  }
+               }
+            }
+         }
+      }
 
       settingViewModel.category.observe(viewLifecycleOwner, { catFilter ->
          catFilter?.let {
@@ -168,18 +183,6 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                   }
                }
             })
-         }
-      })
-
-      settingViewModel.storageAccessed.observe(viewLifecycleOwner, { sa ->
-         sa?.let { storageAccessed ->
-            if (storageAccessed) {
-               settingViewModel.recipeDirectory.observe(viewLifecycleOwner, {
-                  if (!isLoaded) {
-                     it?.let { recipesViewModel.initRecipes(it) }
-                  }
-               })
-            }
          }
       })
 

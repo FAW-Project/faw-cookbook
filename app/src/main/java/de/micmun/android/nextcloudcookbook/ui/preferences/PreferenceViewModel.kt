@@ -7,31 +7,45 @@ package de.micmun.android.nextcloudcookbook.ui.preferences
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import de.micmun.android.nextcloudcookbook.settings.PreferenceDao
-import de.micmun.android.nextcloudcookbook.settings.SharedPreferenceLiveData
+import androidx.lifecycle.viewModelScope
+import de.micmun.android.nextcloudcookbook.settings.PreferenceData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 /**
  * ViewModel for preferences.
  *
  * @author MicMun
- * @version 1.3, 07.04.21
+ * @version 1.4, 27.11.21
  */
 class PreferenceViewModel(application: Application) : AndroidViewModel(application) {
-   private val prefDao = PreferenceDao.getInstance(application)
+   private val prefData = PreferenceData.getInstance()
 
-   internal val recipeDirectory: SharedPreferenceLiveData<String> = prefDao.getRecipeDirectory()
-   internal val theme: SharedPreferenceLiveData<Int> = prefDao.getTheme()
-   internal val storageAccesssed: SharedPreferenceLiveData<Boolean> = prefDao.isStorageAccessed()
+   internal val recipeDirectory: Flow<String> = prefData.getRecipeDir()
+   internal val theme: Flow<Int> = prefData.getTheme()
 
    fun setRecipeDirectory(recipeDirectory: String) {
-      prefDao.setRecipeDirectory(recipeDirectory)
+      viewModelScope.launch(Dispatchers.IO) {
+         prefData.setRecipeDir(recipeDirectory)
+      }
    }
 
    fun setTheme(theme: Int) {
-      prefDao.setTheme(theme)
+      viewModelScope.launch(Dispatchers.IO) {
+         prefData.setTheme(theme)
+      }
+   }
+
+   fun setInitialized(init: Boolean) {
+      viewModelScope.launch(Dispatchers.IO) {
+         prefData.setInitialised(init)
+      }
    }
 
    fun setStorageAccessed(access: Boolean) {
-      prefDao.setStorageAccess(access)
+      viewModelScope.launch(Dispatchers.IO) {
+         prefData.setStorageAccessed(access)
+      }
    }
 }

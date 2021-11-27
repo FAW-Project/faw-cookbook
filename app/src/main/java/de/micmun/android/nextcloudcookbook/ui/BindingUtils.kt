@@ -14,12 +14,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.BindingAdapter
+import com.anggrayudi.storage.extension.launchOnUiThread
 import com.anggrayudi.storage.file.getAbsolutePath
-import de.micmun.android.nextcloudcookbook.MainApplication
 import de.micmun.android.nextcloudcookbook.R
 import de.micmun.android.nextcloudcookbook.db.model.DbRecipe
 import de.micmun.android.nextcloudcookbook.db.model.DbRecipePreview
-import de.micmun.android.nextcloudcookbook.settings.PreferenceDao
+import de.micmun.android.nextcloudcookbook.settings.PreferenceData
 import de.micmun.android.nextcloudcookbook.util.DurationUtils
 import de.micmun.android.nextcloudcookbook.util.StorageManager
 import java.util.stream.Collectors
@@ -28,7 +28,7 @@ import java.util.stream.Collectors
  * Utilities for binding data to view.
  *
  * @author MicMun
- * @version 2.4, 29.08.21
+ * @version 2.5, 27.11.21
  */
 
 // Overview list
@@ -46,7 +46,9 @@ fun ImageView.setRecipeImage(item: DbRecipePreview?) {
                else
                   setImageURI(Uri.parse(thumbImage.getAbsolutePath(context)))
             } catch (e: SecurityException) {
-               PreferenceDao.getInstance(MainApplication.AppContext).setStorageAccess(false)
+               launchOnUiThread {
+                  PreferenceData.getInstance().setStorageAccessed(false)
+               }
             }
          }
       }
@@ -84,7 +86,9 @@ fun ImageView.setRecipeHeaderImage(item: DbRecipe?) {
                else
                   setImageURI(Uri.parse(fullImage.getAbsolutePath(context)))
             } catch (e: SecurityException) {
-               PreferenceDao.getInstance(MainApplication.AppContext).setStorageAccess(false)
+               launchOnUiThread {
+                  PreferenceData.getInstance().setStorageAccessed(false)
+               }
             }
          }
       }

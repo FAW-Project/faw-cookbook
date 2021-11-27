@@ -15,6 +15,8 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.anggrayudi.storage.file.getAbsolutePath
@@ -22,12 +24,13 @@ import com.google.android.material.snackbar.Snackbar
 import de.micmun.android.nextcloudcookbook.R
 import de.micmun.android.nextcloudcookbook.ui.MainActivity
 import de.micmun.android.nextcloudcookbook.util.StorageManager
+import kotlinx.coroutines.flow.collect
 
 /**
  * Fragment for settings.
  *
  * @author MicMun
- * @version 1.8, 29.08.21
+ * @version 1.9, 27.11.21
  */
 class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener,
                            Preference.OnPreferenceClickListener {
@@ -44,6 +47,8 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
             val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
             requireContext().contentResolver.takePersistableUriPermission(uri, takeFlags)
             viewModel.setRecipeDirectory(uri.toString())
+            viewModel.setInitialized(true)
+            viewModel.setStorageAccessed(true)
          }
       }
    }
@@ -62,6 +67,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
       // find prefs
       dirPreference = findPreference(getString(R.string.prefkey_recipeDir))!!
       themePreference = findPreference(getString(R.string.prefkey_theme))!!
+      themePreference.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
       val aboutPreference: Preference = findPreference(getString(R.string.prefkey_about))!!
 
       // change listener
@@ -78,25 +84,18 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
 
    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
       // observe values
-      viewModel.recipeDirectory.observe(viewLifecycleOwner, {
-         it?.let { dir ->
+      lifecycleScope.launchWhenResumed {
+         viewModel.recipeDirectory.collect { dir ->
             val summary = if (dir.isEmpty()) "" else StorageManager.getDocumentFromString(requireContext(), dir)
                                                         ?.getAbsolutePath(requireContext()) ?: ""
             dirPreference.summary = summary
             currentDirectory = dir
          }
-      })
-
-      viewModel.theme.observe(viewLifecycleOwner, {
-         themePreference.value = it.toString()
-         themePreference.summary = themePreference.entry
-      })
-
-      viewModel.storageAccesssed.observe(viewLifecycleOwner, { isAccess ->
-         if (!isAccess) {
-            //askPermission()
+         viewModel.theme.collect { theme ->
+            themePreference.value = theme.toString()
+            themePreference.summary = themePreference.entry
          }
-      })
+      }
 
       return super.onCreateView(inflater, container, savedInstanceState)
    }
@@ -132,38 +131,10 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
     */
    private fun chooseFolder() {
       askPermission()
-
-//      when {
-//         currentDirectory == "" -> {
-//            askPermission()
-//         }
-//         arePermissionsGranted(currentDirectory) -> {
-//            val folder = StorageManager.getDocumentFromString(requireContext(), currentDirectory)
-//            Snackbar.make(requireView(),
-//                          getString(R.string.folder_pick_success, folder?.getAbsolutePath(requireContext()) ?: ""),
-//                          Snackbar.LENGTH_SHORT).show()
-//            viewModel.setRecipeDirectory(folder?.uri?.toString() ?: "")
-//         }
-//         else -> {
-//            askPermission()
-//         }
-//      }
    }
 
    private fun askPermission() {
       val folder = StorageManager.getDocumentFromString(requireContext(), currentDirectory)
       getContent.launch(folder?.uri ?: Uri.EMPTY)
-   }
-
-   private fun arePermissionsGranted(uriString: String): Boolean {
-      // list of all persisted permissions for our app
-      val list = requireContext().contentResolver.persistedUriPermissions
-      for (i in list.indices) {
-         val persistedUriString = list[i].uri.toString()
-         if (persistedUriString == uriString && list[i].isWritePermission && list[i].isReadPermission) {
-            return true
-         }
-      }
-      return false
    }
 }

@@ -90,6 +90,8 @@ dependencies {
    implementation "androidx.room:room-ktx:$version_room"
    // storage access framework (SAF)
    implementation "androidx.documentfile:documentfile:$version_document"
+   // datastore for settings
+   implementation "androidx.datastore:datastore-preferences:$version_datastore"
 
    // Json parser
    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$version_serialization"

@@ -9,10 +9,11 @@ package de.micmun.android.nextcloudcookbook.settings
  * Constants for pref name.
  *
  * @author MicMun
- * @version 1.4, 26.01.21
+ * @version 1.5, 27.11.21
  */
 class Pref {
    companion object {
+      const val IS_INIT = "is_initialized"
       const val RECIPE_DIR = "recipe_directory"
       const val THEME = "theme_setting"
       const val SORT = "recipe_list_sorting"

@@ -7,12 +7,12 @@ package de.micmun.android.nextcloudcookbook.ui.recipelist
 
 import android.app.Application
 import androidx.lifecycle.*
-import de.micmun.android.nextcloudcookbook.json.JsonRecipeRepository
-import de.micmun.android.nextcloudcookbook.db.DbRecipeRepository
-import de.micmun.android.nextcloudcookbook.json.model.Recipe
 import de.micmun.android.nextcloudcookbook.data.CategoryFilter
 import de.micmun.android.nextcloudcookbook.data.SortValue
+import de.micmun.android.nextcloudcookbook.db.DbRecipeRepository
 import de.micmun.android.nextcloudcookbook.db.model.DbRecipePreview
+import de.micmun.android.nextcloudcookbook.json.JsonRecipeRepository
+import de.micmun.android.nextcloudcookbook.json.model.Recipe
 import de.micmun.android.nextcloudcookbook.util.Recipe2DbRecipeConverter
 import kotlinx.coroutines.*
 import java.util.stream.Collectors
@@ -21,7 +21,7 @@ import java.util.stream.Collectors
  * ViewModel for list of recipes.
  *
  * @author MicMun
- * @version 1.8, 26.01.21
+ * @version 1.9, 27.11.21
  */
 class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) {
    // coroutines
@@ -43,7 +43,7 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
    private var catFilter: CategoryFilter = CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
 
    // navigate to recipe
-   private val _navigateToRecipe = MutableLiveData<Long>()
+   private val _navigateToRecipe = MutableLiveData<Long?>()
    val navigateToRecipe
       get() = _navigateToRecipe
 
@@ -79,8 +79,11 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
          recipeDir = path
       }
       val dir = if (path.isEmpty()) recipeDir else path
-      if (dir.isEmpty())
+
+      if (dir.isEmpty()) {
+         isUpdating.postValue(false)
          return
+      }
 
       isUpdating.postValue(true)
 

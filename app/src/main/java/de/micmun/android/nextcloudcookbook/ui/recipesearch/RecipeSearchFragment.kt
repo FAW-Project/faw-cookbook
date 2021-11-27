@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,12 +30,13 @@ import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
 import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeListAdapter
 import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeListListener
+import kotlinx.coroutines.flow.collect
 
 /**
  * Fragment for search result.
  *
  * @author MicMun
- * @version 1.7, 23.11.21
+ * @version 1.8, 27.11.21
  */
 class RecipeSearchFragment : Fragment() {
    private lateinit var binding: FragmentRecipesearchBinding
@@ -70,11 +72,11 @@ class RecipeSearchFragment : Fragment() {
          }
       })
 
-      settingViewModel.sorting.observe(viewLifecycleOwner, { sorting ->
-         sorting?.let {
-            recipeSearchViewModel.setSort(SortValue.getByValue(it))
+      lifecycleScope.launchWhenResumed {
+         settingViewModel.sorting.collect { sort ->
+            recipeSearchViewModel.setSort(SortValue.getByValue(sort))
          }
-      })
+      }
 
       recipeSearchViewModel.setFilter(filter)
 

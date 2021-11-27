@@ -19,6 +19,7 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.anggrayudi.storage.file.findFolder
 import com.anggrayudi.storage.file.openOutputStream
 import de.micmun.android.nextcloudcookbook.MainApplication
@@ -27,10 +28,10 @@ import de.micmun.android.nextcloudcookbook.databinding.FragmentDownloadFormBindi
 import de.micmun.android.nextcloudcookbook.json.model.Recipe
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
-import de.micmun.android.nextcloudcookbook.ui.MainActivity
 import de.micmun.android.nextcloudcookbook.util.StorageManager
 import de.micmun.android.nextcloudcookbook.util.json.RecipeJsonConverter
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -45,7 +46,7 @@ import java.net.URL
  * Fragment for recipe download form.
  *
  * @author Leafar
- * @version 1.2, 29.08.21
+ * @version 1.3, 27.11.21
  */
 class DownloadFormFragment : Fragment(), DownloadClickListener {
    private lateinit var binding: FragmentDownloadFormBinding
@@ -65,9 +66,11 @@ class DownloadFormFragment : Fragment(), DownloadClickListener {
       settingViewModel = ViewModelProvider(MainApplication.AppContext, factory)
          .get(CurrentSettingViewModel::class.java)
 
-      settingViewModel.recipeDirectory.observe(viewLifecycleOwner, {
-         recipeDir = it
-      })
+      lifecycleScope.launchWhenCreated {
+         settingViewModel.recipeDirectory.collect { dir ->
+            recipeDir = dir
+         }
+      }
 
       isDownloading.observe(viewLifecycleOwner, { isDownloading ->
          binding.downloadBtn.isEnabled = !isDownloading
@@ -79,9 +82,11 @@ class DownloadFormFragment : Fragment(), DownloadClickListener {
    override fun onActivityCreated(savedInstanceState: Bundle?) {
       @Suppress("DEPRECATION")
       super.onActivityCreated(savedInstanceState)
-      (requireActivity() as AppCompatActivity).supportActionBar?.title = resources.getString(R.string.form_download_title)
+      (requireActivity() as AppCompatActivity).supportActionBar?.title =
+         resources.getString(R.string.form_download_title)
    }
 
+   @Suppress("BlockingMethodInNonBlockingContext")
    override fun doDownload() {
       val url = binding.recipeUrlTxt.text.toString()
       val overridePath = binding.recipeOverridePath.text.toString()
@@ -154,6 +159,7 @@ class DownloadFormFragment : Fragment(), DownloadClickListener {
       return url.toString()
    }
 
+   @Suppress("BlockingMethodInNonBlockingContext")
    private suspend fun fetchAndParse(url: String): Pair<Recipe, JsonObject>? {
       return withContext(Dispatchers.IO) {
          val document: Document
@@ -194,6 +200,7 @@ class DownloadFormFragment : Fragment(), DownloadClickListener {
       }
    }
 
+   @Suppress("BlockingMethodInNonBlockingContext")
    private suspend fun fetchImage(url: String): Bitmap? {
       return withContext(Dispatchers.IO) {
          try {

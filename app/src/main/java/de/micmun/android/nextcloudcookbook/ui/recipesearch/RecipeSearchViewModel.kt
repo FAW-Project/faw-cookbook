@@ -21,7 +21,7 @@ import kotlinx.coroutines.runBlocking
  * ViewModel for recipe search result.
  *
  * @author MicMun
- * @version 1.4, 24.04.21
+ * @version 1.5, 28.11.21
  */
 class RecipeSearchViewModel(application: Application) :
    AndroidViewModel(application) {
@@ -69,7 +69,7 @@ class RecipeSearchViewModel(application: Application) :
       applyFilter = filter
    }
 
-   private val _navigateToRecipe = MutableLiveData<Long>()
+   private val _navigateToRecipe = MutableLiveData<Long?>()
    val navigateToRecipe
       get() = _navigateToRecipe
 

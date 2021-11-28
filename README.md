@@ -12,7 +12,6 @@ You need the Nextcloud Android client to sync the recipes.
       alt="Get it on F-Droid"
       width="160">](https://f-droid.org/en/packages/de.micmun.android.nextcloudcookbook/)
 
-Not updated anymore (cause of Google forcing App bundles):  
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play"
       height="60">](https://play.google.com/store/apps/details?id=de.micmun.android.nextcloudcookbook)

@@ -22,8 +22,8 @@ localized:
       Therefore it is better to use the above mentioned path on the SD card (see First steps).
     summary: View the recipes from your Nextcloud Cookbook
     whatsNew: |-
-      + Updated translations
-      + Little bugfixes
+      + New feature: Copy ingredients to clipboard
+      + Emprovement: datastore for settings
     phoneScreenshotsBaseUrl: https://codeberg.org/MicMun/nextcloud-cookbook/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/
     phoneScreenshots:
       - screenshot_start.png
@@ -46,8 +46,8 @@ localized:
       Deshalb bitte besser den oben genannten Pfad auf der SD-Karte nutzen (siehe Erste Schritte).
     summary: Zeige die Rezepte aus Deinem Nextcloud Kochbuch an
     whatsNew: |-
-      + Aktualisierte Übersetzungen
-      + Kleine Fehlerbehebungen
+      + Neues Feature: Zutaten in Zwischenablage kopieren
+      + Verbesserung: Datastore für die Einstellungen
     phoneScreenshotsBaseUrl: https://codeberg.org/MicMun/nextcloud-cookbook/raw/branch/master/fastlane/metadata/android/de/images/phoneScreenshots/
     phoneScreenshots:
       - screenshot_start.png
@@ -58,6 +58,10 @@ localized:
       - screenshot_settings.png
 
 builds:
+  - versionName: 2.7.0
+    versionCode: 270
+    sha256: d072b70483817f8ad36091bf92678ea16fcbde7f184e2ba1f6b5f02d1ef070e4
+    apkLink: sia://_BVYsZFEe238cEv5z1z7TdSW9dXfnyIuocwCzUkE1O-HtQ
   - versionName: 2.6.1
     versionCode: 261
     sha256: 7b21fe85018c93569894c6e480aa41885a1607a2ddc81cea377e99495d5b6b52
@@ -115,8 +119,8 @@ builds:
     sha256: ab98ebfffc1cbbd15f1d7cb48644ae68733ca4669d39ebaf9817679bfc989912
     apkLink: sia://_Bka9tS-fiGpHIjylx-yjr1caGY_w7p-2vhm5rU9gqhG-w
 
-currentVersionName: 2.6.1
-currentVersionCode: 261
+currentVersionName: 2.7.0
+currentVersionCode: 270
 
 added: 1618153205273
-lastUpdated: 1636296628592
+lastUpdated: 1638107946428

@@ -16,6 +16,7 @@ class Pref {
       const val IS_INIT = "is_initialized"
       const val RECIPE_DIR = "recipe_directory"
       const val THEME = "theme_setting"
+      const val SCREEN_KEEPALIVE = "keep_screen_alive"
       const val SORT = "recipe_list_sorting"
       const val STORAGE_ACCESS = "storage_access"
       const val SYNC_SERVICE = "enableSyncService"

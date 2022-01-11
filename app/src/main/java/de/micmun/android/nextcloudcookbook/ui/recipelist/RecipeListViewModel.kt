@@ -8,6 +8,7 @@ package de.micmun.android.nextcloudcookbook.ui.recipelist
 import android.app.Application
 import androidx.lifecycle.*
 import de.micmun.android.nextcloudcookbook.data.CategoryFilter
+import de.micmun.android.nextcloudcookbook.data.RecipeFilter
 import de.micmun.android.nextcloudcookbook.data.SortValue
 import de.micmun.android.nextcloudcookbook.db.DbRecipeRepository
 import de.micmun.android.nextcloudcookbook.db.model.DbRecipePreview
@@ -41,6 +42,7 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
 
    // sorting and category
    private var sort: SortValue = SortValue.NAME_A_Z
+   private var filter: RecipeFilter? = null
    private var catFilter: CategoryFilter = CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
 
    // navigate to recipe
@@ -61,14 +63,18 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
 
       runBlocking(Dispatchers.IO) {
          recipes =
-            if (catFilter.type == CategoryFilter.CategoryFilterOption.ALL_CATEGORIES && sort == SortValue.NAME_A_Z) {
-               recipeRepository.getAllRecipePreviews()
-            } else if (catFilter.type == CategoryFilter.CategoryFilterOption.ALL_CATEGORIES) {
-               recipeRepository.sort(sort)
-            } else if (catFilter.type == CategoryFilter.CategoryFilterOption.UNCATEGORIZED) {
-               recipeRepository.filterUncategorized(sort)
+            if(filter != null) {
+               recipeRepository.filterAll(sort, filter!!)
             } else {
-               recipeRepository.filterCategory(sort, catFilter.name)
+               if (catFilter.type == CategoryFilter.CategoryFilterOption.ALL_CATEGORIES && sort == SortValue.NAME_A_Z) {
+                  recipeRepository.getAllRecipePreviews()
+               } else if (catFilter.type == CategoryFilter.CategoryFilterOption.ALL_CATEGORIES) {
+                  recipeRepository.sort(sort)
+               } else if (catFilter.type == CategoryFilter.CategoryFilterOption.UNCATEGORIZED) {
+                  recipeRepository.filterUncategorized(sort)
+               } else {
+                  recipeRepository.filterCategory(sort, catFilter.name)
+               }
             }
       }
       return recipes
@@ -119,12 +125,19 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
    }
 
    // category filter
-   fun filterRecipesByCategory(catFilter: CategoryFilter) {
-      this.catFilter = catFilter
+   fun filterRecipesByCategory(catFilter: CategoryFilter?) {
+      if(catFilter==null) {
+         this.catFilter = CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
+      } else {
+         this.catFilter = catFilter
+      }
    }
 
    fun sortList(sort: SortValue) {
       this.sort = sort
+   }
+   fun search(filter: RecipeFilter?) {
+      this.filter = filter
    }
 
    override fun onCleared() {

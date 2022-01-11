@@ -20,14 +20,14 @@
    <!-- tab infos -->
    <string name="header_image_desc">Header-Bild des Rezepts</string>
    <string name="text_uncategorized">Unkategorisiert</string>
-   <string name="text_categories"><![CDATA[<strong>Kategorie:</strong><br/> ]]> %1$s</string>
-   <string name="text_yield"><![CDATA[<strong>Portionen:</strong>]]> %1$s</string>
-   <string name="text_author">Autor: %1$s</string>
-   <string name="text_url">Quelle: %1$s</string>
+   <string name="text_categories">Kategorie:</string>
+   <string name="text_yield">Portionen:</string>
+   <string name="text_author">Autor:</string>
+   <string name="text_url">Quelle:</string>
    <string name="text_no_keywords">Keine Schlüsselwörter.</string>
-   <string name="text_keywords"><![CDATA[<strong>Schlüsselwörter:</strong><br/> ]]> %1$s</string>
+   <string name="text_keywords">Schlüsselwörter:</string>
    <string name="text_date_published">Veröffentlichungsdatum: %1$s</string>
-   <string name="text_tools"><![CDATA[<strong>Benötigte Werkzeuge:</strong><br/> ]]> %1$s</string>
+   <string name="text_tools">Benötigte Werkzeuge:</string>
    <!-- Nutritions -->
    <string name="nutrition_calories">Kalorien: %1$s</string>
    <string name="nutrition_carbohydrate_content">Kohlenhydratgehalt: %1$s</string>

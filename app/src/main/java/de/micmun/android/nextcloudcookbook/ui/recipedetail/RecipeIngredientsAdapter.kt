@@ -12,6 +12,7 @@ import android.content.Context
 import android.graphics.Paint
 import android.text.Html
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.textChanged
@@ -38,10 +39,13 @@ class RecipeIngredientsAdapter(
    init {
       setYieldInput(baseYield)
       tabBinding.yieldInput.textChanged { notifyDataSetChanged() }
-      tabBinding.yieldMinus.setOnClickListener { setYieldInput((getYieldInput() - 1).coerceAtLeast(1f)) }
-      tabBinding.yieldPlus.setOnClickListener { setYieldInput(getYieldInput() + 1) }
+      tabBinding.yieldMinus.setOnClickListener { calculateYield(false) }
+      tabBinding.yieldPlus.setOnClickListener { calculateYield(true) }
       tabBinding.cpIngredientsBtn.setOnClickListener {
          copy()
+      }
+      if(ingredients.isNotEmpty()) {
+         tabBinding.labelNoContent.visibility = View.GONE
       }
    }
 
@@ -62,6 +66,51 @@ class RecipeIngredientsAdapter(
          ingredient = scaleIngredientAmount("-\\s?$amountRegexString", ingredient, factor)
       }
       holder.bind(ingredient)
+   }
+
+   private fun calculateYield(increase: Boolean) {
+      val current = getYieldInput()
+      var future: Float
+
+      val numbersSet = arrayListOf<Float>(
+         1F,
+         (4F/5F),
+         (3F/4F),
+         0.66F,  //actually calculating the value breaks the system, since the ui can only show two decimal places
+         (1F/2F),
+         0.33F,
+         (1F/4F),
+         0.12F,
+         0F
+      )
+
+      if(increase){
+         // If yield gets increased
+         if(current>=1){
+            // add one if above 1 portion
+            future = current + 1
+         } else {
+            // calculate next bigger fraction
+            var index = numbersSet.indexOf(current) - 1
+            if(0 > index-1) {
+               index = 0
+            }
+            future = numbersSet[index]
+         }
+      } else {
+         if(current>1){
+            future = (current - 1)
+         } else {
+            // calculate next smaller fraction
+            var index = numbersSet.indexOf(current) + 1
+            if(numbersSet.size < index) {
+               index = numbersSet.size
+            }
+            future = numbersSet[index]
+         }
+      }
+
+      setYieldInput(future)
    }
 
    class IngredientsViewHolder private constructor(val binding: IngredientsItemBinding) :

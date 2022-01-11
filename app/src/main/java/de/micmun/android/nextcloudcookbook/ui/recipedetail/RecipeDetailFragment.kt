@@ -1,13 +1,14 @@
 package de.micmun.android.nextcloudcookbook.ui.recipedetail
 
-import android.content.res.TypedArray
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -18,8 +19,14 @@ import de.micmun.android.nextcloudcookbook.MainApplication
 import de.micmun.android.nextcloudcookbook.R
 import de.micmun.android.nextcloudcookbook.databinding.FragmentDetailBinding
 import de.micmun.android.nextcloudcookbook.db.model.DbRecipe
+import de.micmun.android.nextcloudcookbook.settings.PreferenceData
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
+import de.micmun.android.nextcloudcookbook.ui.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * Fragment for detail of a recipe.
@@ -32,10 +39,6 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
    private lateinit var viewModel: RecipeViewModel
    private lateinit var settingViewModel: CurrentSettingViewModel
 
-   private lateinit var infoIcons: TypedArray
-   private lateinit var ingredientsIcons: TypedArray
-   private lateinit var instructionsIcons: TypedArray
-   private lateinit var nutritionsIcons: TypedArray
    private var adapter: ViewPagerAdapter? = null
 
    private var currentPage = 0
@@ -50,7 +53,6 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
       val args = RecipeDetailFragmentArgs.fromBundle(requireArguments())
-
       if (savedInstanceState != null) {
          currentPage = savedInstanceState[KEY_CURRENT_PAGE] as Int
          recipeId = args.recipeId
@@ -81,21 +83,32 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
 
       val orientation = resources.configuration.orientation
 
-      infoIcons = requireActivity().obtainStyledAttributes(intArrayOf(R.attr.tab_info_icon))
-      ingredientsIcons = requireActivity().obtainStyledAttributes(intArrayOf(R.attr.tab_ingredients_icon))
-      instructionsIcons = requireActivity().obtainStyledAttributes(intArrayOf(R.attr.tab_instructions_icon))
-      nutritionsIcons = requireActivity().obtainStyledAttributes(intArrayOf(R.attr.tab_nutritions_icon))
-
-      viewModel.recipe.observe(viewLifecycleOwner, { recipe ->
+      viewModel.recipe.observe(viewLifecycleOwner) { recipe ->
          recipe?.let {
             initPager(it, orientation)
             setTitle(it.recipeCore.name)
          }
-      })
+      }
+
+      var parent = (activity as MainActivity?)!!
+      binding.backButton.setOnClickListener {
+         requireActivity().onBackPressed()
+         parent.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+      }
+
+      parent.showToolbar(false)
+
+      if(PreferenceData.getInstance().getScreenKeepalive()){
+         parent.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+      }
 
       return binding.root
    }
 
+   override fun onStop() {
+      (activity as MainActivity?)!!.showToolbar(true)
+      super.onStop()
+   }
    /**
     * Initialise the view pager and tablayout with the current recipe.
     *
@@ -109,30 +122,19 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
       TabLayoutMediator(tabLayout, binding.pager) { tab, position ->
          when (adapter!!.getItemViewType(position)) {
             ViewPagerAdapter.TYPE_INFO -> {
-               tab.text = resources.getString(R.string.tab_info_title)
-               tab.icon = ResourcesCompat.getDrawable(resources, infoIcons.getResourceId(0, 1), requireActivity().theme)
+               tab.icon = AppCompatResources.getDrawable(this.requireContext(), R.drawable.ic_info)
             }
             ViewPagerAdapter.TYPE_INGREDIENTS -> {
-               tab.text = resources.getString(R.string.tab_ingredients_title)
-               tab.icon =
-                  ResourcesCompat.getDrawable(resources, ingredientsIcons.getResourceId(0, 1), requireActivity().theme)
+               tab.icon = AppCompatResources.getDrawable(this.requireContext(), R.drawable.ic_ingredients)
             }
             ViewPagerAdapter.TYPE_INSTRUCTIONS -> {
-               tab.text = resources.getString(R.string.tab_instructions_title)
-               tab.icon =
-                  ResourcesCompat.getDrawable(resources, instructionsIcons.getResourceId(0, 1), requireActivity().theme)
+               tab.icon = AppCompatResources.getDrawable(this.requireContext(), R.drawable.ic_instructions)
             }
             ViewPagerAdapter.TYPE_NUTRITIONS -> {
-               tab.text = resources.getString(R.string.tab_nutritions_title)
-               tab.icon =
-                  ResourcesCompat.getDrawable(resources, nutritionsIcons.getResourceId(0, 1), requireActivity().theme)
+               tab.icon = AppCompatResources.getDrawable(this.requireContext(), R.drawable.ic_nutritions)
             }
             ViewPagerAdapter.TYPE_INGRED_AND_INSTRUCT -> {
-               tab.text = "${resources.getString(R.string.tab_ingredients_title)} & ${
-                  resources.getString(R.string.tab_instructions_title)
-               }"
-               tab.icon =
-                  ResourcesCompat.getDrawable(resources, instructionsIcons.getResourceId(0, 1), requireActivity().theme)
+               tab.icon = AppCompatResources.getDrawable(this.requireContext(), R.drawable.ic_instructions)
             }
          }
       }.attach()
@@ -165,6 +167,7 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
 
    override fun onResume() {
       super.onResume()
+      (activity as MainActivity?)!!.showToolbar(false)
       if (adapter != null) {
          val type = adapter!!.getItemViewType(currentPage)
          if (type == ViewPagerAdapter.TYPE_INSTRUCTIONS || type == ViewPagerAdapter.TYPE_INGRED_AND_INSTRUCT) {
@@ -187,8 +190,12 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
    }
 
    override fun onClick(recipe: DbRecipe) {
-      findNavController()
-         .navigate(
-            RecipeDetailFragmentDirections.actionRecipeDetailFragmentToCooktimerFragment(recipe.recipeCore.id))
+     if(!recipe.recipeCore.cookTime.isEmpty()){
+        findNavController()
+           .navigate(
+              RecipeDetailFragmentDirections.actionRecipeDetailFragmentToCooktimerFragment(recipe.recipeCore.id))
+     } else {
+        Toast.makeText(requireContext(), getString(R.string.recipe_no_timer), Toast.LENGTH_SHORT).show()
+     }
    }
 }

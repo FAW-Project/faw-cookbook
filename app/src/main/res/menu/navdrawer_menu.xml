@@ -2,10 +2,44 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
    <item
-         android:id="@+id/menu_all_categories"
-         android:title="@string/menu_all_categories" />
+       android:id="@+id/menu_search_extended"
+       android:icon="@drawable/ic_search"
+       android:title="@string/form_exact_search" />
+
+   <group android:visible="true">
+      <item
+          android:id="@+id/menu_all_categories"
+          android:title="@string/menu_all_categories" />
+      <item
+          android:id="@+id/menu_uncategorized"
+          android:title="@string/menu_uncategorized" />
+   </group>
+
    <item
-         android:id="@+id/menu_uncategorized"
-         android:title="@string/menu_uncategorized" />
-   <group android:id="@+id/menu_categories_group" />
+       android:title="@string/menu_categories"
+       android:id="@+id/submenu_item"
+       >
+      <menu
+          android:id="@+id/submenu_categories">
+         <group
+             android:id="@+id/menu_categories_group"/>
+      </menu>
+   </item>
+
+   <item android:title="App">
+      <menu>
+         <item
+             android:id="@+id/app_import_recipe"
+             android:icon="@drawable/ic_download"
+             android:title="@string/menu_import_recipe" />
+         <item
+             android:id="@+id/app_settings"
+             android:icon="@drawable/ic_settings"
+             android:title="@string/menu_settings" />
+         <item
+             android:id="@+id/app_sso"
+             android:icon="@drawable/ic_login"
+             android:title="@string/menu_sso" />
+      </menu>
+   </item>
 </menu>

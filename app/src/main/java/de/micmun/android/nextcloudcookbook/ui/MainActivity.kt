@@ -7,18 +7,18 @@ package de.micmun.android.nextcloudcookbook.ui
 
 import android.app.SearchManager
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -51,6 +51,10 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
 
+import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeSearchCallback
+
 
 /**
  * Main Activity of the app.
@@ -63,6 +67,8 @@ class MainActivity : AppCompatActivity() {
    private lateinit var drawerLayout: DrawerLayout
    private lateinit var currentSettingViewModel: CurrentSettingViewModel
    private lateinit var preferenceData: PreferenceData
+
+   private var mRecipeSearchCallback: RecipeSearchCallback? = null
 
    override fun onCreate(savedInstanceState: Bundle?) {
       preferenceData = PreferenceData.getInstance()
@@ -79,18 +85,20 @@ class MainActivity : AppCompatActivity() {
          }
       }
 
+
+      setTheme(R.style.AppTheme_Light)
       // apply theme
       when (preferenceData.getThemeSync()) {
-         0 -> setTheme(R.style.AppTheme_Light)
-         1 -> setTheme(R.style.AppTheme_Dark)
-         2 -> setTheme(systemTheme())
+         0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+         1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+         2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
       }
 
       super.onCreate(savedInstanceState)
       binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
       // toolbar
-      setSupportActionBar(binding.toolbar.myToolbar)
+      setupToolbars()
 
       // drawer layout
       drawerLayout = binding.drawerLayout
@@ -98,17 +106,6 @@ class MainActivity : AppCompatActivity() {
       // navigation
       val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
       val navController = navHostFragment.findNavController()
-      NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-      NavigationUI.setupWithNavController(binding.navView, navController)
-
-      // prevent nav gesture if not on start destination
-      navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, _: Bundle? ->
-         if (nd.id == nc.graph.startDestinationId) {
-            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-         } else {
-            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-         }
-      }
 
       // settings
       val factory = CurrentSettingViewModelFactory(MainApplication.AppContext)
@@ -120,9 +117,51 @@ class MainActivity : AppCompatActivity() {
             R.id.menu_uncategorized -> CategoryFilter(CategoryFilter.CategoryFilterOption.UNCATEGORIZED)
             else -> CategoryFilter(CategoryFilter.CategoryFilterOption.CATEGORY, item.title.toString())
          }
+         handleNavigationDrawerSelection(item.itemId)
          currentSettingViewModel.setNewCategory(currentCat)
          drawerLayout.closeDrawers()
          true
+      }
+
+      with(binding) {
+         currentSettingViewModel =
+           ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
+         navView.setNavigationItemSelectedListener { item ->
+           val currentCat = when (item.itemId) {
+              R.id.menu_all_categories -> CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
+              R.id.menu_uncategorized -> CategoryFilter(CategoryFilter.CategoryFilterOption.UNCATEGORIZED)
+              else -> CategoryFilter(CategoryFilter.CategoryFilterOption.CATEGORY, item.title.toString())
+           }
+           handleNavigationDrawerSelection(item.itemId)
+           currentSettingViewModel.setNewCategory(currentCat)
+           drawerLayout.closeDrawers()
+           true
+        }
+
+
+         searchText.setOnClickListener {
+            searchToolbar.visibility = View.VISIBLE
+            normalToolbar.visibility = View.GONE
+            searchbar.isIconified = false
+         }
+
+         backButton.setOnClickListener{
+            searchToolbar.visibility = View.GONE
+            normalToolbar.visibility = View.VISIBLE
+         }
+
+         searchbar.setOnQueryTextListener(object : OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
+
+            override fun onQueryTextChange(qString: String): Boolean {
+               search(qString)
+               return true
+            }
+            override fun onQueryTextSubmit(qString: String): Boolean {
+               search(qString)
+               return true
+            }
+         })
       }
 
       // permission for storage
@@ -145,6 +184,37 @@ class MainActivity : AppCompatActivity() {
       return super.onOptionsItemSelected(item)
    }
 
+   fun handleNavigationDrawerSelection(item: Int){
+      val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+      val navController = navHostFragment.findNavController()
+      when (item) {
+         R.id.menu_search_extended -> {
+            navController.navigate(R.id.searchFormFragment)
+            showToolbar(true, false)
+         }
+         R.id.app_import_recipe -> {
+            navController.navigate(R.id.downloadFormFragment)
+            showToolbar(true, false)
+         }
+         R.id.app_settings -> {
+            navController.navigate(R.id.preferenceFragment)
+            showToolbar(true, false)
+         }
+         R.id.app_sso -> {
+
+         }
+         R.id.menu_all_categories, R.id.menu_uncategorized -> {
+            navController.navigate(R.id.recipeListFragment)
+            showToolbar(true, true)
+         }
+         else -> {
+            navController.navigate(R.id.recipeListFragment)
+            showToolbar(true, true)
+         }
+      }
+
+   }
+
    override fun onNewIntent(intent: Intent?) {
       super.onNewIntent(intent)
       handleIntent(intent)
@@ -155,14 +225,20 @@ class MainActivity : AppCompatActivity() {
    }
 
    override fun onSupportNavigateUp(): Boolean {
-      val navControler = this.findNavController(R.id.navHostFragment)
-      return NavigationUI.navigateUp(navControler, drawerLayout)
+      val navController = this.findNavController(R.id.navHostFragment)
+      return NavigationUI.navigateUp(navController, drawerLayout)
    }
 
-   private fun systemTheme(): Int {
-      return when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-         Configuration.UI_MODE_NIGHT_YES -> R.style.AppTheme_Dark
-         else -> R.style.AppTheme_Light
+   private fun setupToolbars() {
+      binding.menuButton.setOnClickListener { v ->
+         binding.drawerLayout.openDrawer(
+            GravityCompat.START
+         )
+      }
+      binding.moreMenu.setOnClickListener { v ->
+         val popupMenu = PopupMenu(this, v)
+         this.menuInflater.inflate(R.menu.overflow_menu, popupMenu.menu)
+         popupMenu.show()
       }
    }
 
@@ -175,12 +251,17 @@ class MainActivity : AppCompatActivity() {
       if (Intent.ACTION_SEARCH == intent?.action) {
          val query = intent.getStringExtra(SearchManager.QUERY)
          if (query != null) {
-            val filter = RecipeFilter(RecipeFilter.QueryType.QUERY_NAME, query)
-            val navControler = this.findNavController(R.id.navHostFragment)
-            navControler.navigate(
-               RecipeListFragmentDirections.actionRecipeListFragmentToRecipeSearchFragment(filter))
+            search(query)
          }
       }
+   }
+
+   private fun search(query: String) {
+      val filter = RecipeFilter(RecipeFilter.QueryType.QUERY_NAME, query)
+      val navController = this.findNavController(R.id.navHostFragment)
+
+      mRecipeSearchCallback?.searchRecipes(filter)
+      //navController.navigate(RecipeListFragmentDirections.actionRecipeListFragmentToRecipeSearchFragment(filter))
    }
 
    /**
@@ -208,6 +289,26 @@ class MainActivity : AppCompatActivity() {
          })
          .check()
    }
+
+   fun showToolbar(showToolbar: Boolean, showSearch: Boolean = true) {
+      if(showToolbar) {
+         binding.appBar.visibility = View.VISIBLE
+      } else {
+         binding.appBar.visibility = View.GONE
+      }
+      if(showSearch) {
+         binding.searchText.visibility = View.VISIBLE
+      } else {
+         binding.searchText.visibility = View.INVISIBLE
+      }
+
+
+   }
+
+   fun setRecipeSearchCallback(callback: RecipeSearchCallback?) {
+      mRecipeSearchCallback = callback
+   }
+
 
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
       super.onActivityResult(requestCode, resultCode, data)

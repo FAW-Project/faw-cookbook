@@ -68,6 +68,7 @@ class RecipeListAdapter(private val clickListener: RecipeListListener, private v
             repository.updateStar(recipe.id, starSwitcher.currentView.id == R.id.recipeOverviewStarOn)
          }
          binding.executePendingBindings()
+         binding.recipeOverviewImage.clipToOutline = true
       }
 
       companion object {

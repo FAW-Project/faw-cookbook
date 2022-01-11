@@ -28,6 +28,11 @@
             android:key="@string/prefkey_theme"
             android:summary="%s"
             android:title="@string/preftitle_theme" />
+      <CheckBoxPreference
+          android:defaultValue="true"
+          android:key="@string/prefkey_keep_screen_alive"
+          android:summary="@string/prefkey_keep_screen_alive_summary"
+          android:title="@string/prefkey_keep_screen_alive_title" />
    </PreferenceCategory>
 
    <PreferenceCategory android:title="@string/about_title">

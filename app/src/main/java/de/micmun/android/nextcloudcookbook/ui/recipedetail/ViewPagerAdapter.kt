@@ -8,6 +8,7 @@ package de.micmun.android.nextcloudcookbook.ui.recipedetail
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -138,6 +139,11 @@ class ViewPagerAdapter(private val recipe: DbRecipe, private val orientation: In
        */
       fun bind(recipe: DbRecipe) {
          binding.instructionsView.adapter = RecipeInstructionsAdapter(recipe.recipeInstructions ?: emptyList())
+         if(recipe.recipeInstructions!=null) {
+            if(recipe.recipeInstructions.isNotEmpty()){
+               binding.labelNoInstructions.visibility = View.GONE
+            }
+         }
          val orientation = (binding.instructionsView.layoutManager as LinearLayoutManager).orientation
          val dividerItemDecoration = DividerItemDecoration(binding.instructionsView.context, orientation)
          binding.instructionsView.addItemDecoration(dividerItemDecoration)

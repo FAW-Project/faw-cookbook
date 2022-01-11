@@ -53,4 +53,8 @@ class RecipeFilter(val type: QueryType, val query: String, val ignoreCase: Boole
          return arrayOfNulls(size)
       }
    }
+
+   override fun toString(): String {
+      return type.name+" "+query+" " + ignoreCase.toString() + " " +exact.toString()
+   }
 }

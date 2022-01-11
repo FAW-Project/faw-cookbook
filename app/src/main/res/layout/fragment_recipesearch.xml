@@ -8,7 +8,7 @@
 
       <variable
             name="recipeSearchViewModel"
-            type="de.micmun.android.nextcloudcookbook.ui.recipesearch.RecipeSearchViewModel" />
+            type="de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeListViewModel" />
    </data>
 
    <ViewSwitcher

@@ -22,8 +22,8 @@ localized:
       Therefore it is better to use the above mentioned path on the SD card (see First steps).
     summary: View the recipes from your Nextcloud Cookbook
     whatsNew: |-
-      + New feature: Copy ingredients to clipboard
-      + Emprovement: datastore for settings
+      + New feature Copy ingredients to clipboard
+      + Emprovement datastore for settings
     phoneScreenshotsBaseUrl: https://codeberg.org/MicMun/nextcloud-cookbook/raw/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/
     phoneScreenshots:
       - screenshot_start.png
@@ -46,8 +46,8 @@ localized:
       Deshalb bitte besser den oben genannten Pfad auf der SD-Karte nutzen (siehe Erste Schritte).
     summary: Zeige die Rezepte aus Deinem Nextcloud Kochbuch an
     whatsNew: |-
-      + Neues Feature: Zutaten in Zwischenablage kopieren
-      + Verbesserung: Datastore für die Einstellungen
+      + Neues Feature Zutaten in Zwischenablage kopieren
+      + Verbesserung Datastore für die Einstellungen
     phoneScreenshotsBaseUrl: https://codeberg.org/MicMun/nextcloud-cookbook/raw/branch/master/fastlane/metadata/android/de/images/phoneScreenshots/
     phoneScreenshots:
       - screenshot_start.png
@@ -56,6 +56,8 @@ localized:
       - screenshot_detail_info.png
       - screenshot_detail_ingredients.png
       - screenshot_settings.png
+
+# !!! DO NO EDIT BELOW THIS LINE !!!
 
 builds:
   - versionName: 2.7.0

@@ -1,54 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:tools="http://schemas.android.com/tools"
-      package="de.micmun.android.nextcloudcookbook"
-      android:installLocation="auto">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="de.micmun.android.nextcloudcookbook"
+    android:installLocation="auto">
 
-   <uses-permission android:name="android.permission.INTERNET" />
-   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-   <uses-permission
-         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-         android:maxSdkVersion="28" />
-   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-   <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-   <application
-         android:name=".MainApplication"
-         android:allowBackup="true"
-         android:configChanges="orientation|screenSize"
-         android:fullBackupContent="true"
-         android:icon="@drawable/ic_launcher"
-         android:label="@string/app_name"
-         android:requestLegacyExternalStorage="true"
-         android:roundIcon="@drawable/ic_launcher_round"
-         android:supportsRtl="true"
-         android:theme="@style/AppTheme"
-         tools:ignore="GoogleAppIndexingWarning"
-         tools:remove="android:appComponentFactory">
-      <activity
+    <application
+        android:name=".MainApplication"
+        android:allowBackup="true"
+        android:configChanges="orientation|screenSize"
+        android:fullBackupContent="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@drawable/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:remove="android:appComponentFactory">
+
+        <activity
             android:name=".ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="sensor">
-         <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-         </intent-filter>
-         <intent-filter>
-            <action android:name="android.intent.action.SEARCH" />
-         </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-         <meta-data
-               android:name="android.app.searchable"
-               android:resource="@xml/searchable" />
-      </activity>
-      <service android:name=".services.CooktimerService" />
-      <receiver
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <service android:name=".services.CooktimerService" />
+
+        <service
+            android:name=".services.sync.SyncService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
             android:name=".services.RemainReceiver"
             android:exported="false">
-         <intent-filter>
-            <action android:name="de.micmun.android.nextcloudcookbook.services.RemainReceiver.REMAIN_ACTION" />
-         </intent-filter>
-      </receiver>
-   </application>
+            <intent-filter>
+                <action android:name="de.micmun.android.nextcloudcookbook.services.RemainReceiver.REMAIN_ACTION" />
+            </intent-filter>
+        </receiver> <!-- https://developer.android.com/training/scheduling/alarms#boot -->
+        <!-- See link for improvements of bootreciever -->
+        <receiver
+            android:name=".reciever.BootReciever"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".reciever.LocalBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
+    </application>
+
 </manifest>

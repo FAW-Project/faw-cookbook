@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.collect
  * Fragment for settings.
  *
  * @author MicMun
- * @version 1.9, 27.11.21
+ * @version 2.0, 15.04.22
  */
 class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener,
                            Preference.OnPreferenceClickListener {
@@ -82,7 +82,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
       aboutPreference.title = getString(R.string.about_version, version)
    }
 
-   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
       // observe values
       lifecycleScope.launchWhenResumed {
          viewModel.recipeDirectory.collect { dir ->
@@ -100,7 +100,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
       return super.onCreateView(inflater, container, savedInstanceState)
    }
 
-   override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
+   override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
       when (preference) {
          dirPreference -> viewModel.setRecipeDirectory(newValue.toString())
          themePreference -> {
@@ -116,7 +116,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
       return true
    }
 
-   override fun onPreferenceClick(preference: Preference?): Boolean {
+   override fun onPreferenceClick(preference: Preference): Boolean {
       when (preference) {
          dirPreference -> {
             chooseFolder()

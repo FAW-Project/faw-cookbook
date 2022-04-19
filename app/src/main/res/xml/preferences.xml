@@ -10,6 +10,16 @@
             android:summary="%s"
             android:title="@string/preftitle_recipeDir" />
    </PreferenceCategory>
+   <PreferenceCategory
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:title="@string/pref_category_sync">
+
+      <Preference
+          android:key="@string/prefkey_enableSyncService"
+          android:summary="%s"
+          android:title="@string/preftitle_enableSyncService" />
+   </PreferenceCategory>
    <PreferenceCategory android:title="@string/pref_category_design">
       <de.micmun.android.nextcloudcookbook.ui.preferences.IntListPreference
             android:defaultValue="0"

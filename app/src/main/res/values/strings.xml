@@ -153,4 +153,11 @@
    <!-- action buttons -->
    <string name="copy_ingredients">Copy ingredients</string>
    <string name="copy_ing_message">Ingredients copied to clipboard.</string>
+    <string name="sync_service_channel_name">Sync Service</string>
+   <string name="sync_service_channel_description">Used for foreground notfiication when syncing recipes</string>
+   <string name="sync_service_notification_title">Sync Recipes</string>
+   <string name="sync_service_notification_content">We are currently updating your recipes, we\'ll be back shortly!</string>
+    <string name="preftitle_enableSyncService">Sync Recipes in the Background</string>
+   <string name="prefkey_enableSyncService">enableSyncService</string>
+   <string name="pref_category_sync">Synchronisation</string>
 </resources>

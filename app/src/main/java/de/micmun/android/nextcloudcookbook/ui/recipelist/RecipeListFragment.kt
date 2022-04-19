@@ -3,7 +3,10 @@ package de.micmun.android.nextcloudcookbook.ui.recipelist
 import android.app.SearchManager
 import android.content.Context
 import android.content.DialogInterface
+import android.content.IntentFilter
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +16,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -26,10 +30,17 @@ import de.micmun.android.nextcloudcookbook.data.CategoryFilter
 import de.micmun.android.nextcloudcookbook.data.SortValue
 import de.micmun.android.nextcloudcookbook.databinding.FragmentRecipelistBinding
 import de.micmun.android.nextcloudcookbook.db.DbRecipeRepository
+import de.micmun.android.nextcloudcookbook.nextcloudapi.Sync
+import de.micmun.android.nextcloudcookbook.reciever.LocalBroadcastReceiver
+import de.micmun.android.nextcloudcookbook.services.sync.SyncService
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
 import de.micmun.android.nextcloudcookbook.ui.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+
 
 /**
  * Fragment for list of recipes.
@@ -42,6 +53,10 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
    private lateinit var recipesViewModel: RecipeListViewModel
    private lateinit var settingViewModel: CurrentSettingViewModel
    private lateinit var adapter: RecipeListAdapter
+
+   private lateinit var mLocalBroadcastManager: LocalBroadcastManager
+   private lateinit var mLocalBroadcastReceiver: LocalBroadcastReceiver
+   private var mAutoRefreshList = false
 
    private var refreshItem: MenuItem? = null
 
@@ -62,7 +77,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
          ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
       binding.lifecycleOwner = viewLifecycleOwner
 
-      recipesViewModel.isUpdating.observe(viewLifecycleOwner, { it ->
+      recipesViewModel.isUpdating.observe(viewLifecycleOwner) { it ->
          it?.let { isUpdating ->
             if (isUpdating) {
                // preparation for loading
@@ -73,16 +88,16 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                refreshItem?.let { it.isEnabled = true }
             }
          }
-      })
+      }
 
-      recipesViewModel.isLoaded.observe(viewLifecycleOwner, {
+      recipesViewModel.isLoaded.observe(viewLifecycleOwner) {
          it?.let {
             isLoaded = it
          }
-      })
+      }
 
       initializeRecipeList()
-
+      setupBroadcastListener()
       return binding.root
    }
 
@@ -110,6 +125,8 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
    override fun onOptionsItemSelected(item: MenuItem): Boolean {
       return when (item.itemId) {
          R.id.refreshAction -> {
+            val sync = Sync(this.requireContext())
+            sync.synchronizeRecipesAsync()
             onRefresh()
             true
          }
@@ -139,13 +156,13 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
       // settings
       adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
-      recipesViewModel.navigateToRecipe.observe(viewLifecycleOwner, { recipe ->
+      recipesViewModel.navigateToRecipe.observe(viewLifecycleOwner) { recipe ->
          recipe?.let {
             this.findNavController()
                .navigate(RecipeListFragmentDirections.actionRecipeListFragmentToRecipeDetailFragment(recipe))
             recipesViewModel.onRecipeNavigated()
          }
-      })
+      }
 
       lifecycleScope.launchWhenResumed {
          settingViewModel.sorting.collect { sort ->
@@ -166,14 +183,14 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
          }
       }
 
-      settingViewModel.category.observe(viewLifecycleOwner, { catFilter ->
+      settingViewModel.category.observe(viewLifecycleOwner) { catFilter ->
          catFilter?.let {
             // filter recipes to set category
             recipesViewModel.filterRecipesByCategory(it)
             setCategoryTitle(it)
             loadData()
 
-            settingViewModel.categoryChanged.observe(viewLifecycleOwner, { changed ->
+            settingViewModel.categoryChanged.observe(viewLifecycleOwner) { changed ->
                changed?.let { c ->
                   if (c) {
                      binding.recipeList.postDelayed(250) {
@@ -182,11 +199,11 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                      settingViewModel.resetCategoryChanged()
                   }
                }
-            })
+            }
          }
-      })
+      }
 
-      recipesViewModel.categories.observe(viewLifecycleOwner, { categories ->
+      recipesViewModel.categories.observe(viewLifecycleOwner) { categories ->
          categories?.let {
             var order = 1
             val activity = requireActivity() as MainActivity
@@ -197,7 +214,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                menu.add(R.id.menu_categories_group, category.hashCode(), order++, category)
             }
          }
-      })
+      }
 
       loadData()
    }
@@ -206,7 +223,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     * Loads the current data.
     */
    private fun loadData() {
-      recipesViewModel.getRecipes().observe(viewLifecycleOwner, { recipes ->
+      recipesViewModel.getRecipes().observe(viewLifecycleOwner) { recipes ->
          recipes?.let {
             adapter.submitList(it)
          }
@@ -216,7 +233,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
          } else if (R.id.titleConstraint == binding.switcher.nextView.id) {
             binding.switcher.showNext()
          }
-      })
+      }
    }
 
    private fun setCategoryTitle(categoryFilter: CategoryFilter) {
@@ -245,13 +262,79 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
       sortDialog = builder.show()
    }
 
+
+   //todo: think about how to make this more elegant.
+   //also it seems quickly refreshing breaks the database.
+   fun onRefreshAndReschedule() {
+      if(!mAutoRefreshList){
+         return
+      }
+      Handler(Looper.getMainLooper()).postDelayed({
+         CoroutineScope(Dispatchers.Main).launch {
+            settingViewModel.storageAccessed.collect { storageAccessed ->
+               if (storageAccessed) {
+                  settingViewModel.recipeDirectory.collect { dir ->
+                     if (dir != recipesViewModel.getRecipeDir()) {
+                        recipesViewModel.initRecipes(dir, true)
+                     }else{
+                        recipesViewModel.initRecipes(hidden = true)
+                     }
+                  }
+               }
+            }
+         }
+         onRefreshAndReschedule();
+      }, 500)
+   }
+
    override fun onRefresh() {
       // load recipes from files
       recipesViewModel.initRecipes()
    }
 
+   override fun onResume() {
+      setupBroadcastListener()
+      super.onResume()
+   }
+
    override fun onPause() {
+      dismissBroadcastListener()
       sortDialog?.dismiss()
       super.onPause()
+   }
+
+   fun notifyUpdate(updating: Boolean) {
+      mAutoRefreshList = updating
+
+      // Dont use this for now.
+      // onRefreshAndReschedule()
+
+      if(!updating){
+         CoroutineScope(Dispatchers.Main).launch {
+            settingViewModel.storageAccessed.collect { storageAccessed ->
+               if (storageAccessed) {
+                  settingViewModel.recipeDirectory.collect { dir ->
+                     if (dir != recipesViewModel.getRecipeDir()) {
+                        recipesViewModel.initRecipes(dir, true)
+                     }else{
+                        recipesViewModel.initRecipes(hidden = true)
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   private fun setupBroadcastListener() {
+      mLocalBroadcastManager = LocalBroadcastManager.getInstance(this.requireContext())
+      mLocalBroadcastReceiver = LocalBroadcastReceiver(this)
+      val intentFilter = IntentFilter()
+      intentFilter.addAction(SyncService.SYNC_SERVICE_UPDATE_BROADCAST)
+      mLocalBroadcastManager.registerReceiver(mLocalBroadcastReceiver, intentFilter)
+   }
+
+   private fun dismissBroadcastListener() {
+      mLocalBroadcastManager.unregisterReceiver(mLocalBroadcastReceiver)
    }
 }

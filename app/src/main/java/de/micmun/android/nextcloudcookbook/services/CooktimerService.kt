@@ -6,11 +6,8 @@
 package de.micmun.android.nextcloudcookbook.services
 
 import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -20,6 +17,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavDeepLinkBuilder
 import de.micmun.android.nextcloudcookbook.MainApplication
 import de.micmun.android.nextcloudcookbook.R
+import de.micmun.android.nextcloudcookbook.notifications.NotificationChannelManager
 import de.micmun.android.nextcloudcookbook.util.DurationUtils
 
 /**
@@ -36,11 +34,6 @@ class CooktimerService : LifecycleService() {
    private var remains: Long = 10000L
    private var recipeId: Long = -1L
    private var pendingIntent: PendingIntent? = null
-
-   companion object {
-      // Channel ID for notification channel
-      const val CHANNEL_ID = "nc_cooktimer"
-   }
 
    override fun onCreate() {
       super.onCreate()
@@ -62,42 +55,38 @@ class CooktimerService : LifecycleService() {
       if (pendingIntent == null) {
          pendingIntent = buildPendingIntent()
       }
-      createNotificationChannel() // creating notification channel (only Android.O+)
 
-      // create notification
-      notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
-         .setCategory(Notification.CATEGORY_ALARM)
-         .setContentTitle(getString(R.string.notification_title))
-         .setSmallIcon(R.drawable.ic_timer)
-         .setContentIntent(pendingIntent)
-         .setOnlyAlertOnce(true)
-         .setAutoCancel(true)
-         .setOngoing(true)
-      notification = notificationBuilder.build()
-      NotificationManagerCompat.from(this).notify(1, notification)
+      NotificationChannelManager.createCookTimerNotificationChannel(this)
+      notificationBuilder = NotificationChannelManager.createCookTimerNotification(this, pendingIntent!!)
+      showNotification()
 
       // Observe timer and start it
-      viewModel.cooktimer.observe(this, {
+      viewModel.cooktimer.observe(this) {
          it?.let { timer ->
             viewModel.startTimer(timer)
          }
-      })
+      }
 
       // current remaining time
-      viewModel.remains.observe(this, {
+      viewModel.remains.observe(this) {
          it?.let { remains ->
             this.remains = remains
             if (remains > 0L) {
                // update notification
                notificationBuilder.setContentText(
-                  getString(R.string.notification_text, DurationUtils.formatDurationSeconds(remains / 1000)))
+                  getString(
+                     R.string.notification_text,
+                     DurationUtils.formatDurationSeconds(remains / 1000)
+                  )
+               )
             }
-            LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(buildIntent(remains))
+            LocalBroadcastManager.getInstance(applicationContext)
+               .sendBroadcast(buildIntent(remains))
 
             pendingIntent = buildPendingIntent()
             notificationBuilder.setContentIntent(pendingIntent)
-            notification = notificationBuilder.build()
-            NotificationManagerCompat.from(this).notify(1, notification)
+            showNotification()
+
 
             if (remains == 0L) { // timer ends
                viewModel.stopTimer()
@@ -108,7 +97,7 @@ class CooktimerService : LifecycleService() {
                stopSelf()
             }
          }
-      })
+      }
 
       // start service
       startForeground(1, notification)
@@ -121,24 +110,6 @@ class CooktimerService : LifecycleService() {
       stopForeground(true)
       stopSelf()
       super.onDestroy()
-   }
-
-   /**
-    * Creates a notification channel when Android version >= O (API 26+).
-    */
-   private fun createNotificationChannel() {
-      // Create the NotificationChannel, but only on API 26+ because
-      // the NotificationChannel class is new and not in the support library
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-         val name = getString(R.string.channel_name)
-         val descriptionText = getString(R.string.channel_description)
-         val importance = NotificationManager.IMPORTANCE_DEFAULT
-         val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-            description = descriptionText
-         }
-         // Register the channel with the system
-         NotificationManagerCompat.from(this).createNotificationChannel(channel)
-      }
    }
 
    /**
@@ -163,5 +134,14 @@ class CooktimerService : LifecycleService() {
       intent.action = RemainReceiver.REMAIN_ACTION
       intent.putExtra(RemainReceiver.KEY_REMAINS, remains)
       return intent
+   }
+
+   private fun showNotification() {
+      val notificationManager = NotificationManagerCompat.from(this)
+      notification = notificationBuilder.build()
+      notificationManager.notify(
+         NotificationChannelManager.TIMER_NOTIFICATION_ID,
+         notification
+      )
    }
 }

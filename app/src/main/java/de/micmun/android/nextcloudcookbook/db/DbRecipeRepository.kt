@@ -170,6 +170,12 @@ class DbRecipeRepository private constructor(application: Application) {
       }
    }
 
+   fun deleteRecipe(name: String) {
+      RecipeDatabase.databaseWriteExecutor.execute {
+         mRecipeDao.findByName(name)?.recipeCore?.let { mRecipeDao.delete(it) }
+      }
+   }
+
    private fun getWhereClause(recipeFilter: RecipeFilter): String {
       val upper = if (recipeFilter.ignoreCase) "UPPER(%s) " else "%s "
 

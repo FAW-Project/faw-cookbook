@@ -15,6 +15,7 @@ import de.micmun.android.nextcloudcookbook.json.JsonRecipeRepository
 import de.micmun.android.nextcloudcookbook.json.model.Recipe
 import de.micmun.android.nextcloudcookbook.util.Recipe2DbRecipeConverter
 import kotlinx.coroutines.*
+import java.io.File
 import java.util.stream.Collectors
 
 /**
@@ -74,18 +75,18 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
    }
 
    // read recipes
-   fun initRecipes(path: String = "") {
+   fun initRecipes(path: String = "", hidden: Boolean = false) {
       if (path.isNotEmpty()) {
          recipeDir = path
       }
       val dir = if (path.isEmpty()) recipeDir else path
 
       if (dir.isEmpty()) {
-         isUpdating.postValue(false)
+         if(!hidden) isUpdating.postValue(false)
          return
       }
 
-      isUpdating.postValue(true)
+      if(!hidden) isUpdating.postValue(true)
 
       uiScope.launch {
          val list = getRecipesFromRepo(dir)
@@ -95,13 +96,25 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
          recipeRepository.insertAll(dbList)
 
          isLoaded.postValue(true)
-         isUpdating.postValue(false)
+         if(!hidden)  isUpdating.postValue(false)
       }
    }
 
    private suspend fun getRecipesFromRepo(path: String): List<Recipe> {
+
       return withContext(Dispatchers.IO) {
-         JsonRecipeRepository.getInstance().getAllRecipes(app, path, recipeRepository.getAllFileInfos())
+
+         val repositoryRecipes = JsonRecipeRepository.getInstance()
+            .getAllRecipes(app, path, recipeRepository.getAllFileInfos())
+
+         for (recipeInfo in recipeRepository.getAllFileInfos()){
+            if(!File(recipeInfo.filePath).exists()){
+               var filename = recipeInfo.filePath.substring(0, recipeInfo.filePath.lastIndexOf("/"))
+               filename = filename.substring(filename.lastIndexOf("/")+1, filename.length)
+               recipeRepository.deleteRecipe(filename)
+            }
+         }
+         repositoryRecipes
       }
    }
 
@@ -117,6 +130,10 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
    override fun onCleared() {
       super.onCleared()
       viewModelJob.cancel()
+   }
+
+   fun getRecipeDir(): String {
+      return recipeDir
    }
 }
 

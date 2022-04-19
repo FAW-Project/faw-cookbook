@@ -11,6 +11,7 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -33,11 +34,23 @@ import de.micmun.android.nextcloudcookbook.data.CategoryFilter
 import de.micmun.android.nextcloudcookbook.data.RecipeFilter
 import de.micmun.android.nextcloudcookbook.data.SortValue
 import de.micmun.android.nextcloudcookbook.databinding.ActivityMainBinding
+import de.micmun.android.nextcloudcookbook.nextcloudapi.Accounts
 import de.micmun.android.nextcloudcookbook.settings.PreferenceData
 import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeListFragmentDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import com.nextcloud.android.sso.AccountImporter
+import com.nextcloud.android.sso.ui.UiExceptionManager
+import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException
+import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException
+import com.nextcloud.android.sso.helper.SingleAccountHelper
+import com.nextcloud.android.sso.model.SingleSignOnAccount
+import de.micmun.android.nextcloudcookbook.services.sync.SyncService
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import java.io.File
+
 
 /**
  * Main Activity of the app.
@@ -122,6 +135,14 @@ class MainActivity : AppCompatActivity() {
       }
 
       handleIntent(intent)
+      SyncService.startServiceScheduling(baseContext)
+   }
+
+   override fun onOptionsItemSelected(item: MenuItem): Boolean {
+      if (item.itemId == R.id.sso) {
+         Accounts(this).openAccountChooser(this)
+      }
+      return super.onOptionsItemSelected(item)
    }
 
    override fun onNewIntent(intent: Intent?) {
@@ -186,5 +207,48 @@ class MainActivity : AppCompatActivity() {
             }
          })
          .check()
+   }
+
+   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+      super.onActivityResult(requestCode, resultCode, data)
+      AccountImporter.onActivityResult(
+         requestCode, resultCode, data, this
+      ) { account ->
+         val context = applicationContext
+
+         // As this library supports multiple accounts we created some helper methods if you only want to use one.
+         // The following line stores the selected account as the "default" account which can be queried by using
+         // the SingleAccountHelper.getCurrentSingleSignOnAccount(context) method
+         SingleAccountHelper.setCurrentAccount(context, account.name)
+
+         // Get the "default" account
+         var ssoAccount: SingleSignOnAccount? = null
+         try {
+            ssoAccount = SingleAccountHelper.getCurrentSingleSignOnAccount(context)
+         } catch (e: NextcloudFilesAppAccountNotFoundException) {
+            UiExceptionManager.showDialogForException(context, e)
+         } catch (e: NoCurrentAccountSelectedException) {
+            UiExceptionManager.showDialogForException(context, e)
+         }
+         SingleAccountHelper.setCurrentAccount(context, ssoAccount!!.name)
+         var username = ssoAccount!!.name
+         val file = File(this.filesDir, "recipes/$username/")
+         val prefs = PreferenceData.getInstance()
+         runBlocking {
+            withContext(Dispatchers.IO) {
+               prefs.setRecipeDir(file.absolutePath)
+            }
+         }
+         startService(Intent(this, SyncService::class.java))
+      }
+   }
+
+   override fun onRequestPermissionsResult(
+      requestCode: Int,
+      permissions: Array<String?>,
+      grantResults: IntArray
+   ) {
+      super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+      AccountImporter.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
    }
 }

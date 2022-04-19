@@ -18,5 +18,6 @@ class Pref {
       const val THEME = "theme_setting"
       const val SORT = "recipe_list_sorting"
       const val STORAGE_ACCESS = "storage_access"
+      const val SYNC_SERVICE = "enableSyncService"
    }
 }

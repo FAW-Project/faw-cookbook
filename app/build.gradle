@@ -1,5 +1,7 @@
 buildscript {
-   repositories { mavenCentral() }
+   repositories {
+      mavenCentral()
+   }
 
    dependencies {
       classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
@@ -52,7 +54,7 @@ android {
       viewBinding true
       dataBinding true
    }
-   lintOptions {
+   lint {
       disable 'MissingTranslation'
    }
 }
@@ -106,4 +108,11 @@ dependencies {
 
    // timer view
    implementation 'com.github.guilhe:circular-progress-view:2.0.0'
+
+   //nextcloud api
+   implementation "com.github.nextcloud:Android-SingleSignOn:0.6.0"
+   implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+   implementation 'com.github.bumptech.glide:glide:4.12.0'
+   annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+   implementation 'com.github.stefan-niedermann.nextcloud-commons:sso-glide:1.6.2'
 }

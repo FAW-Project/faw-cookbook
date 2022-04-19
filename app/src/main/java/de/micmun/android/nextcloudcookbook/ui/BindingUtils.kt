@@ -22,6 +22,8 @@ import de.micmun.android.nextcloudcookbook.db.model.DbRecipePreview
 import de.micmun.android.nextcloudcookbook.settings.PreferenceData
 import de.micmun.android.nextcloudcookbook.util.DurationUtils
 import de.micmun.android.nextcloudcookbook.util.StorageManager
+import java.io.File
+import java.net.URLDecoder
 import java.util.stream.Collectors
 
 /**
@@ -38,7 +40,18 @@ fun ImageView.setRecipeImage(item: DbRecipePreview?) {
       if (thumbImageUrl.isEmpty()) {
          setImageURI(null)
       } else {
-         val thumbImage = StorageManager.getImageFromString(context, thumbImageUrl)
+
+         // required, because internal storage may contain special chars that are
+         // encoded and will result in unreadable images
+         var img = item.thumbImageUrl
+         if(img.startsWith("file://${context.filesDir}")){
+            img = img.replace("file://", "")
+            img = URLDecoder.decode(img, "UTF-8")
+            setImageURI(Uri.fromFile(File(img)))
+            return
+         }
+
+         val thumbImage = StorageManager.getImageFromString(context, img)
          thumbImage?.run {
             try {
                if (thumbImage.canRead())
@@ -78,6 +91,16 @@ fun ImageView.setRecipeHeaderImage(item: DbRecipe?) {
          setImageURI(null)
          visibility = View.GONE
       } else {
+
+         // required, because internal storage may contain special chars that are
+         // encoded and will result in unreadable images
+         var img = recipeCore.fullImageUrl
+         if(img.startsWith("file://${context.filesDir}")){
+            img = img.replace("file://", "")
+            img = URLDecoder.decode(img, "UTF-8")
+            setImageURI(Uri.fromFile(File(img)))
+            return
+         }
          val fullImage = StorageManager.getImageFromString(context, recipeCore.fullImageUrl)
          fullImage?.run {
             try {

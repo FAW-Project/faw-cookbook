@@ -28,6 +28,7 @@ class PreferenceData private constructor() {
    private val themeKey = intPreferencesKey(Pref.THEME)
    private val sortKey = intPreferencesKey(Pref.SORT)
    private val isStorageAccessedKey = booleanPreferencesKey(Pref.STORAGE_ACCESS)
+   private val isSyncServiceEnabled = booleanPreferencesKey(Pref.SYNC_SERVICE)
 
    companion object {
       @Volatile
@@ -101,6 +102,19 @@ class PreferenceData private constructor() {
          .map { preferences ->
             preferences[isStorageAccessedKey] ?: false
          }
+   }
+
+   fun isSyncServiceEnabled(): Boolean {
+      var enabled = true
+      runBlocking {
+         enabled = MainApplication.AppContext.dataStore.data
+            .map { preferences ->
+               preferences[isSyncServiceEnabled] ?: false
+            }
+            .first()
+      }
+
+      return enabled
    }
 
    suspend fun setInitialised(isInit: Boolean) {

@@ -26,6 +26,7 @@ import de.micmun.android.nextcloudcookbook.MainApplication
 import de.micmun.android.nextcloudcookbook.R
 import de.micmun.android.nextcloudcookbook.databinding.FragmentDownloadFormBinding
 import de.micmun.android.nextcloudcookbook.json.model.Recipe
+import de.micmun.android.nextcloudcookbook.nextcloudapi.Sync
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
 import de.micmun.android.nextcloudcookbook.util.StorageManager
@@ -105,7 +106,8 @@ class DownloadFormFragment : Fragment(), DownloadClickListener {
                   if (recipeDir == null || replaceExisting) {
                      if (recipeDir == null)
                         recipeDir = storage.createDirectory(recipeDirName)
-                     val recipeFile = recipeDir?.findOrCreateFile("application/json", "recipe.json")
+                     recipeDir?.findOrCreateFile("application/json", Sync.NEW_FILE_MARKER)
+                     val recipeFile = recipeDir?.findOrCreateFile(Sync.RECIPE)
                      val writer = recipeFile?.openOutputStream(requireContext(), false)?.bufferedWriter()
                      // we write the full json to also keep fields we do not process yet
                      writer?.write(pair.second.toString())
@@ -237,8 +239,15 @@ class DownloadFormFragment : Fragment(), DownloadClickListener {
    }
 }
 
+fun DocumentFile.findOrCreateFile(fileName: String): DocumentFile? {
+   return findFile(fileName) ?: createFile("", fileName)
+}
+
+@Deprecated("Broken mimetype", ReplaceWith("findOrCreateFile(fileName)"))
 fun DocumentFile.findOrCreateFile(mime: String, fileName: String): DocumentFile? {
-   return findFile(fileName) ?: createFile(mime, fileName)
+   // do not append mimetype. This triggers android to append a fileending.
+   // eg. image.jpg with mimetype image/jpg will then be image.jpg.jpg
+   return findOrCreateFile(fileName)
 }
 
 interface DownloadClickListener {

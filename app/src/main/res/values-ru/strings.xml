@@ -103,4 +103,11 @@
     <string name="dir_chooser_error">Ошибка: Корневая папка запрещена!</string>
     <string name="copy_ingredients">Копировать ингредиенты</string>
     <string name="copy_ing_message">Ингредиенты скопированы в буфер обмена.</string>
+    <string name="sync_service_channel_name">Сервис синхронизации</string>
+    <string name="sync_service_notification_title">Синхронизация рецептов</string>
+    <string name="preftitle_enableSyncService">Синхронизация рецептов в фоновом режиме</string>
+    <string name="prefkey_enableSyncService">включитьслужбусинхронизации</string>
+    <string name="sync_service_channel_description">Используется для нотификации переднего плана при синхронизации рецептов</string>
+    <string name="sync_service_notification_content">В настоящее время мы обновляем ваши рецепты, мы скоро вернемся!</string>
+    <string name="pref_category_sync">Синхронизация</string>
 </resources>

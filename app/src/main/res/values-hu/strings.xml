@@ -112,4 +112,11 @@
     <string name="dir_chooser_error">Hiba: Gyökérmappa nem engedélyezett!</string>
     <string name="copy_ingredients">Másolja az összetevőket</string>
     <string name="copy_ing_message">A vágólapra másolt összetevők.</string>
+    <string name="sync_service_channel_description">A receptek szinkronizálásakor az előtérben lévő értesítésre szolgál</string>
+    <string name="sync_service_channel_name">Szinkronizálási szolgáltatás</string>
+    <string name="pref_category_sync">Szinkronizálás</string>
+    <string name="sync_service_notification_content">Jelenleg frissítjük a recepteket, hamarosan visszatérünk!</string>
+    <string name="sync_service_notification_title">Szinkronizált receptek</string>
+    <string name="prefkey_enableSyncService">engedélyezzeSzinkronizálásiSzolgáltatást</string>
+    <string name="preftitle_enableSyncService">Receptek szinkronizálása a háttérben</string>
 </resources>

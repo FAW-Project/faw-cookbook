@@ -103,10 +103,6 @@ class MainActivity : AppCompatActivity() {
       // drawer layout
       drawerLayout = binding.drawerLayout
 
-      // navigation
-      val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
-      val navController = navHostFragment.findNavController()
-
       // settings
       val factory = CurrentSettingViewModelFactory(MainApplication.AppContext)
       currentSettingViewModel =
@@ -201,7 +197,7 @@ class MainActivity : AppCompatActivity() {
             showToolbar(true, false)
          }
          R.id.app_sso -> {
-
+            Accounts(baseContext).openAccountChooser(this)
          }
          R.id.menu_all_categories, R.id.menu_uncategorized -> {
             navController.navigate(R.id.recipeListFragment)

@@ -284,11 +284,6 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
       recipesViewModel.initRecipes()
    }
 
-   override fun onResume() {
-      setupBroadcastListener()
-      super.onResume()
-   }
-
    override fun onPause() {
       dismissBroadcastListener()
       sortDialog?.dismiss()
@@ -296,6 +291,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
    }
 
    override fun onResume() {
+      setupBroadcastListener()
       recipesViewModel.search(null)
       recipesViewModel.filterRecipesByCategory(null)
       loadData()

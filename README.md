@@ -6,15 +6,15 @@ This app is a viewer for recipes in Nextcloud App.
 You need the Nextcloud Android client to sync the recipes.
 
 [<img src="https://to.skydroid.app/assets/skydroid.svg"
-      alt="Get it on SkyDroid"
-      width="160">](https://to.skydroid.app/nextcloud-cookbook.micmun.de)
+alt="Get it on SkyDroid"
+width="160">](https://to.skydroid.app/nextcloud-cookbook.micmun.de)
 [<img src="https://f-droid.org/badge/get-it-on.svg"
-      alt="Get it on F-Droid"
-      width="160">](https://f-droid.org/en/packages/de.micmun.android.nextcloudcookbook/)
+alt="Get it on F-Droid"
+width="160">](https://f-droid.org/en/packages/de.micmun.android.nextcloudcookbook/)
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
-      alt="Get it on Google Play"
-      height="60">](https://play.google.com/store/apps/details?id=de.micmun.android.nextcloudcookbook)
+alt="Get it on Google Play"
+height="60">](https://play.google.com/store/apps/details?id=de.micmun.android.nextcloudcookbook)
 
 **First steps**
 
@@ -72,7 +72,7 @@ This app needs Android &gt;= 6.0 (API &gt;= 23) and uses the libraries (see also
 
 ## License
 
-**Copyright 2020-2021 by MicMun**
+**Copyright 2020-2022 by MicMun**
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU
 General Public License as published by the Free Software Foundation, either version 3 of the License, or

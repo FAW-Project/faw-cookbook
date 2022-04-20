@@ -103,4 +103,11 @@
     <string name="dir_chooser_error">Fel: Root folder är inte tillåten!</string>
     <string name="copy_ingredients">Kopiera ingredienser</string>
     <string name="copy_ing_message">Ingredienser kopieras till urklipp.</string>
+    <string name="sync_service_channel_name">Sync-tjänst</string>
+    <string name="pref_category_sync">Synkronisering</string>
+    <string name="preftitle_enableSyncService">Synka recept i bakgrunden</string>
+    <string name="prefkey_enableSyncService">aktiveraSyncTjänsten</string>
+    <string name="sync_service_channel_description">Används för förgrundsbeteckning när recept synkroniseras</string>
+    <string name="sync_service_notification_title">Synka recept</string>
+    <string name="sync_service_notification_content">Vi håller just nu på att uppdatera dina recept, vi är snart tillbaka!</string>
 </resources>

@@ -112,4 +112,11 @@
     <string name="dir_chooser_error">Błąd: Folder główny jest niedozwolony!</string>
     <string name="copy_ing_message">Składniki skopiowane do schowka.</string>
     <string name="copy_ingredients">Składniki kopii</string>
+    <string name="sync_service_channel_name">Usługa Synchronizacji</string>
+    <string name="sync_service_channel_description">Służy do powiadamiania o pierwszym planie podczas synchronizacji przepisów</string>
+    <string name="sync_service_notification_title">Synchronizuj Przepisy</string>
+    <string name="preftitle_enableSyncService">Synchronizuj przepisy w tle</string>
+    <string name="prefkey_enableSyncService">WłączUsługęSynchronizacji</string>
+    <string name="sync_service_notification_content">Aktualnie aktualizujemy wasze przepisy, wkrótce wrócimy!</string>
+    <string name="pref_category_sync">Synchronizacja</string>
 </resources>

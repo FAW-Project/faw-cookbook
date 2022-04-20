@@ -103,4 +103,11 @@
     <string name="dir_chooser_error">Errorea: Erro karpeta ez dago baimenduta!</string>
     <string name="copy_ing_message">Arbelean kopiatutako osagaiak.</string>
     <string name="copy_ingredients">Kopiatu osagaiak</string>
+    <string name="sync_service_notification_title">Sinkronizatu Errezetak</string>
+    <string name="prefkey_enableSyncService">msgstr</string>
+    <string name="pref_category_sync">Sinkronizazioa</string>
+    <string name="sync_service_channel_name">Sinkronizazio Zerbitzua</string>
+    <string name="sync_service_channel_description">Aurreko planoaren jakinarazpenerako erabiltzen da errezetak sinkronizatzean</string>
+    <string name="sync_service_notification_content">Zure errezeta prestatzen ari gara, laster itzuliko gara!</string>
+    <string name="preftitle_enableSyncService">Sinkronizatu Errezeta Atzeko planoan</string>
 </resources>

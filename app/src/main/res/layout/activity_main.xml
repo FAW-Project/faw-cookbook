@@ -68,15 +68,25 @@
                       android:textSize="16sp" />
 
                   <androidx.appcompat.widget.AppCompatImageView
-                      android:id="@+id/more_menu"
+                      android:id="@+id/sortorder"
                       android:layout_width="?attr/actionBarSize"
                       android:layout_height="?attr/actionBarSize"
                       android:layout_gravity="center_vertical|end"
                       android:background="?attr/selectableItemBackgroundBorderless"
                       android:padding="12dp"
-                      android:tooltipText="@string/app_name"
+                      android:tooltipText="@string/menu_sort_title"
                       android:tint="@color/textColor"
-                      app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+                      app:srcCompat="@drawable/ic_sort" />
+
+                  <androidx.appcompat.widget.AppCompatImageView
+                      android:id="@+id/accountSwitcher"
+                      android:layout_width="?attr/actionBarSize"
+                      android:layout_height="?attr/actionBarSize"
+                      android:layout_gravity="center_vertical|end"
+                      android:background="?attr/selectableItemBackgroundBorderless"
+                      android:padding="12dp"
+                      android:tooltipText="@string/manage_accounts"
+                      app:srcCompat="@drawable/ic_baseline_account_circle_24" />
                </LinearLayout>
 
                <LinearLayout

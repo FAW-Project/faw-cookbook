@@ -94,10 +94,6 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
          }
       }
 
-      binding.sortorder.setOnClickListener {
-         showSortOptions()
-      }
-
       initializeRecipeList()
       setupBroadcastListener()
       return binding.root
@@ -111,24 +107,6 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
       super.onCreateOptionsMenu(menu, inflater)
       inflater.inflate(R.menu.overflow_menu, menu)
-   }
-
-   override fun onOptionsItemSelected(item: MenuItem): Boolean {
-      return when (item.itemId) {
-         R.id.refreshAction -> {
-            val sync = Sync(this.requireContext())
-            sync.synchronizeRecipesAsync()
-            onRefresh()
-            true
-         }
-         R.id.sortAction -> {
-            showSortOptions()
-            true
-         }
-         else -> NavigationUI
-                    .onNavDestinationSelected(item,
-                                              requireView().findNavController()) || super.onOptionsItemSelected(item)
-      }
    }
 
    private fun initializeRecipeList() {
@@ -307,6 +285,10 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
       recipesViewModel.filterRecipesByCategory(filter)
       recipesViewModel.search(null)
       loadData()
+   }
+
+   override fun showSortSelector() {
+      showSortOptions()
    }
 
    fun notifyUpdate(updating: Boolean) {

@@ -51,7 +51,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
 
-import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeSearchCallback
 
@@ -119,6 +118,7 @@ class MainActivity : AppCompatActivity() {
          true
       }
 
+      var context = this
       with(binding) {
          currentSettingViewModel =
            ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
@@ -144,6 +144,14 @@ class MainActivity : AppCompatActivity() {
          backButton.setOnClickListener{
             searchToolbar.visibility = View.GONE
             normalToolbar.visibility = View.VISIBLE
+         }
+
+         sortorder.setOnClickListener{
+            mRecipeSearchCallback?.showSortSelector()
+         }
+
+         accountSwitcher.setOnClickListener{
+            Accounts(context).openAccountChooser(context)
          }
 
          searchbar.setOnQueryTextListener(object : OnQueryTextListener,
@@ -231,11 +239,6 @@ class MainActivity : AppCompatActivity() {
             GravityCompat.START
          )
       }
-      binding.moreMenu.setOnClickListener { v ->
-         val popupMenu = PopupMenu(this, v)
-         this.menuInflater.inflate(R.menu.overflow_menu, popupMenu.menu)
-         popupMenu.show()
-      }
    }
 
    /**
@@ -254,10 +257,7 @@ class MainActivity : AppCompatActivity() {
 
    private fun search(query: String) {
       val filter = RecipeFilter(RecipeFilter.QueryType.QUERY_NAME, query)
-      val navController = this.findNavController(R.id.navHostFragment)
-
       mRecipeSearchCallback?.searchRecipes(filter)
-      //navController.navigate(RecipeListFragmentDirections.actionRecipeListFragmentToRecipeSearchFragment(filter))
    }
 
    /**
@@ -304,7 +304,6 @@ class MainActivity : AppCompatActivity() {
    fun setRecipeSearchCallback(callback: RecipeSearchCallback?) {
       mRecipeSearchCallback = callback
    }
-
 
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
       super.onActivityResult(requestCode, resultCode, data)

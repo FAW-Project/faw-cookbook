@@ -18,7 +18,6 @@ import de.micmun.android.nextcloudcookbook.services.sync.SyncService
 class Accounts(private val mContext: Context) {
 
    fun openAccountChooser(activity: Activity) {
-      Log.e(SyncService.TAG, "TEST1")
       try {
          AccountImporter.pickNewAccount(activity)
       } catch (e: NextcloudFilesAppNotInstalledException) {

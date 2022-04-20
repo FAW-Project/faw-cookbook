@@ -30,7 +30,7 @@
                 android:layout_marginBottom="@dimen/spacer_1hx"
                 android:clickable="false"
                 app:cardBackgroundColor="@color/appbar"
-                app:cardCornerRadius="@dimen/spacer_1x"
+                app:cardCornerRadius="@dimen/spacer_4x"
                 app:cardElevation="2dp"
                 app:strokeWidth="0dp">
 
@@ -38,6 +38,8 @@
                    android:id="@+id/normalToolbar"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
+                   android:paddingStart="@dimen/spacer_1x"
+                   android:paddingEnd="@dimen/spacer_1x"
                    android:orientation="horizontal">
 
                   <androidx.appcompat.widget.AppCompatImageButton

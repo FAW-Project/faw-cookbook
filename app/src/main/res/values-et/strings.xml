@@ -103,4 +103,11 @@
     <string name="dir_chooser_error">Viga: juurkataloog ei ole lubatud!</string>
     <string name="copy_ingredients">Koostisosade kopeerimine</string>
     <string name="copy_ing_message">Koostisosad kopeeritakse lõikelauale.</string>
+    <string name="sync_service_notification_title">Retseptide Sünkroonimine</string>
+    <string name="sync_service_channel_name">Sünkroonimisteenus</string>
+    <string name="sync_service_channel_description">Kasutatakse retseptide sünkroonimisel esiplaani teavitamiseks</string>
+    <string name="sync_service_notification_content">Uuendame praegu teie retsepte, tuleme varsti tagasi!</string>
+    <string name="pref_category_sync">Sünkroonimine</string>
+    <string name="preftitle_enableSyncService">Retseptide sünkroonimine taustal</string>
+    <string name="prefkey_enableSyncService">sünkroonimisteenuselubamine</string>
 </resources>

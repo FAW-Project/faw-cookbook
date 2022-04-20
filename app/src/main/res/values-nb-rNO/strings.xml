@@ -103,4 +103,11 @@
     <string name="dir_chooser_error">Feil: Root-mappen er ikke tillatt!</string>
     <string name="copy_ingredients">Kopier ingredienser</string>
     <string name="copy_ing_message">Ingredienser kopiert til utklippstavlen.</string>
+    <string name="sync_service_notification_content">Vi oppdaterer for tiden oppskriftene dine, vi kommer snart tilbake!</string>
+    <string name="preftitle_enableSyncService">Synkroniser Oppskrifter I Bakgrunnen</string>
+    <string name="prefkey_enableSyncService">aktiverSynkroniseringstjeneste</string>
+    <string name="pref_category_sync">Synkronisering</string>
+    <string name="sync_service_channel_name">Synkroniseringstjeneste</string>
+    <string name="sync_service_channel_description">Brukes til forgrunnsvarsling når du synkroniserer oppskrifter</string>
+    <string name="sync_service_notification_title">Sync Oppskrifter</string>
 </resources>

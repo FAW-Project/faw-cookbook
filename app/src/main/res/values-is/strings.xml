@@ -103,4 +103,11 @@
     <string name="dir_chooser_error">Villa: Rótina er ekki leyft!</string>
     <string name="copy_ing_message">Efni afrita að klemmuspjald.</string>
     <string name="copy_ingredients">Afrit efni</string>
+    <string name="sync_service_notification_title">Samstilling Uppskriftir</string>
+    <string name="preftitle_enableSyncService">Samstilling Uppskriftir Í Bakgrunni</string>
+    <string name="pref_category_sync">Samstilling</string>
+    <string name="prefkey_enableSyncService">VirkjaSamstillingarþjónustu</string>
+    <string name="sync_service_channel_name">Samstilla Þjónusta</string>
+    <string name="sync_service_channel_description">Notað fyrir forgrunn tilkynningu þegar samstilling uppskriftir</string>
+    <string name="sync_service_notification_content">Við erum nú að uppfæra uppskriftir, við munum koma aftur fljótlega!</string>
 </resources>

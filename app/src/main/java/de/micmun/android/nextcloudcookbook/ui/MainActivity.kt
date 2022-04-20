@@ -52,6 +52,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import com.nextcloud.android.sso.exceptions.AccountImportCancelledException
 import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeSearchCallback
 
 
@@ -181,13 +182,6 @@ class MainActivity : AppCompatActivity() {
       SyncService.startServiceScheduling(baseContext)
    }
 
-   override fun onOptionsItemSelected(item: MenuItem): Boolean {
-      if (item.itemId == R.id.sso) {
-         Accounts(this).openAccountChooser(this)
-      }
-      return super.onOptionsItemSelected(item)
-   }
-
    fun handleNavigationDrawerSelection(item: Int){
       val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
       val navController = navHostFragment.findNavController()
@@ -203,9 +197,6 @@ class MainActivity : AppCompatActivity() {
          R.id.app_settings -> {
             navController.navigate(R.id.preferenceFragment)
             showToolbar(true, false)
-         }
-         R.id.app_sso -> {
-            Accounts(baseContext).openAccountChooser(this)
          }
          R.id.menu_all_categories, R.id.menu_uncategorized -> {
             navController.navigate(R.id.recipeListFragment)
@@ -307,36 +298,38 @@ class MainActivity : AppCompatActivity() {
 
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
       super.onActivityResult(requestCode, resultCode, data)
-      AccountImporter.onActivityResult(
-         requestCode, resultCode, data, this
-      ) { account ->
-         val context = applicationContext
+      try {
+         AccountImporter.onActivityResult(
+            requestCode, resultCode, data, this
+         ) { account ->
+            val context = applicationContext
 
-         // As this library supports multiple accounts we created some helper methods if you only want to use one.
-         // The following line stores the selected account as the "default" account which can be queried by using
-         // the SingleAccountHelper.getCurrentSingleSignOnAccount(context) method
-         SingleAccountHelper.setCurrentAccount(context, account.name)
+            // As this library supports multiple accounts we created some helper methods if you only want to use one.
+            // The following line stores the selected account as the "default" account which can be queried by using
+            // the SingleAccountHelper.getCurrentSingleSignOnAccount(context) method
+            SingleAccountHelper.setCurrentAccount(context, account.name)
 
-         // Get the "default" account
-         var ssoAccount: SingleSignOnAccount? = null
-         try {
-            ssoAccount = SingleAccountHelper.getCurrentSingleSignOnAccount(context)
-         } catch (e: NextcloudFilesAppAccountNotFoundException) {
-            UiExceptionManager.showDialogForException(context, e)
-         } catch (e: NoCurrentAccountSelectedException) {
-            UiExceptionManager.showDialogForException(context, e)
-         }
-         SingleAccountHelper.setCurrentAccount(context, ssoAccount!!.name)
-         var username = ssoAccount!!.name
-         val file = File(this.filesDir, "recipes/$username/")
-         val prefs = PreferenceData.getInstance()
-         runBlocking {
-            withContext(Dispatchers.IO) {
-               prefs.setRecipeDir(file.absolutePath)
+            // Get the "default" account
+            var ssoAccount: SingleSignOnAccount? = null
+            try {
+               ssoAccount = SingleAccountHelper.getCurrentSingleSignOnAccount(context)
+            } catch (e: NextcloudFilesAppAccountNotFoundException) {
+               UiExceptionManager.showDialogForException(context, e)
+            } catch (e: NoCurrentAccountSelectedException) {
+               UiExceptionManager.showDialogForException(context, e)
             }
+            SingleAccountHelper.setCurrentAccount(context, ssoAccount!!.name)
+            var username = ssoAccount!!.name
+            val file = File(this.filesDir, "recipes/$username/")
+            val prefs = PreferenceData.getInstance()
+            runBlocking {
+               withContext(Dispatchers.IO) {
+                  prefs.setRecipeDir(file.absolutePath)
+               }
+            }
+            startService(Intent(this, SyncService::class.java))
          }
-         startService(Intent(this, SyncService::class.java))
-      }
+      } catch (e: AccountImportCancelledException) {}
    }
 
    override fun onRequestPermissionsResult(

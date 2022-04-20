@@ -25,4 +25,9 @@
       <item name="cooktimeBackground">@color/cooktimeBackground</item>
       <item name="android:windowLightStatusBar">@bool/statusbarLight</item>
    </style>
+
+   <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">
+      <item name="itemIconTint">@color/subtextColor</item>
+      <item name="itemTextColor">@color/subtextColor</item>
+   </style>
 </resources>

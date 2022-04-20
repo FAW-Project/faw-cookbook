@@ -36,10 +36,6 @@
              android:id="@+id/app_settings"
              android:icon="@drawable/ic_settings"
              android:title="@string/menu_settings" />
-         <item
-             android:id="@+id/app_sso"
-             android:icon="@drawable/ic_login"
-             android:title="@string/menu_sso" />
       </menu>
    </item>
 </menu>

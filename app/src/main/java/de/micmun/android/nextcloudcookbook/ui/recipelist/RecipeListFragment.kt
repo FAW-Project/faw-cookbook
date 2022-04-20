@@ -104,11 +104,6 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
       super.onActivityCreated(savedInstanceState)
    }
 
-   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-      super.onCreateOptionsMenu(menu, inflater)
-      inflater.inflate(R.menu.overflow_menu, menu)
-   }
-
    private fun initializeRecipeList() {
       binding.recipeListViewModel = recipesViewModel
       binding.lifecycleOwner = viewLifecycleOwner

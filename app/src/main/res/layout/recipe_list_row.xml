@@ -74,9 +74,6 @@
                 android:singleLine="true"
                 android:text="Title"
                 android:textAlignment="viewStart"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textSize="@dimen/text_normal"
-                android:textStyle="bold"
                 app:recipeName="@{recipe}" />
 
             <TextView
@@ -87,6 +84,7 @@
                 android:maxLines="2"
                 android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:textColor="@color/subtextColor"
                 android:textSize="@dimen/text_small"
                 android:textStyle="italic"
                 app:recipeDescription="@{recipe}" />

@@ -22,7 +22,7 @@
    </PreferenceCategory>
    <PreferenceCategory android:title="@string/pref_category_design">
       <de.micmun.android.nextcloudcookbook.ui.preferences.IntListPreference
-            android:defaultValue="0"
+            android:defaultValue="2"
             android:entries="@array/theme_names"
             android:entryValues="@array/theme_values"
             android:key="@string/prefkey_theme"

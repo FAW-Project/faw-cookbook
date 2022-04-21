@@ -37,6 +37,12 @@ class PreferenceViewModel(application: Application) : AndroidViewModel(applicati
       }
    }
 
+   fun setSyncServiceEnabled(enabled: Boolean) {
+      viewModelScope.launch(Dispatchers.IO) {
+         prefData.setSyncServiceEnabled(enabled)
+      }
+   }
+
    fun setInitialized(init: Boolean) {
       viewModelScope.launch(Dispatchers.IO) {
          prefData.setInitialised(init)

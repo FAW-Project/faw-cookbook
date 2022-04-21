@@ -14,10 +14,9 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:title="@string/pref_category_sync">
-
-      <Preference
+      <CheckBoxPreference
+          android:defaultValue="true"
           android:key="@string/prefkey_enableSyncService"
-          android:summary="%s"
           android:title="@string/preftitle_enableSyncService" />
    </PreferenceCategory>
    <PreferenceCategory android:title="@string/pref_category_design">

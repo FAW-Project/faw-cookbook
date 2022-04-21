@@ -38,6 +38,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
 
    private lateinit var dirPreference: Preference
    private lateinit var themePreference: IntListPreference
+   private lateinit var syncPreference: Preference
 
    private val getContent = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) {
       it?.let { uri ->
@@ -67,12 +68,14 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
       // find prefs
       dirPreference = findPreference(getString(R.string.prefkey_recipeDir))!!
       themePreference = findPreference(getString(R.string.prefkey_theme))!!
+      syncPreference = findPreference(getString(R.string.prefkey_enableSyncService))!!
       themePreference.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
       val aboutPreference: Preference = findPreference(getString(R.string.prefkey_about))!!
 
       // change listener
       dirPreference.onPreferenceChangeListener = this
       themePreference.onPreferenceChangeListener = this
+      syncPreference.onPreferenceChangeListener = this
 
       // click listener
       dirPreference.onPreferenceClickListener = this
@@ -103,6 +106,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
    override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
       when (preference) {
          dirPreference -> viewModel.setRecipeDirectory(newValue.toString())
+         syncPreference -> viewModel.setSyncServiceEnabled(newValue.toString().toBoolean())
          themePreference -> {
             viewModel.setTheme(newValue.toString().toInt())
             // recreate activity

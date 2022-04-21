@@ -118,6 +118,14 @@ class PreferenceData private constructor() {
       return enabled
    }
 
+   fun setSyncServiceEnabled(enabled: Boolean){
+      runBlocking {
+         MainApplication.AppContext.dataStore.edit { preferences ->
+            preferences[isSyncServiceEnabled] = enabled
+         }
+      }
+   }
+
    suspend fun setInitialised(isInit: Boolean) {
       MainApplication.AppContext.dataStore.edit { preferences ->
          preferences[isInitializedKey] = isInit

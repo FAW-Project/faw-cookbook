@@ -49,9 +49,9 @@ class SyncService : IntentService("SyncService") {
          val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
          val calendar: Calendar = Calendar.getInstance()
          calendar.timeInMillis = System.currentTimeMillis()
-         calendar.set(Calendar.SECOND, 0)
-         calendar.set(Calendar.MINUTE, 0)
-         calendar.set(Calendar.HOUR_OF_DAY, 1)
+         //calendar.set(Calendar.SECOND, 0)
+         //calendar.set(Calendar.MINUTE, 0)
+         //calendar.set(Calendar.HOUR_OF_DAY, 1)
          alarmManager.cancel(pendingIntent)
          alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,

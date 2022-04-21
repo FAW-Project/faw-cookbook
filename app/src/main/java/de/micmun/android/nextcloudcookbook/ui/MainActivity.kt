@@ -329,6 +329,7 @@ class MainActivity : AppCompatActivity() {
                   prefs.setRecipeDir(file.absolutePath)
                }
             }
+            PreferenceData.getInstance().setSyncServiceEnabled(true)
 
             updateProfilePicture();
             startService(Intent(this, SyncService::class.java))

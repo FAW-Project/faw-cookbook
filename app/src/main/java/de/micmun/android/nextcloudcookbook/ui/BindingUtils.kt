@@ -89,9 +89,8 @@ fun ImageView.setRecipeHeaderImage(item: DbRecipe?) {
    item?.run {
       if (recipeCore.fullImageUrl.isEmpty()) {
          setImageURI(null)
-         visibility = View.GONE
       } else {
-
+         setPadding(0,0,0,0)
          // required, because internal storage may contain special chars that are
          // encoded and will result in unreadable images
          var img = recipeCore.fullImageUrl
@@ -137,22 +136,16 @@ fun TextView.setPrepTime(item: DbRecipe?) {
 @BindingAdapter("recipeCookTime")
 fun TextView.setCookTime(item: DbRecipe?) {
    item?.let {
-      if (it.recipeCore.cookTime.isEmpty())
-         text = ""
-      else {
+      if (it.recipeCore.cookTime.isEmpty()){
+         text = "00:00"
+      } else {
          text = DurationUtils.formatStringToDuration(it.recipeCore.cookTime)
-         // timer icon
-         setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_timer, 0, 0, 0)
-         // tooltip
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            tooltipText = context.getString(R.string.cooktime_tooltip)
-         }
-         // themed background for cook time
-         val a: TypedArray = context.theme.obtainStyledAttributes(intArrayOf(R.attr.cooktimeBackground))
-         val attributeResourceId = a.getResourceId(0, 0)
-         val drawable = AppCompatResources.getDrawable(context, attributeResourceId)
-         background = drawable
-         a.recycle()
+      }
+      // timer icon
+      setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_timer, 0, 0, 0)
+      // tooltip
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+         tooltipText = context.getString(R.string.cooktime_tooltip)
       }
    }
 }
@@ -174,10 +167,7 @@ fun TextView.setRecipeCategories(item: DbRecipe?) {
          it.recipeCore.recipeCategory
       }
       @Suppress("DEPRECATION")
-      text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-         Html.fromHtml(resources.getString(R.string.text_categories, categories), Html.FROM_HTML_MODE_LEGACY)
-      else
-         Html.fromHtml(resources.getString(R.string.text_categories, categories))
+      text = categories
    }
 }
 
@@ -189,10 +179,7 @@ fun TextView.setKeywords(item: DbRecipe?) {
       else
          recipe.keywords.joinToString(transform = { kw -> kw.keyword })
       @Suppress("DEPRECATION")
-      text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-         Html.fromHtml(resources.getString(R.string.text_keywords, keywords), Html.FROM_HTML_MODE_LEGACY)
-      else
-         Html.fromHtml(resources.getString(R.string.text_keywords, keywords))
+      text = keywords
    }
 }
 
@@ -202,7 +189,7 @@ fun TextView.setAuthor(item: DbRecipe?) {
       if (it.recipeCore.author == null) {
          visibility = View.GONE
       } else {
-         text = resources.getString(R.string.text_author, it.recipeCore.author.name)
+         text = it.recipeCore.author.name
          visibility = View.VISIBLE
       }
    }
@@ -214,7 +201,7 @@ fun TextView.setUrl(item: DbRecipe?) {
       if (it.recipeCore.url.isEmpty()) {
          visibility = View.GONE
       } else {
-         text = resources.getString(R.string.text_url, it.recipeCore.url)
+         text = it.recipeCore.url
          visibility = View.VISIBLE
       }
    }
@@ -227,12 +214,7 @@ fun TextView.setRecipeYield(item: DbRecipe?) {
          visibility = View.GONE
       } else {
          @Suppress("DEPRECATION")
-         text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            Html.fromHtml(resources.getString(R.string.text_yield, it.recipeCore.recipeYield),
-                          Html.FROM_HTML_MODE_LEGACY)
-         else
-            Html.fromHtml(resources.getString(R.string.text_yield, it.recipeCore.recipeYield))
-
+         text = it.recipeCore.recipeYield
          visibility = View.VISIBLE
       }
    }
@@ -247,10 +229,7 @@ fun TextView.setTools(item: DbRecipe?) {
          val tools = it.tool.stream().map { it.tool }.collect(Collectors.toList()).joinToString(", ")
 
          @Suppress("DEPRECATION")
-         text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            Html.fromHtml(resources.getString(R.string.text_tools, tools), Html.FROM_HTML_MODE_LEGACY)
-         else
-            Html.fromHtml(resources.getString(R.string.text_tools, tools))
+         text = tools
       }
    }
 }

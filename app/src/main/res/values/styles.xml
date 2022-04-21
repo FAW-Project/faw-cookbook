@@ -9,34 +9,25 @@
    <attr name="cooktimeBackground" format="color" />
 
    <!-- Light application theme. -->
-   <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
+   <style name="AppTheme.Light" parent="Theme.MaterialComponents.DayNight.NoActionBar">
       <item name="colorPrimary">@color/colorPrimary</item>
       <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
       <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-      <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+
+      <item name="android:statusBarColor">@color/colorBackground</item>
+      <item name="android:windowBackground">@color/colorBackground</item>
+      <item name="android:textColor">@color/textColor</item>
+
+
       <item name="colorAccent">@color/colorAccent</item>
       <item name="colorSecondary">@color/colorAccent</item>
       <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-      <item name="tab_info_icon">@drawable/ic_info</item>
-      <item name="tab_ingredients_icon">@drawable/ic_ingredients</item>
-      <item name="tab_instructions_icon">@drawable/ic_instructions</item>
-      <item name="tab_nutritions_icon">@drawable/ic_nutritions</item>
-      <item name="cooktimeBackground">@color/lightCooktimeBackground</item>
+      <item name="cooktimeBackground">@color/cooktimeBackground</item>
+      <item name="android:windowLightStatusBar">@bool/statusbarLight</item>
    </style>
 
-   <!-- Dark application theme. -->
-   <style name="AppTheme.Dark" parent="Theme.MaterialComponents.NoActionBar">
-      <item name="colorPrimary">@color/colorPrimary</item>
-      <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
-      <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-      <item name="android:statusBarColor">@color/colorPrimaryDark</item>
-      <item name="colorAccent">@color/colorAccent</item>
-      <item name="colorSecondary">@color/colorAccent</item>
-      <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-      <item name="tab_info_icon">@drawable/ic_info</item>
-      <item name="tab_ingredients_icon">@drawable/ic_ingredients</item>
-      <item name="tab_instructions_icon">@drawable/ic_instructions</item>
-      <item name="tab_nutritions_icon">@drawable/ic_nutritions</item>
-      <item name="cooktimeBackground">@color/darkCooktimeBackground</item>
+   <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">
+      <item name="itemIconTint">@color/icon_color</item>
+      <item name="itemTextColor">@color/subtextColor</item>
    </style>
 </resources>

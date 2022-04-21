@@ -26,6 +26,7 @@ class PreferenceData private constructor() {
    private val isInitializedKey = booleanPreferencesKey(Pref.IS_INIT)
    private val recipeDirKey = stringPreferencesKey(Pref.RECIPE_DIR)
    private val themeKey = intPreferencesKey(Pref.THEME)
+   private val screenKeepalive = booleanPreferencesKey(Pref.SCREEN_KEEPALIVE)
    private val sortKey = intPreferencesKey(Pref.SORT)
    private val isStorageAccessedKey = booleanPreferencesKey(Pref.STORAGE_ACCESS)
    private val isSyncServiceEnabled = booleanPreferencesKey(Pref.SYNC_SERVICE)
@@ -146,6 +147,20 @@ class PreferenceData private constructor() {
          preferences[recipeDirKey] = recipeDir
       }
    }
+
+   fun getScreenKeepalive(): Boolean {
+      var keepAlive = true
+      runBlocking {
+         keepAlive = MainApplication.AppContext.dataStore.data
+            .map { preferences ->
+               preferences[screenKeepalive] ?: false
+            }
+            .first()
+      }
+
+      return keepAlive
+   }
+
 
    /**
     * Migrates the current sharedPreferences to Datastore.

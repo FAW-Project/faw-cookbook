@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-   <string name="app_name" translatable="false">Nextcloud Cookbook</string>
+   <string name="app_name" translatable="false">Cookbook</string>
    <string name="app_logo_desc">Launcher icon of the app showing a cookbook symbol</string>
 
    <string name="no_information">No Information.</string>
@@ -26,14 +26,14 @@
    <!-- tab infos -->
    <string name="header_image_desc">Header image of recipe</string>
    <string name="text_uncategorized">Uncategorized</string>
-   <string name="text_categories"><![CDATA[<strong>Category:</strong><br/> ]]> %1$s</string>
-   <string name="text_yield"><![CDATA[<strong>Yield:</strong>]]> %1$s</string>
-   <string name="text_author">Author: %1$s</string>
-   <string name="text_url">Source: %1$s</string>
+   <string name="text_categories">Category:</string>
+   <string name="text_yield">Yield:</string>
+   <string name="text_author">Author:</string>
+   <string name="text_url">Source:</string>
    <string name="text_no_keywords">No keywords.</string>
-   <string name="text_keywords"><![CDATA[<strong>Keywords:</strong><br/> ]]> %1$s</string>
+   <string name="text_keywords">Keywords:</string>
    <string name="text_date_published">Date published: %1$s</string>
-   <string name="text_tools"><![CDATA[<strong>Needed tools:</strong><br/> ]]> %1$s</string>
+   <string name="text_tools">Needed tools:</string>
 
    <!-- Nutritions -->
    <string name="nutrition_calories">Calories: %1$s</string>
@@ -153,11 +153,23 @@
    <!-- action buttons -->
    <string name="copy_ingredients">Copy ingredients</string>
    <string name="copy_ing_message">Ingredients copied to clipboard.</string>
-    <string name="sync_service_channel_name">Sync Service</string>
+   <string name="menu_import_recipe">Import Recipe</string>
+   <string name="menu_settings">Settings</string>
+   <string name="menu_sso">Single Sign On</string>
+   <string name="menu_categories">Categories</string>
+   <string name="no_ingredients">No Ingredients</string>
+   <string name="label_source">Quelle:</string>
+   <string name="recipe_no_timer">This Recipe does not have a timer!</string>
+   <string name="search_in_all">Search...</string>
+   <string name="prefkey_keep_screen_alive" translatable="false">keep_screen_alive</string>
+   <string name="prefkey_keep_screen_alive_summary">Dont lock the screen when viewing a recipe</string>
+   <string name="prefkey_keep_screen_alive_title">Keep the screen alive</string>
+   <string name="sync_service_channel_name">Sync Service</string>
    <string name="sync_service_channel_description">Used for foreground notfiication when syncing recipes</string>
    <string name="sync_service_notification_title">Sync Recipes</string>
    <string name="sync_service_notification_content">We are currently updating your recipes, we\'ll be back shortly!</string>
-    <string name="preftitle_enableSyncService">Sync Recipes in the Background</string>
+   <string name="preftitle_enableSyncService">Sync Recipes in the Background</string>
    <string name="prefkey_enableSyncService">enableSyncService</string>
    <string name="pref_category_sync">Synchronisation</string>
+    <string name="manage_accounts">Accountmanagement</string>
 </resources>

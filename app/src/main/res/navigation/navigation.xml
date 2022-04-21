@@ -53,8 +53,8 @@
          android:name="de.micmun.android.nextcloudcookbook.ui.searchform.SearchFormFragment"
          android:label="SearchFormFragment">
       <action
-            android:id="@+id/action_searchFormFragment_to_recipeSearchFragment"
-            app:destination="@id/recipeSearchFragment" />
+          android:id="@+id/action_searchFormFragment_to_recipeSearchFragment"
+          app:destination="@id/recipeListFragment" />
    </fragment>
    <fragment
          android:id="@+id/downloadFormFragment"

@@ -1,7 +1,5 @@
 package de.micmun.android.nextcloudcookbook.ui.recipelist
 
-import android.app.SearchManager
-import android.content.Context
 import android.content.DialogInterface
 import android.content.IntentFilter
 import android.os.Bundle
@@ -10,7 +8,6 @@ import android.os.Looper
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.postDelayed
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -20,13 +17,12 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import de.micmun.android.nextcloudcookbook.MainApplication
 import de.micmun.android.nextcloudcookbook.R
 import de.micmun.android.nextcloudcookbook.data.CategoryFilter
+import de.micmun.android.nextcloudcookbook.data.RecipeFilter
 import de.micmun.android.nextcloudcookbook.data.SortValue
 import de.micmun.android.nextcloudcookbook.databinding.FragmentRecipelistBinding
 import de.micmun.android.nextcloudcookbook.db.DbRecipeRepository
@@ -48,7 +44,7 @@ import kotlinx.coroutines.launch
  * @author MicMun
  * @version 2.5, 27.11.21
  */
-class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, RecipeSearchCallback {
    private lateinit var binding: FragmentRecipelistBinding
    private lateinit var recipesViewModel: RecipeListViewModel
    private lateinit var settingViewModel: CurrentSettingViewModel
@@ -67,7 +63,6 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
       binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipelist, container, false)
-      setHasOptionsMenu(true)
 
       binding.swipeContainer.setOnRefreshListener(this)
       val recipeListViewModelFactory = RecipeListViewModelFactory(requireActivity().application)
@@ -76,6 +71,9 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
       settingViewModel =
          ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
       binding.lifecycleOwner = viewLifecycleOwner
+
+
+      (activity as MainActivity).setRecipeSearchCallback(this)
 
       recipesViewModel.isUpdating.observe(viewLifecycleOwner) { it ->
          it?.let { isUpdating ->
@@ -104,49 +102,12 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
    override fun onActivityCreated(savedInstanceState: Bundle?) {
       @Suppress("DEPRECATION")
       super.onActivityCreated(savedInstanceState)
-      (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.app_name)
-   }
-
-   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-      super.onCreateOptionsMenu(menu, inflater)
-      inflater.inflate(R.menu.overflow_menu, menu)
-
-      // Associate searchable configuration with the SearchView
-      val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-      val searchView = menu.findItem(R.id.search).actionView as SearchView
-      searchView.apply {
-         setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
-      }
-
-      // refreshItem
-      refreshItem = menu.findItem(R.id.refreshAction)
-   }
-
-   override fun onOptionsItemSelected(item: MenuItem): Boolean {
-      return when (item.itemId) {
-         R.id.refreshAction -> {
-            val sync = Sync(this.requireContext())
-            sync.synchronizeRecipesAsync()
-            onRefresh()
-            true
-         }
-         R.id.sortAction -> {
-            showSortOptions()
-            true
-         }
-         else -> NavigationUI
-                    .onNavDestinationSelected(item,
-                                              requireView().findNavController()) || super.onOptionsItemSelected(item)
-      }
    }
 
    private fun initializeRecipeList() {
       binding.recipeListViewModel = recipesViewModel
       binding.lifecycleOwner = viewLifecycleOwner
 
-      // divider for recyclerview
-      val dividerDecoration = DividerItemDecoration(binding.recipeList.context, LinearLayoutManager.VERTICAL)
-      binding.recipeList.addItemDecoration(dividerDecoration)
 
       // data adapter
       adapter = RecipeListAdapter(RecipeListListener { recipeName -> recipesViewModel.onRecipeClicked(recipeName) },
@@ -159,7 +120,11 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
       recipesViewModel.navigateToRecipe.observe(viewLifecycleOwner) { recipe ->
          recipe?.let {
             this.findNavController()
-               .navigate(RecipeListFragmentDirections.actionRecipeListFragmentToRecipeDetailFragment(recipe))
+               .navigate(
+                  RecipeListFragmentDirections.actionRecipeListFragmentToRecipeDetailFragment(
+                     recipe
+                  )
+               )
             recipesViewModel.onRecipeNavigated()
          }
       }
@@ -207,11 +172,12 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
          categories?.let {
             var order = 1
             val activity = requireActivity() as MainActivity
-            val menu = activity.getMenu()
+            val menu = activity.getMenu().findItem(R.id.submenu_item).subMenu
 
             menu.removeGroup(R.id.menu_categories_group)
             categories.forEach { category ->
                menu.add(R.id.menu_categories_group, category.hashCode(), order++, category)
+                  .setIcon(R.drawable.ic_food);
             }
          }
       }
@@ -251,7 +217,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
       builder.setTitle(R.string.menu_sort_title)
       val sortValue = currentSort ?: SortValue.NAME_A_Z
       builder.setSingleChoiceItems(sortNames, sortValue.sort) { _: DialogInterface, which: Int ->
-         settingViewModel.setSorting(which)
+         settingViewModel.setSorting(which, (activity as MainActivity))
          sortDialog?.dismiss()
          sortDialog = null
          binding.recipeList.postDelayed(200) {
@@ -261,7 +227,6 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
       builder.setOnDismissListener { sortDialog = null }
       sortDialog = builder.show()
    }
-
 
    //todo: think about how to make this more elegant.
    //also it seems quickly refreshing breaks the database.
@@ -292,15 +257,33 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
       recipesViewModel.initRecipes()
    }
 
-   override fun onResume() {
-      setupBroadcastListener()
-      super.onResume()
-   }
-
    override fun onPause() {
       dismissBroadcastListener()
       sortDialog?.dismiss()
       super.onPause()
+   }
+
+   override fun onResume() {
+      setupBroadcastListener()
+      recipesViewModel.search(null)
+      recipesViewModel.filterRecipesByCategory(null)
+      loadData()
+      super.onResume()
+   }
+
+   override fun searchRecipes(filter: RecipeFilter) {
+      recipesViewModel.search(filter)
+      loadData()
+   }
+
+   override fun searchCategory(filter: CategoryFilter) {
+      recipesViewModel.filterRecipesByCategory(filter)
+      recipesViewModel.search(null)
+      loadData()
+   }
+
+   override fun showSortSelector() {
+      showSortOptions()
    }
 
    fun notifyUpdate(updating: Boolean) {

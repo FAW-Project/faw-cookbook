@@ -38,7 +38,7 @@ class NotificationChannelManager {
 
       fun createSyncServiceNotification(context: Context): NotificationCompat.Builder {
          return NotificationCompat.Builder(context, SYNC_SERVICE_CHANNEL)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.appicon_unscaled)
             .setContentTitle(context.getString(R.string.sync_service_notification_title))
             .setContentText(context.getString(R.string.sync_service_notification_content))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

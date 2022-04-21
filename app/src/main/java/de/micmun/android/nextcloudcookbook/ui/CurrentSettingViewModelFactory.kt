@@ -8,7 +8,6 @@ package de.micmun.android.nextcloudcookbook.ui
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import de.micmun.android.nextcloudcookbook.ui.recipesearch.RecipeSearchViewModel
 
 /**
  * Factory for CurrentSettingViewModel.

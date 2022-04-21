@@ -9,4 +9,13 @@
    <dimen name="text_small">14sp</dimen>
    <dimen name="header_image_height">150dp</dimen>
    <dimen name="instruction_counter_size">35dp</dimen>
+
+
+   <!-- Dimensions taken from Nextcloud Notes - Android app -->
+   <!-- Default screen margins, per the Android Design guidelines. -->
+   <dimen name="spacer_1hx">4dp</dimen>
+   <dimen name="spacer_1x">8dp</dimen>
+   <dimen name="spacer_2x">16dp</dimen>
+   <dimen name="spacer_4x">32dp</dimen>
+
 </resources>

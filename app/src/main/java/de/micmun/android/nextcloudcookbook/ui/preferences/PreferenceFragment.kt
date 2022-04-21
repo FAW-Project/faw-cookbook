@@ -38,7 +38,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
 
    private lateinit var dirPreference: Preference
    private lateinit var themePreference: IntListPreference
-   private lateinit var syncPreference: Preference
+   private lateinit var syncPreference: IntListPreference
 
    private val getContent = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) {
       it?.let { uri ->
@@ -106,7 +106,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
    override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
       when (preference) {
          dirPreference -> viewModel.setRecipeDirectory(newValue.toString())
-         syncPreference -> viewModel.setSyncServiceEnabled(newValue.toString().toBoolean())
+         syncPreference -> viewModel.setSyncServiceInterval(newValue.toString().toInt())
          themePreference -> {
             viewModel.setTheme(newValue.toString().toInt())
             // recreate activity

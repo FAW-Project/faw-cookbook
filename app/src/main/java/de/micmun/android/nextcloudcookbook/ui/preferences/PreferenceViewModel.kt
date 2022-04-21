@@ -37,9 +37,9 @@ class PreferenceViewModel(application: Application) : AndroidViewModel(applicati
       }
    }
 
-   fun setSyncServiceEnabled(enabled: Boolean) {
+   fun setSyncServiceInterval(interval: Int) {
       viewModelScope.launch(Dispatchers.IO) {
-         prefData.setSyncServiceEnabled(enabled)
+         prefData.setSyncServiceInterval(interval)
       }
    }
 

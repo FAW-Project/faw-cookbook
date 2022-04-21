@@ -24,12 +24,15 @@ class SyncService : IntentService("SyncService") {
 
    companion object {
       val TAG = SyncService::class.java.toString()
+      private const val SECOND = 1000
+      private const val MINUTE = SECOND * 60
+      private const val HOUR = MINUTE * 60
       const val SYNC_SERVICE_START_BROADCAST = "SYNC_SERVICE_START_BROADCAST"
       const val SYNC_SERVICE_UPDATE_BROADCAST = "SYNC_SERVICE_UPDATE_BROADCAST"
       const val SYNC_SERVICE_UPDATE_STATUS = "SYNC_SERVICE_UPDATE_STATUS"
       const val SYNC_SERVICE_UPDATE_STATUS_START = "SYNC_SERVICE_UPDATE_STATUS_START"
       const val SYNC_SERVICE_UPDATE_STATUS_END = "SYNC_SERVICE_UPDATE_STATUS_END"
-      private const val SYNC_INTERVAL_MINUTES = 24 * 60
+      const val SYNC_SERVICE_INTERVAL_DEFAULT = 24
 
       fun startServiceScheduling(context: Context) {
 
@@ -42,6 +45,8 @@ class SyncService : IntentService("SyncService") {
             // Sync disabled. Dont schedule.
             return
          }
+
+         val interval = PreferenceData.getInstance().getSyncServiceInterval()
 
          val myIntent = Intent(context.applicationContext, SyncService::class.java)
          val pendingIntent = PendingIntent.getService(context, 0, myIntent, PendingIntent.FLAG_IMMUTABLE)
@@ -56,7 +61,7 @@ class SyncService : IntentService("SyncService") {
          alarmManager.setInexactRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
-            (1000 * 60 * SYNC_INTERVAL_MINUTES).toLong(),
+            ( HOUR * interval).toLong(),
             pendingIntent
          )
       }

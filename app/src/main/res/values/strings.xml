@@ -125,6 +125,23 @@
    <string name="sort_value_time_asc">Total time ascending</string>
    <string name="sort_value_time_desc">Total time descending</string>
 
+
+   <string name="sync_interval_name_off">Off</string>
+   <string name="sync_interval_name_1">Every Hour</string>
+   <string name="sync_interval_name_4">Every 4 Hours</string>
+   <string name="sync_interval_name_6">Every 6 Hours</string>
+   <string name="sync_interval_name_12">Every 12 Hours</string>
+   <string name="sync_interval_name_24">Every 24 Hours</string>
+
+   <string-array name="sync_interval_values" translatable="false">
+      <item>0</item>
+      <item>1</item>
+      <item>4</item>
+      <item>6</item>
+      <item>12</item>
+      <item>24</item>
+   </string-array>
+
    <!-- permissions -->
    <string name="permission_granted" translatable="false">granted</string>
    <string name="permission_denied" translatable="false">denied</string>

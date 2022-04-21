@@ -14,9 +14,12 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:title="@string/pref_category_sync">
-      <CheckBoxPreference
-          android:defaultValue="true"
+      <de.micmun.android.nextcloudcookbook.ui.preferences.IntListPreference
+          android:defaultValue="24"
+          android:entries="@array/sync_interval_names"
+          android:entryValues="@array/sync_interval_values"
           android:key="@string/prefkey_enableSyncService"
+          android:summary="%s"
           android:title="@string/preftitle_enableSyncService" />
    </PreferenceCategory>
    <PreferenceCategory android:title="@string/pref_category_design">

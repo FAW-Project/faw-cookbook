@@ -14,4 +14,13 @@
       <item>@string/sort_value_time_asc</item>
       <item>@string/sort_value_time_desc</item>
    </string-array>
+
+   <string-array name="sync_interval_names">
+      <item>@string/sync_interval_name_off</item>
+      <item>@string/sync_interval_name_1</item>
+      <item>@string/sync_interval_name_4</item>
+      <item>@string/sync_interval_name_6</item>
+      <item>@string/sync_interval_name_12</item>
+      <item>@string/sync_interval_name_24</item>
+   </string-array>
 </resources>

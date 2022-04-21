@@ -11,6 +11,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import de.micmun.android.nextcloudcookbook.MainApplication
+import de.micmun.android.nextcloudcookbook.services.sync.SyncService.Companion.SYNC_SERVICE_INTERVAL_DEFAULT
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -29,7 +30,7 @@ class PreferenceData private constructor() {
    private val screenKeepalive = booleanPreferencesKey(Pref.SCREEN_KEEPALIVE)
    private val sortKey = intPreferencesKey(Pref.SORT)
    private val isStorageAccessedKey = booleanPreferencesKey(Pref.STORAGE_ACCESS)
-   private val isSyncServiceEnabled = booleanPreferencesKey(Pref.SYNC_SERVICE)
+   private val isSyncServiceEnabled = intPreferencesKey(Pref.SYNC_SERVICE)
 
    companion object {
       @Volatile
@@ -105,23 +106,33 @@ class PreferenceData private constructor() {
          }
    }
 
-   fun isSyncServiceEnabled(): Boolean {
-      var enabled = true
+   fun getSyncServiceInterval(): Int {
+      var interval = SYNC_SERVICE_INTERVAL_DEFAULT
       runBlocking {
-         enabled = MainApplication.AppContext.dataStore.data
+         interval = MainApplication.AppContext.dataStore.data
             .map { preferences ->
-               preferences[isSyncServiceEnabled] ?: false
+               preferences[isSyncServiceEnabled] ?: SYNC_SERVICE_INTERVAL_DEFAULT
             }
             .first()
       }
-
-      return enabled
+      return interval
    }
 
-   fun setSyncServiceEnabled(enabled: Boolean){
+   fun isSyncServiceEnabled(): Boolean {
+      if(getSyncServiceInterval() > 0) {
+         return true
+      }
+      return false
+   }
+
+   fun setSyncServiceEnabled(){
+      setSyncServiceInterval(SYNC_SERVICE_INTERVAL_DEFAULT)
+   }
+
+   fun setSyncServiceInterval(interval: Int){
       runBlocking {
          MainApplication.AppContext.dataStore.edit { preferences ->
-            preferences[isSyncServiceEnabled] = enabled
+            preferences[isSyncServiceEnabled] = interval
          }
       }
    }

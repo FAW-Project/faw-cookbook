@@ -72,7 +72,7 @@
     <string name="form_search_title">Tìm kiếm nâng cao</string>
     <string name="form_type_ingredients">Tìm kiếm theo nguyên liệu</string>
     <string name="menu_uncategorized">Chưa phân loại</string>
-    <string name="about_summary">© 2020-2021 bởi MicMun. Được cấp phép dưới GPLv3.
+    <string name="about_summary">© 2020-2022 bởi MicMun. Được cấp phép dưới GPLv3.
 \n
 \nNextcloud Cookbook là một ứng dụng dành cho sách nấu ăn trên nextcloud để quản lý các công thức.</string>
     <string name="permission_select_root" tools:ignore="MissingTranslation">Vui lòng chọn %1$s.</string>

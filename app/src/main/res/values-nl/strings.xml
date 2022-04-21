@@ -68,7 +68,7 @@
     <string name="preftitle_theme">Selecteer Thema</string>
     <string name="about_title">Over</string>
     <string name="about_version">App versie: %1$s</string>
-    <string name="about_summary">© 2020-2021 door MicMun. Licentie onder GPLv3.
+    <string name="about_summary">© 2020-2022 door MicMun. Licentie onder GPLv3.
 \n
 \nNextcloud Cookbook is een app voor kookboek op nextcloud om recepten te beheren.</string>
     <string name="theme_name_light">Licht</string>

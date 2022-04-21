@@ -68,7 +68,7 @@
     <string name="preftitle_theme">Seleziona Tema</string>
     <string name="about_title">Informazioni</string>
     <string name="about_version">Versione dell\'app: %1$s</string>
-    <string name="about_summary">© 2020-2021 di MicMun. Licenza sotto GPLv3.
+    <string name="about_summary">© 2020-2022 di MicMun. Licenza sotto GPLv3.
 \n
 \nNextcloud Cookbook è un\'applicazione per ricettari su nextcloud per gestire le ricette.</string>
     <string name="theme_name_light">Chiaro</string>

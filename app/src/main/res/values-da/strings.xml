@@ -59,7 +59,7 @@
     <string name="nutrition_trans_fat_content">Transfedtindhold: %1$s</string>
     <string name="form_search_title">Avanceret Søgning</string>
     <string name="form_search_options">Søgefunktion</string>
-    <string name="about_summary">© 2020-2021 MicMun. Lisenssi GPLv3: n nojalla.
+    <string name="about_summary">© 2020-2022 MicMun. Lisenssi GPLv3: n nojalla.
 \n
 \nNextcloud Cookbook on sovellus keittokirjaan nextcloudissa reseptien hallitsemiseksi.</string>
     <string name="theme_name_light">Lys</string>

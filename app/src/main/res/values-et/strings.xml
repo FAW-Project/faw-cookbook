@@ -59,7 +59,7 @@
     <string name="preftitle_theme">Valige Teema</string>
     <string name="about_title">Umbes</string>
     <string name="about_version">Rakenduse versioon: %1$s</string>
-    <string name="about_summary">© 2020-2021 MicMuni poolt. Litsents GPLv3 alusel.
+    <string name="about_summary">© 2020-2022 MicMuni poolt. Litsents GPLv3 alusel.
 \n
 \nNextcloudi kokaraamat on retseptiraamatute haldamise rakendus järgmisel pilvel.</string>
     <string name="theme_name_light">Valgus</string>

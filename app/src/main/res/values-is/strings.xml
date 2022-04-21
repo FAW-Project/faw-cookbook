@@ -68,7 +68,7 @@
     <string name="text_keywords"><strong>Lykilorð:</strong><br/> %1$s</string>
     <string name="form_exact_search">Gera nákvæma leit\?</string>
     <string name="menu_all_categories">Sýna öllum flokkum</string>
-    <string name="about_summary">© 2020-2021 by MicMun. License under GPLv3.
+    <string name="about_summary">© 2020-2022 by MicMun. License under GPLv3.
 \n
 \nNextcloud Matreiðslubók er til forrit fyrir bókinni á nextcloud að stjórna uppskriftir.</string>
     <string name="permission_please_grant" tools:ignore="MissingTranslation">Vinsamlegast veittu geymsluheimildir.</string>

@@ -11,7 +11,7 @@
     <string name="theme_name_system">Sistema</string>
     <string name="theme_name_dark">Iluna</string>
     <string name="theme_name_light">Argia</string>
-    <string name="about_summary">© 2020-2021 arabera MicMun. Lizentzia pean GPLv3.
+    <string name="about_summary">© 2020-2022 arabera MicMun. Lizentzia pean GPLv3.
 \n
 \nNextcloud Cookbook aplikazio bat da cookbook on nextcloud kudeatzeko errezetak.</string>
     <string name="about_version">Aplikazioaren bertsioa: %1$s</string>

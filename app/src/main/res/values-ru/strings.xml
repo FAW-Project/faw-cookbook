@@ -73,7 +73,7 @@
     <string name="nutrition_unsaturated_fat_content">Содержание ненасыщенного жира: %1$s</string>
     <string name="form_type_keyword">Поиск по ключевым словам</string>
     <string name="pref_category_function">Функциональность</string>
-    <string name="about_summary">© 2020-2021 от MicMun. Лицензия под GPLV3.
+    <string name="about_summary">© 2020-2022 от MicMun. Лицензия под GPLV3.
 \n
 \nNextCloud Cookbook - это приложение кулинарной книги на NextCloud для управления рецептами.</string>
     <string name="app_logo_desc">Икона запуска приложения, показывающая символ кулинарной книги</string>

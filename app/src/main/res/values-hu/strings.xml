@@ -68,7 +68,7 @@
     <string name="preftitle_theme">Téma Kiválasztása</string>
     <string name="about_title">Ról ről</string>
     <string name="about_version">Alkalmazás verzió: %1$s</string>
-    <string name="about_summary">© 2020-2021 by Micmunn. Licenc alatt GPLv3.
+    <string name="about_summary">© 2020-2022 by Micmunn. Licenc alatt GPLv3.
 \n
 \nNextcloud Cookbook egy app szakácskönyv nextcloud kezelésére recepteket.</string>
     <string name="theme_name_light">Fény</string>

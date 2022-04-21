@@ -86,7 +86,7 @@
     <string name="preftitle_recipeDir">Oppskriftsmappe</string>
     <string name="about_version">Programversjon: %1$s</string>
     <string name="text_categories"><strong>Kategori:</strong><br/> %1$s</string>
-    <string name="about_summary">© 2020–2021 by MicMun. Lisensiert GPLv3.
+    <string name="about_summary">© 2020–2022 by MicMun. Lisensiert GPLv3.
 \n
 \nNextcloud Cookbook er et Nextcloud-kokebokprogram for håndtering av oppskrifter.</string>
     <string name="ingredients_yield">Gi</string>

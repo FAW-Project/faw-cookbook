@@ -11,6 +11,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import de.micmun.android.nextcloudcookbook.MainApplication
+import de.micmun.android.nextcloudcookbook.ui.MainActivity.Companion.THEME_PREFERENCE_DEFAULT
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -73,17 +74,17 @@ class PreferenceData private constructor() {
    fun getTheme(): Flow<Int> {
       return MainApplication.AppContext.dataStore.data
          .map { preferences ->
-            preferences[themeKey] ?: 0
+            preferences[themeKey] ?: THEME_PREFERENCE_DEFAULT
          }
    }
 
    fun getThemeSync(): Int {
-      var theme = 0
+      var theme = THEME_PREFERENCE_DEFAULT
 
       runBlocking {
          theme = MainApplication.AppContext.dataStore.data
             .map { preferences ->
-               preferences[themeKey] ?: 0
+               preferences[themeKey] ?: THEME_PREFERENCE_DEFAULT
             }
             .first()
       }

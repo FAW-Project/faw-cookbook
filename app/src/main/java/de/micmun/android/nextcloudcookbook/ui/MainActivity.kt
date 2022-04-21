@@ -65,6 +65,11 @@ import java.io.File
  * @version 1.8, 27.11.21
  */
 class MainActivity : AppCompatActivity() {
+
+   companion object {
+      const val THEME_PREFERENCE_DEFAULT = 2
+   }
+
    private lateinit var binding: ActivityMainBinding
    private lateinit var drawerLayout: DrawerLayout
    private lateinit var currentSettingViewModel: CurrentSettingViewModel
@@ -81,7 +86,7 @@ class MainActivity : AppCompatActivity() {
             preferenceData.migrateSharedPreferences(sharedPreferences)
             if (!preferenceData.isInitializedSync()) {
                preferenceData.setSort(SortValue.NAME_A_Z.sort)
-               preferenceData.setTheme(2)
+               preferenceData.setTheme(THEME_PREFERENCE_DEFAULT)
                preferenceData.setStorageAccessed(false)
             }
          }

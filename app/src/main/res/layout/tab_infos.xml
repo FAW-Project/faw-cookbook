@@ -20,8 +20,8 @@
          android:layout_height="match_parent">
 
       <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
 
          <ImageView
              android:id="@+id/headerImage"
@@ -29,11 +29,14 @@
              android:layout_height="wrap_content"
              android:adjustViewBounds="true"
              android:contentDescription="Header image"
+             android:paddingLeft="72dp"
+             android:paddingRight="72dp"
              android:scaleType="centerCrop"
              app:layout_constraintEnd_toEndOf="parent"
              app:layout_constraintStart_toStartOf="parent"
              app:layout_constraintTop_toTopOf="parent"
              app:recipeHeaderImage="@{recipe}"
+             app:srcCompat="@drawable/ic_food"
              tools:ignore="HardcodedText" />
 
          <TextView
@@ -51,16 +54,16 @@
              app:recipeDescription="@{recipe}" />
 
          <TextView
-               android:id="@+id/datePublishedText"
-               android:layout_width="0dp"
-               android:layout_height="wrap_content"
-               android:layout_marginStart="16dp"
-               android:layout_marginTop="8dp"
-               android:layout_marginEnd="16dp"
-               app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toBottomOf="@id/headerText"
-               app:recipePublishedDate="@{recipe}" />
+             android:id="@+id/datePublishedText"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="16dp"
+             android:layout_marginTop="8dp"
+             android:layout_marginEnd="16dp"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/headerText"
+             app:recipePublishedDate="@{recipe}" />
 
          <LinearLayout
              android:id="@+id/timeInfosTitleLayout"
@@ -191,16 +194,16 @@
                <TextView
                    android:id="@+id/label_Yield"
                    android:layout_width="0dp"
-                   android:layout_weight=".30"
                    android:layout_height="wrap_content"
+                   android:layout_weight=".30"
                    android:text="@string/text_yield" />
 
                <TextView
                    android:id="@+id/yieldTxt"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_weight=".70"
                    android:layout_marginStart="16dp"
+                   android:layout_weight=".70"
                    android:minLines="1"
                    android:text="yield"
                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
@@ -218,16 +221,16 @@
                <TextView
                    android:id="@+id/label_tools"
                    android:layout_width="0dp"
-                   android:layout_weight=".30"
                    android:layout_height="wrap_content"
+                   android:layout_weight=".30"
                    android:text="@string/text_tools" />
 
                <TextView
                    android:id="@+id/toolsTxt"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_weight=".70"
                    android:layout_marginStart="16dp"
+                   android:layout_weight=".70"
                    android:minLines="1"
                    android:text="tools"
                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
@@ -244,16 +247,16 @@
                <TextView
                    android:id="@+id/label_categories"
                    android:layout_width="0dp"
-                   android:layout_weight=".30"
                    android:layout_height="wrap_content"
+                   android:layout_weight=".30"
                    android:text="@string/text_categories" />
 
                <TextView
                    android:id="@+id/categoriesTxt"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_weight=".70"
                    android:layout_marginStart="16dp"
+                   android:layout_weight=".70"
                    android:minLines="1"
                    android:text="categories"
                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
@@ -270,16 +273,16 @@
                <TextView
                    android:id="@+id/label_keywords"
                    android:layout_width="0dp"
-                   android:layout_weight=".30"
                    android:layout_height="wrap_content"
+                   android:layout_weight=".30"
                    android:text="@string/text_keywords" />
 
                <TextView
                    android:id="@+id/keywordsTxt"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_weight=".70"
                    android:layout_marginStart="16dp"
+                   android:layout_weight=".70"
                    android:minLines="1"
                    android:text="keywords"
                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
@@ -296,16 +299,16 @@
                <TextView
                    android:id="@+id/label_author"
                    android:layout_width="0dp"
-                   android:layout_weight=".30"
                    android:layout_height="wrap_content"
+                   android:layout_weight=".30"
                    android:text="@string/text_author" />
 
                <TextView
                    android:id="@+id/authorTxt"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_weight=".70"
                    android:layout_marginStart="16dp"
+                   android:layout_weight=".70"
                    android:minLines="1"
                    android:text="author"
                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
@@ -322,16 +325,16 @@
                <TextView
                    android:id="@+id/sourcelabel"
                    android:layout_width="0dp"
-                   android:layout_weight=".30"
                    android:layout_height="wrap_content"
+                   android:layout_weight=".30"
                    android:text="@string/label_source" />
 
                <TextView
                    android:id="@+id/urlTxt"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
-                   android:layout_weight=".70"
                    android:layout_marginStart="16dp"
+                   android:layout_weight=".70"
                    android:autoLink="web"
                    android:minLines="1"
                    android:text="url"

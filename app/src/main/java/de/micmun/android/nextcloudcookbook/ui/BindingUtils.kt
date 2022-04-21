@@ -89,9 +89,8 @@ fun ImageView.setRecipeHeaderImage(item: DbRecipe?) {
    item?.run {
       if (recipeCore.fullImageUrl.isEmpty()) {
          setImageURI(null)
-         visibility = View.GONE
       } else {
-
+         setPadding(0,0,0,0)
          // required, because internal storage may contain special chars that are
          // encoded and will result in unreadable images
          var img = recipeCore.fullImageUrl

@@ -65,6 +65,7 @@
                       android:gravity="start"
                       android:lines="1"
                       android:text="@string/search_in_all"
+                      android:textColor="@color/subtextColor"
                       android:textSize="16sp" />
 
                   <androidx.appcompat.widget.AppCompatImageView
@@ -75,7 +76,7 @@
                       android:background="?attr/selectableItemBackgroundBorderless"
                       android:padding="12dp"
                       android:tooltipText="@string/menu_sort_title"
-                      android:tint="@color/textColor"
+                      android:tint="@color/icon_color"
                       app:srcCompat="@drawable/sort_alphabetical_ascending" />
 
                   <androidx.appcompat.widget.AppCompatImageView

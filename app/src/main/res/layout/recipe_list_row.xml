@@ -102,9 +102,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            app:recipeImage="@{recipe}"
-            app:srcCompat="@drawable/ic_food" />
+            app:recipeImage="@{recipe}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

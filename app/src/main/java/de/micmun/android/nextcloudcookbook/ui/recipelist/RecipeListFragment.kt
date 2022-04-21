@@ -217,7 +217,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
       builder.setTitle(R.string.menu_sort_title)
       val sortValue = currentSort ?: SortValue.NAME_A_Z
       builder.setSingleChoiceItems(sortNames, sortValue.sort) { _: DialogInterface, which: Int ->
-         settingViewModel.setSorting(which)
+         settingViewModel.setSorting(which, (activity as MainActivity))
          sortDialog?.dismiss()
          sortDialog = null
          binding.recipeList.postDelayed(200) {

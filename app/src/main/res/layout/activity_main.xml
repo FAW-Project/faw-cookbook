@@ -76,7 +76,7 @@
                       android:padding="12dp"
                       android:tooltipText="@string/menu_sort_title"
                       android:tint="@color/textColor"
-                      app:srcCompat="@drawable/ic_sort" />
+                      app:srcCompat="@drawable/sort_alphabetical_ascending" />
 
                   <androidx.appcompat.widget.AppCompatImageView
                       android:id="@+id/accountSwitcher"

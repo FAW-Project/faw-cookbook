@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import de.micmun.android.nextcloudcookbook.data.CategoryFilter
+import de.micmun.android.nextcloudcookbook.data.SortValue
 import de.micmun.android.nextcloudcookbook.settings.PreferenceData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -38,7 +39,8 @@ class CurrentSettingViewModel(application: Application) : AndroidViewModel(appli
    val categoryChanged: LiveData<Boolean>
       get() = _categoryChanged
 
-   fun setSorting(sort: Int) {
+   fun setSorting(sort: Int, mainActivity: MainActivity) {
+      mainActivity.setSortIcon(SortValue.getByValue(sort))
       viewModelScope.launch(Dispatchers.IO) {
          prefData.setSort(sort)
       }

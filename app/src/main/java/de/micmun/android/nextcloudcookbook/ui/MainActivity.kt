@@ -7,6 +7,7 @@ package de.micmun.android.nextcloudcookbook.ui
 
 import android.app.SearchManager
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +16,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -327,6 +329,7 @@ class MainActivity : AppCompatActivity() {
                   prefs.setRecipeDir(file.absolutePath)
                }
             }
+
             updateProfilePicture();
             startService(Intent(this, SyncService::class.java))
          }
@@ -356,5 +359,21 @@ class MainActivity : AppCompatActivity() {
       }
       catch (e : NextcloudFilesAppAccountNotFoundException) {}
       catch (e: NoCurrentAccountSelectedException) {}
+   }
+
+
+   fun setSortIcon(sort: SortValue){
+      var id = R.drawable.sort_alphabetical_ascending;
+
+      when (sort) {
+         SortValue.NAME_A_Z -> id = R.drawable.sort_alphabetical_ascending
+         SortValue.NAME_Z_A -> id = R.drawable.sort_alphabetical_descending
+         SortValue.DATE_ASC -> id = R.drawable.sort_calendar_ascending
+         SortValue.DATE_DESC -> id = R.drawable.sort_calendar_descending
+         SortValue.TOTAL_TIME_ASC -> id = R.drawable.sort_clock_ascending_outline
+         SortValue.TOTAL_TIME_DESC -> id = R.drawable.sort_clock_descending_outline
+      }
+
+      binding.sortorder.setImageDrawable(ContextCompat.getDrawable(this, id))
    }
 }

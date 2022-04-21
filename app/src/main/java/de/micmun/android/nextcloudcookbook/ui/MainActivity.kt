@@ -7,13 +7,14 @@ package de.micmun.android.nextcloudcookbook.ui
 
 import android.app.SearchManager
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -24,10 +25,19 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.listener.multi.BaseMultiplePermissionsListener
+import com.nextcloud.android.sso.AccountImporter
+import com.nextcloud.android.sso.exceptions.AccountImportCancelledException
+import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException
+import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException
+import com.nextcloud.android.sso.helper.SingleAccountHelper
+import com.nextcloud.android.sso.model.SingleSignOnAccount
+import com.nextcloud.android.sso.ui.UiExceptionManager
 import de.micmun.android.nextcloudcookbook.MainApplication
 import de.micmun.android.nextcloudcookbook.R
 import de.micmun.android.nextcloudcookbook.data.CategoryFilter
@@ -35,25 +45,15 @@ import de.micmun.android.nextcloudcookbook.data.RecipeFilter
 import de.micmun.android.nextcloudcookbook.data.SortValue
 import de.micmun.android.nextcloudcookbook.databinding.ActivityMainBinding
 import de.micmun.android.nextcloudcookbook.nextcloudapi.Accounts
+import de.micmun.android.nextcloudcookbook.services.sync.SyncService
 import de.micmun.android.nextcloudcookbook.settings.PreferenceData
-import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeListFragmentDirections
+import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeSearchCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import com.nextcloud.android.sso.AccountImporter
-import com.nextcloud.android.sso.ui.UiExceptionManager
-import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException
-import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException
-import com.nextcloud.android.sso.helper.SingleAccountHelper
-import com.nextcloud.android.sso.model.SingleSignOnAccount
-import de.micmun.android.nextcloudcookbook.services.sync.SyncService
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
-
-import androidx.appcompat.widget.SearchView.OnQueryTextListener
-import com.nextcloud.android.sso.exceptions.AccountImportCancelledException
-import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeSearchCallback
 
 
 /**
@@ -177,7 +177,7 @@ class MainActivity : AppCompatActivity() {
             }
          }
       }
-
+      updateProfilePicture()
       handleIntent(intent)
       SyncService.startServiceScheduling(baseContext)
    }
@@ -327,6 +327,7 @@ class MainActivity : AppCompatActivity() {
                   prefs.setRecipeDir(file.absolutePath)
                }
             }
+            updateProfilePicture();
             startService(Intent(this, SyncService::class.java))
          }
       } catch (e: AccountImportCancelledException) {}
@@ -339,5 +340,21 @@ class MainActivity : AppCompatActivity() {
    ) {
       super.onRequestPermissionsResult(requestCode, permissions, grantResults)
       AccountImporter.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+   }
+
+   fun updateProfilePicture() {
+      try {
+
+         val ssoAccount = SingleAccountHelper.getCurrentSingleSignOnAccount(applicationContext)
+         Glide
+            .with(this)
+            .load(ssoAccount.url + "/index.php/avatar/" + Uri.encode(ssoAccount.userId) + "/64")
+            .placeholder(R.drawable.ic_baseline_account_circle_24)
+            .error(R.drawable.ic_baseline_account_circle_24)
+            .apply(RequestOptions.circleCropTransform())
+            .into(binding.accountSwitcher)
+      }
+      catch (e : NextcloudFilesAppAccountNotFoundException) {}
+      catch (e: NoCurrentAccountSelectedException) {}
    }
 }

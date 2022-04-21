@@ -6,7 +6,9 @@
 
     <color name="colorBackground">#121212</color>
     <color name="textColor">#FFFFFF</color>
+    <color name="subtextColor">#FFFFFF</color>
     <color name="textColorLight">#FAFAFA</color>
     <color name="cooktimeBackground">#6E6E6E</color>
     <color name="appbar">#121212</color>
+    <color name="icon_color">#FFFFFF</color>
 </resources>

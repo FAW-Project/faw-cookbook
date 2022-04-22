@@ -104,7 +104,7 @@
     <string name="copy_ingredients">Sao chép phần</string>
     <string name="copy_ing_message">Thành phần sao chép vào nháp.</string>
     <string name="sync_service_notification_title">Sync Công Thức Nấu Ăn</string>
-    <string name="preftitle_enableSyncService">Sync công thức Nấu ăn trong Nền</string>
+    <string name="pref_title_enableSyncService">Sync công thức Nấu ăn trong Nền</string>
     <string name="pref_category_sync">Đồng bộ</string>
     <string name="prefkey_enableSyncService">chophépBộVụ</string>
     <string name="sync_service_channel_name">Sync Dịch Vụ</string>

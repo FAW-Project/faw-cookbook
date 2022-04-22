@@ -109,5 +109,5 @@
     <string name="prefkey_enableSyncService">ativarServiçoSincronização</string>
     <string name="sync_service_channel_name">Serviço De Sincronização</string>
     <string name="sync_service_channel_description">Usado para notificação em primeiro plano ao sincronizar receitas</string>
-    <string name="preftitle_enableSyncService">Sincronizar receitas em segundo plano</string>
+    <string name="pref_title_enableSyncService">Sincronizar receitas em segundo plano</string>
 </resources>

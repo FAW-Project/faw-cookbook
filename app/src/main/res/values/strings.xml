@@ -92,9 +92,16 @@
    <string name="dir_chooser_error">Error: Root folder is not allowed!</string>
    <string name="prefkey_theme" translatable="false">theme_setting</string>
    <string name="preftitle_theme">Select Theme</string>
-
-   <string name="prefkey_enableSyncService" translatable="false">enableSyncService</string>
    <string name="prefkey_about" translatable="false">app_about</string>
+
+   <string name="pref_summary_keep_screen_alive">Dont lock the screen when viewing a recipe</string>
+   <string name="pref_title_keep_screen_alive">Keep the screen alive</string>
+
+   <string name="pref_category_sync">Synchronisation</string>
+   <string name="pref_title_enableSyncService">Background Synchronisation</string>
+
+   <string name="pref_title_sync_wifi_only">Sync on Wifi only</string>
+   <string name="pref_summary_sync_wifi_only" >This disables syncing when the device is only connected via mobile data.</string>
 
    <string-array name="theme_values" translatable="false">
       <item>0</item>
@@ -139,14 +146,10 @@
       <item>24</item>
    </string-array>
 
-   <string name="preftitle_enableSyncService">Sync Recipes in the Background</string>
-   <string name="pref_category_sync">Synchronisation</string>
    <string name="prefkey_keep_screen_alive" translatable="false">keep_screen_alive</string>
-   <string name="prefkey_keep_screen_alive_summary">Dont lock the screen when viewing a recipe</string>
-   <string name="prefkey_keep_screen_alive_title">Keep the screen alive</string>
    <string name="prefkey_sync_wifi_only" translatable="false">sync_wifi_only</string>
-   <string name="prefkey_sync_wifi_only_summary" >Sync on Wifi only</string>
-   <string name="prefkey_sync_wifi_only_title">This disables syncing when the device is only connected via mobile data.</string>
+   <string name="prefkey_enableSyncService" translatable="false">enableSyncService</string>
+
 
    <!-- permissions -->
    <string name="permission_granted" translatable="false">granted</string>

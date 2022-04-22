@@ -118,5 +118,5 @@
     <string name="prefkey_enableSyncService">habilitarSyncService</string>
     <string name="sync_service_channel_description">Usado em primeiro plano para não-ficcionar ao sincronizar receitas</string>
     <string name="sync_service_notification_content">Estamos atualmente atualizando suas receitas, voltaremos em breve!</string>
-    <string name="preftitle_enableSyncService">Receitas de Sincronização no Fundo</string>
+    <string name="pref_title_enableSyncService">Receitas de Sincronização no Fundo</string>
 </resources>

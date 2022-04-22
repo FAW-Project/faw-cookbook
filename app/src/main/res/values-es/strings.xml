@@ -113,7 +113,7 @@
     <string name="copy_ingredients">Copiar ingredientes</string>
     <string name="copy_ing_message">Ingredientes copiados en el portapapeles.</string>
     <string name="sync_service_notification_title">Sincronizar recetas</string>
-    <string name="preftitle_enableSyncService">Sincronización de recetas en segundo plano</string>
+    <string name="pref_title_enableSyncService">Sincronización de recetas en segundo plano</string>
     <string name="pref_category_sync">Sincronización</string>
     <string name="prefkey_enableSyncService">activarServicioSincronización</string>
     <string name="sync_service_channel_name">Servicio de sincronización</string>

@@ -105,7 +105,7 @@
     <string name="copy_ing_message">Ingredienser kopieras till urklipp.</string>
     <string name="sync_service_channel_name">Sync-tjänst</string>
     <string name="pref_category_sync">Synkronisering</string>
-    <string name="preftitle_enableSyncService">Synka recept i bakgrunden</string>
+    <string name="pref_title_enableSyncService">Synka recept i bakgrunden</string>
     <string name="prefkey_enableSyncService">aktiveraSyncTjänsten</string>
     <string name="sync_service_channel_description">Används för förgrundsbeteckning när recept synkroniseras</string>
     <string name="sync_service_notification_title">Synka recept</string>

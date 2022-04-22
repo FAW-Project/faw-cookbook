@@ -117,6 +117,6 @@
     <string name="sync_service_channel_description">Gebruikt voor foreground notificatie bij het synchroniseren van recepten</string>
     <string name="sync_service_notification_title">Recepten Synchroniseren</string>
     <string name="sync_service_notification_content">We zijn momenteel bezig met het updaten van uw recepten, we komen binnenkort terug!</string>
-    <string name="preftitle_enableSyncService">Synchroniseer recepten op de achtergrond</string>
+    <string name="pref_title_enableSyncService">Synchroniseer recepten op de achtergrond</string>
     <string name="prefkey_enableSyncService">synchronisatieserviceinschakelen</string>
 </resources>

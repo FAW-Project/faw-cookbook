@@ -113,7 +113,7 @@
     <string name="copy_ing_message">Ingredienti copiati negli appunti.</string>
     <string name="copy_ingredients">Copia gli ingredienti</string>
     <string name="sync_service_channel_description">Utilizzato per la notifica in primo piano durante la sincronizzazione delle ricette</string>
-    <string name="preftitle_enableSyncService">Sincronizza le ricette in background</string>
+    <string name="pref_title_enableSyncService">Sincronizza le ricette in background</string>
     <string name="sync_service_notification_title">Sincronizza ricette</string>
     <string name="pref_category_sync">Sincronizzazione</string>
     <string name="prefkey_enableSyncService">AbilitaSyncService</string>

@@ -118,5 +118,5 @@
     <string name="sync_service_notification_content">Jelenleg frissítjük a recepteket, hamarosan visszatérünk!</string>
     <string name="sync_service_notification_title">Szinkronizált receptek</string>
     <string name="prefkey_enableSyncService">engedélyezzeSzinkronizálásiSzolgáltatást</string>
-    <string name="preftitle_enableSyncService">Receptek szinkronizálása a háttérben</string>
+    <string name="pref_title_enableSyncService">Receptek szinkronizálása a háttérben</string>
 </resources>

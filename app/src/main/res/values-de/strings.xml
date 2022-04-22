@@ -116,7 +116,7 @@
     <string name="copy_ingredients">Kopiere Zutaten</string>
     <string name="copy_ing_message">Zutaten in Zwischenablage kopiert.</string>
     <string name="sync_service_channel_name">Synchronisationsdienst</string>
-    <string name="preftitle_enableSyncService">Synchronisierung von Rezepten im Hintergrund</string>
+    <string name="pref_title_enableSyncService">Synchronisierung von Rezepten im Hintergrund</string>
     <string name="prefkey_enableSyncService">Synchrondienst aktivieren</string>
     <string name="sync_service_channel_description">Wird bei der Rezeptsynchronisierung für die Vordergrundbenachrichtigung verwendet</string>
     <string name="pref_category_sync">Synchronisierung</string>

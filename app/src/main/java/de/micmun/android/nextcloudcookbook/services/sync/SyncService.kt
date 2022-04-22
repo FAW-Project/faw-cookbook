@@ -13,14 +13,13 @@ import de.micmun.android.nextcloudcookbook.nextcloudapi.Accounts
 import de.micmun.android.nextcloudcookbook.nextcloudapi.Sync
 import de.micmun.android.nextcloudcookbook.notifications.NotificationChannelManager
 import de.micmun.android.nextcloudcookbook.notifications.NotificationChannelManager.Companion.SYNC_SERVICE_NOTIFICATION_ID
+import de.micmun.android.nextcloudcookbook.reciever.LocalBroadcastReceiver
 import de.micmun.android.nextcloudcookbook.settings.PreferenceData
 import java.util.*
 import java.util.concurrent.Executors
 
 
 class SyncService : IntentService("SyncService") {
-
-   private var mLocalBroadcastManager = LocalBroadcastManager.getInstance(this)
 
    companion object {
       val TAG = SyncService::class.java.toString()
@@ -33,38 +32,34 @@ class SyncService : IntentService("SyncService") {
       const val SYNC_SERVICE_UPDATE_STATUS_START = "SYNC_SERVICE_UPDATE_STATUS_START"
       const val SYNC_SERVICE_UPDATE_STATUS_END = "SYNC_SERVICE_UPDATE_STATUS_END"
       const val SYNC_SERVICE_INTERVAL_DEFAULT = 24
+   }
 
-      fun startServiceScheduling(context: Context) {
+   fun startServiceScheduling(context: Context) {
 
-         if (Accounts(context).getCurrentAccount() == null) {
-            //no sso, dont schedule
-            return
-         }
-
-         if (!PreferenceData.getInstance().isSyncServiceEnabled()) {
-            // Sync disabled. Dont schedule.
-            return
-         }
-
-         val interval = PreferenceData.getInstance().getSyncServiceInterval()
-
-         val myIntent = Intent(context.applicationContext, SyncService::class.java)
-         val pendingIntent = PendingIntent.getService(context, 0, myIntent, PendingIntent.FLAG_IMMUTABLE)
-
-         val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
-         val calendar: Calendar = Calendar.getInstance()
-         calendar.timeInMillis = System.currentTimeMillis()
-         //calendar.set(Calendar.SECOND, 0)
-         //calendar.set(Calendar.MINUTE, 0)
-         //calendar.set(Calendar.HOUR_OF_DAY, 1)
-         alarmManager.cancel(pendingIntent)
-         alarmManager.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            ( HOUR * interval).toLong(),
-            pendingIntent
-         )
+      if (Accounts(context).getCurrentAccount() == null) {
+         //no sso, dont schedule
+         return
       }
+
+      if (!PreferenceData.getInstance().isSyncServiceEnabled()) {
+         // Sync disabled. Dont schedule.
+         return
+      }
+
+      val broadcastIntent = Intent(context, LocalBroadcastReceiver::class.java)
+      broadcastIntent.action = SYNC_SERVICE_START_BROADCAST
+      val pendingIntent = PendingIntent.getBroadcast(context, 0, broadcastIntent, PendingIntent.FLAG_IMMUTABLE)
+
+      Log.e(TAG, "START SCHEDULING")
+
+      val interval = PreferenceData.getInstance().getSyncServiceInterval()
+      val alarms = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+      alarms.setRepeating(
+         AlarmManager.RTC_WAKEUP,
+         System.currentTimeMillis() + 100,
+         (HOUR * interval).toLong(),
+         pendingIntent
+      )
    }
 
    @Deprecated("Deprecated in Java")
@@ -117,13 +112,13 @@ class SyncService : IntentService("SyncService") {
    private fun sendSyncStartEvent() {
       val intent = Intent(SYNC_SERVICE_UPDATE_BROADCAST)
       intent.putExtra(SYNC_SERVICE_UPDATE_STATUS, SYNC_SERVICE_UPDATE_STATUS_START)
-      mLocalBroadcastManager.sendBroadcast(intent)
+      LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
 
    }
 
    private fun sendSyncEndEvent() {
       val intent = Intent(SYNC_SERVICE_UPDATE_BROADCAST)
       intent.putExtra(SYNC_SERVICE_UPDATE_STATUS, SYNC_SERVICE_UPDATE_STATUS_END)
-      mLocalBroadcastManager.sendBroadcast(intent)
+      LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
    }
 }

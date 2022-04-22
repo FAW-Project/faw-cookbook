@@ -26,6 +26,8 @@ class SyncService : IntentService("SyncService") {
       private const val SECOND = 1000
       private const val MINUTE = SECOND * 60
       private const val HOUR = MINUTE * 60
+      private const val PENDINGINTENT_ID = 33559911
+
       const val SYNC_SERVICE_START_BROADCAST = "SYNC_SERVICE_START_BROADCAST"
       const val SYNC_SERVICE_UPDATE_BROADCAST = "SYNC_SERVICE_UPDATE_BROADCAST"
       const val SYNC_SERVICE_UPDATE_STATUS = "SYNC_SERVICE_UPDATE_STATUS"
@@ -49,15 +51,17 @@ class SyncService : IntentService("SyncService") {
 
       val broadcastIntent = Intent(context, LocalBroadcastReceiver::class.java)
       broadcastIntent.action = SYNC_SERVICE_START_BROADCAST
-      val pendingIntent = PendingIntent.getBroadcast(context, 0, broadcastIntent, PendingIntent.FLAG_IMMUTABLE)
-
-      Log.e(TAG, "START SCHEDULING")
+      val pendingIntent = PendingIntent.getBroadcast(context, PENDINGINTENT_ID, broadcastIntent, PendingIntent.FLAG_IMMUTABLE)
 
       val interval = PreferenceData.getInstance().getSyncServiceInterval()
+      val rightNow = Calendar.getInstance()
+      rightNow.set(Calendar.MINUTE, 0)
+      rightNow.add(Calendar.HOUR, 1)
+
       val alarms = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
       alarms.setRepeating(
          AlarmManager.RTC_WAKEUP,
-         System.currentTimeMillis() + 100,
+         rightNow.timeInMillis,
          (HOUR * interval).toLong(),
          pendingIntent
       )

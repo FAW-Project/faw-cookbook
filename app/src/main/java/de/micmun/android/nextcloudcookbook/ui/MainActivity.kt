@@ -179,6 +179,8 @@ class MainActivity : AppCompatActivity() {
             }
          }
       }
+
+      SyncService().startServiceScheduling(applicationContext)
       updateProfilePicture()
       handleIntent(intent)
    }

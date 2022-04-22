@@ -10,7 +10,9 @@ import de.micmun.android.nextcloudcookbook.services.sync.SyncService.Companion.S
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService.Companion.SYNC_SERVICE_UPDATE_BROADCAST
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService.Companion.SYNC_SERVICE_UPDATE_STATUS
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService.Companion.SYNC_SERVICE_UPDATE_STATUS_START
+import de.micmun.android.nextcloudcookbook.settings.PreferenceData
 import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeListFragment
+import de.micmun.android.nextcloudcookbook.util.WifiCheck
 
 
 class LocalBroadcastReceiver() : BroadcastReceiver() {
@@ -41,10 +43,13 @@ class LocalBroadcastReceiver() : BroadcastReceiver() {
             }
             SYNC_SERVICE_START_BROADCAST -> {
                if (context != null) {
-                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                     context.startForegroundService(Intent(context, SyncService::class.java))
-                  } else {
-                     context.startService(Intent(context, SyncService::class.java))
+
+                  if(WifiCheck.isConnectedToWifi(context) || !PreferenceData.getInstance().isWifiOnly()){
+                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context.startForegroundService(Intent(context, SyncService::class.java))
+                     } else {
+                        context.startService(Intent(context, SyncService::class.java))
+                     }
                   }
                }
             }

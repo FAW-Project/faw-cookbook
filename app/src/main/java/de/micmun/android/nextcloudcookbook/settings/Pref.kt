@@ -20,5 +20,6 @@ class Pref {
       const val SORT = "recipe_list_sorting"
       const val STORAGE_ACCESS = "storage_access"
       const val SYNC_SERVICE = "enableSyncService"
+      const val SYNC_WIFI_ONLY = "sync_wifi_only"
    }
 }

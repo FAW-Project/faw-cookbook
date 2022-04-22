@@ -32,6 +32,7 @@ class SyncService : IntentService("SyncService") {
       const val SYNC_SERVICE_UPDATE_STATUS_START = "SYNC_SERVICE_UPDATE_STATUS_START"
       const val SYNC_SERVICE_UPDATE_STATUS_END = "SYNC_SERVICE_UPDATE_STATUS_END"
       const val SYNC_SERVICE_INTERVAL_DEFAULT = 24
+      const val SYNC_SERVICE_WIFI_ONLY_DEFAULT = true
    }
 
    fun startServiceScheduling(context: Context) {

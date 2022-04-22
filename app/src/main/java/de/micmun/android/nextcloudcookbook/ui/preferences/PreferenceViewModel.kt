@@ -43,6 +43,12 @@ class PreferenceViewModel(application: Application) : AndroidViewModel(applicati
       }
    }
 
+   fun setWifiOnly(enabled: Boolean) {
+      viewModelScope.launch(Dispatchers.IO) {
+         prefData.setWifiOnly(enabled)
+      }
+   }
+
    fun setInitialized(init: Boolean) {
       viewModelScope.launch(Dispatchers.IO) {
          prefData.setInitialised(init)

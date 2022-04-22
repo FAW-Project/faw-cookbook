@@ -189,7 +189,7 @@ class Sync(private var mContext: Context) {
          try {
             val bytes = mCookbookAPI.getImage(imgUrl)
             if (bytes != null) {
-               mFilesystem.writeDataToInternal(name, "$size.jpg", bytes)
+               mFilesystem.writeDataToInternal("recipes/$username/$name/", "$size.jpg", bytes)
             }
          } catch (e: Exception) {
             Log.e(TAG, "Error pulling image.$size: ${e.message}")

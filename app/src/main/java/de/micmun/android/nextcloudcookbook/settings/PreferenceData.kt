@@ -11,6 +11,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import de.micmun.android.nextcloudcookbook.MainApplication
+import de.micmun.android.nextcloudcookbook.services.sync.SyncService
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService.Companion.SYNC_SERVICE_INTERVAL_DEFAULT
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -134,6 +135,7 @@ class PreferenceData private constructor() {
          MainApplication.AppContext.dataStore.edit { preferences ->
             preferences[isSyncServiceEnabled] = interval
          }
+         SyncService().startServiceScheduling(MainApplication.AppContext)
       }
    }
 

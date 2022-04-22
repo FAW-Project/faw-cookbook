@@ -181,7 +181,6 @@ class MainActivity : AppCompatActivity() {
       }
       updateProfilePicture()
       handleIntent(intent)
-      SyncService.startServiceScheduling(baseContext)
    }
 
    fun handleNavigationDrawerSelection(item: Int){

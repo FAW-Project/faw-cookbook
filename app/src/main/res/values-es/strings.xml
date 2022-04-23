@@ -19,12 +19,11 @@
     <string name="tab_nutritions_title">Nutrición</string>
     <!-- tab infos -->
     <string name="text_uncategorized">Sin categoría</string>
-    <string name="text_categories"><strong>Categoría:</strong><br/> %1$s</string>
-    <string name="text_yield"><strong>Rendimiento:</strong> %1$s</string>
-    <string name="text_author">Autor: %1$s</string>
-    <string name="text_url">Fuente: %1$s</string>
+    <string name="text_categories">Categoría:</string>
+    <string name="text_yield">Rendimiento:</string>
+    <string name="text_author">Autor:</string>
     <string name="text_no_keywords">Sin palabras clave.</string>
-    <string name="text_keywords"><strong>Palabras clave:</strong><br/> %1$s</string>
+    <string name="text_keywords">Palabras clave:</string>
     <string name="text_date_published">Fecha de publicación: %1$s</string>
     <!-- Nutritions -->
     <string name="nutrition_calories">Calorías: %1$s</string>
@@ -89,7 +88,7 @@
 \n¿Desea conceder acceso a esta carpeta\?.</string>
     <string name="permission_ok_message" tools:ignore="MissingTranslation">Se ha concedido acceso al almacenamiento para %1$s.</string>
     <string name="header_image_desc">Imagen de cabecera de la receta</string>
-    <string name="text_tools"><strong>Herramientas necesarias:</strong><br/> %1$s</string>
+    <string name="text_tools">Herramientas necesarias:</string>
     <string name="menu_download_title">Descargar</string>
     <string name="menu_download_tooltip">descargar receta</string>
     <string name="form_download_folder">Anular carpeta de destino</string>

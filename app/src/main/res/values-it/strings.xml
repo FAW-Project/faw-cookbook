@@ -19,12 +19,11 @@
     <string name="tab_nutritions_title">Nutrizioni</string>
     <!-- tab infos -->
     <string name="text_uncategorized">Non categorizzato</string>
-    <string name="text_categories"><strong>Categoria:</strong><br/> %1$s</string>
-    <string name="text_yield"><strong>Rendimento:</strong> %1$s</string>
-    <string name="text_author">Autore: %1$s</string>
-    <string name="text_url">Fonte: %1$s</string>
-    <string name="text_no_keywords">Nessuna parole chiave.</string>
-    <string name="text_keywords"><strong>Parole chiave:</strong><br/> %1$s</string>
+    <string name="text_categories">Categoria:</string>
+    <string name="text_yield">Rendimento:</string>
+    <string name="text_author">Autore:</string>
+   <string name="text_no_keywords">Nessuna parole chiave.</string>
+    <string name="text_keywords">Parole chiave:</string>
     <string name="text_date_published">Data di pubblicazione: %1$s</string>
     <!-- Nutritions -->
     <string name="nutrition_calories">Calorie: %1$s</string>
@@ -85,7 +84,7 @@
     <string name="folder_pick_cancel" tools:ignore="MissingTranslation">Selezionatore cartelle chiuso dall\'utente.</string>
     <string name="folder_pick_success" tools:ignore="MissingTranslation">Cartella %1$s selezionata.</string>
     <string name="header_image_desc">Immagine di intestazione della ricetta</string>
-    <string name="text_tools"><strong>Strumenti necessari:</strong><br/> %1$s</string>
+    <string name="text_tools">Strumenti necessari:</string>
     <string name="permission_select_root" tools:ignore="MissingTranslation">Seleziona %1$s.</string>
     <string name="permission_ok_message" tools:ignore="MissingTranslation">L\'accesso all\'archivio è stato concesso per %1$s.</string>
     <string name="permission_warning_nowrite" tools:ignore="MissingTranslation">Non hai accesso in scrittura a questo archivio, quindi selezionare questa cartella è inutile.

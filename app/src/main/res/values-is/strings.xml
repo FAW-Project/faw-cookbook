@@ -9,11 +9,10 @@
     <string name="tooltip_total_time">Alls</string>
     <string name="tab_ingredients_title">Efni</string>
     <string name="tab_instructions_title">Leiðbeiningar</string>
-    <string name="text_categories"><strong> Flokkur: </strong> <br/> %1$s</string>
-    <string name="text_yield"><strong>Skila:</strong> %1$s</string>
-    <string name="text_author">Höfundur: %1$s</string>
-    <string name="text_url">Heimild: %1$s</string>
-    <string name="text_no_keywords">Engin orð.</string>
+    <string name="text_categories"> Flokkur:</string>
+    <string name="text_yield">Skila:</string>
+    <string name="text_author">Höfundur:</string>
+   <string name="text_no_keywords">Engin orð.</string>
     <string name="text_date_published">Dagsetningu út: %1$s</string>
     <string name="nutrition_calories">Hitaeiningar: %1$s</string>
     <string name="nutrition_carbohydrate_content">Kolvetni Efni: %1$s</string>
@@ -65,7 +64,7 @@
     <string name="app_logo_desc">Sjósetja táknið app að sýna matreiðslubók tákn</string>
     <string name="text_uncategorized">Óflokkað</string>
     <string name="permissions_error_message">Aðgangi hafnað! App þarft geymslu aðgang, vinsamlegast virkja í stillingar.</string>
-    <string name="text_keywords"><strong>Lykilorð:</strong><br/> %1$s</string>
+    <string name="text_keywords">Lykilorð:</string>
     <string name="form_exact_search">Gera nákvæma leit\?</string>
     <string name="menu_all_categories">Sýna öllum flokkum</string>
     <string name="about_summary">© 2020-2022 by MicMun. License under GPLv3.
@@ -79,7 +78,7 @@
     <string name="permission_ok_message" tools:ignore="MissingTranslation">Geymsluaðgangur hefur verið veittur fyrir %1$s.</string>
     <string name="permission_warning_nowrite" tools:ignore="MissingTranslation">Þú hefur engan skrifaðgang að þessari geymslu og því er gagnslaus að velja þessa möppu.
 \nViltu veita aðgang að þessari möppu \?.</string>
-    <string name="text_tools"><strong> Nauðsynleg verkfæri: </strong> <br/> %1$s</string>
+    <string name="text_tools"> Nauðsynleg verkfæri:</string>
     <string name="permission_select_root" tools:ignore="MissingTranslation">Veldu %1$s.</string>
     <string name="form_download_folder">Hunsa miða möppu</string>
     <string name="form_download_override_existing">Skipta núverandi uppskrift möppu</string>

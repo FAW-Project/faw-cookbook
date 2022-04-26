@@ -179,9 +179,10 @@ class MainActivity : AppCompatActivity() {
             }
          }
       }
+
+      SyncService().startServiceScheduling(applicationContext)
       updateProfilePicture()
       handleIntent(intent)
-      SyncService.startServiceScheduling(baseContext)
    }
 
    fun handleNavigationDrawerSelection(item: Int){
@@ -329,6 +330,7 @@ class MainActivity : AppCompatActivity() {
                   prefs.setRecipeDir(file.absolutePath)
                }
             }
+            PreferenceData.getInstance().setSyncServiceEnabled()
 
             updateProfilePicture();
             startService(Intent(this, SyncService::class.java))

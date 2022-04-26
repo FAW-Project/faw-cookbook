@@ -38,6 +38,8 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
 
    private lateinit var dirPreference: Preference
    private lateinit var themePreference: IntListPreference
+   private lateinit var syncPreference: IntListPreference
+   private lateinit var wifiOnlyPreference: Preference
 
    private val getContent = registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) {
       it?.let { uri ->
@@ -67,12 +69,16 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
       // find prefs
       dirPreference = findPreference(getString(R.string.prefkey_recipeDir))!!
       themePreference = findPreference(getString(R.string.prefkey_theme))!!
+      syncPreference = findPreference(getString(R.string.prefkey_enableSyncService))!!
+      wifiOnlyPreference = findPreference(getString(R.string.prefkey_sync_wifi_only))!!
       themePreference.summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
       val aboutPreference: Preference = findPreference(getString(R.string.prefkey_about))!!
 
       // change listener
       dirPreference.onPreferenceChangeListener = this
       themePreference.onPreferenceChangeListener = this
+      syncPreference.onPreferenceChangeListener = this
+      wifiOnlyPreference.onPreferenceChangeListener = this
 
       // click listener
       dirPreference.onPreferenceClickListener = this
@@ -103,6 +109,8 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
    override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
       when (preference) {
          dirPreference -> viewModel.setRecipeDirectory(newValue.toString())
+         syncPreference -> viewModel.setSyncServiceInterval(newValue.toString().toInt())
+         wifiOnlyPreference -> viewModel.setWifiOnly(newValue.toString().toBoolean())
          themePreference -> {
             viewModel.setTheme(newValue.toString().toInt())
             // recreate activity

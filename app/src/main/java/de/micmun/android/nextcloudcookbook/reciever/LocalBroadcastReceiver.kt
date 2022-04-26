@@ -3,27 +3,33 @@ package de.micmun.android.nextcloudcookbook.reciever
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService.Companion.SYNC_SERVICE_START_BROADCAST
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService.Companion.SYNC_SERVICE_UPDATE_BROADCAST
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService.Companion.SYNC_SERVICE_UPDATE_STATUS
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService.Companion.SYNC_SERVICE_UPDATE_STATUS_START
+import de.micmun.android.nextcloudcookbook.settings.PreferenceData
 import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeListFragment
+import de.micmun.android.nextcloudcookbook.util.WifiCheck
 
 
 class LocalBroadcastReceiver() : BroadcastReceiver() {
 
-   private val TAG = LocalBroadcastReceiver::class.toString()
+   companion object {
+      val TAG = LocalBroadcastReceiver::class.java.toString()
+   }
+
+   var mRecipeFragment: RecipeListFragment? = null
 
    constructor(recipeFragment: RecipeListFragment) : this() {
       mRecipeFragment = recipeFragment
    }
 
-   var mRecipeFragment: RecipeListFragment? = null
-
    override fun onReceive(context: Context?, intent: Intent?) {
       Log.d(TAG, "Intent Recieved")
+
       val action = intent!!.action
       if (action != null) {
          when (action) {
@@ -37,8 +43,14 @@ class LocalBroadcastReceiver() : BroadcastReceiver() {
             }
             SYNC_SERVICE_START_BROADCAST -> {
                if (context != null) {
-                  context.startService(Intent(context, SyncService::class.java))
-                  SyncService.startServiceScheduling(context)
+
+                  if(WifiCheck.isConnectedToWifi(context) || !PreferenceData.getInstance().isWifiOnly()){
+                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context.startForegroundService(Intent(context, SyncService::class.java))
+                     } else {
+                        context.startService(Intent(context, SyncService::class.java))
+                     }
+                  }
                }
             }
          }

@@ -107,6 +107,6 @@
     <string name="sync_service_channel_description">Kasutatakse retseptide sünkroonimisel esiplaani teavitamiseks</string>
     <string name="sync_service_notification_content">Uuendame praegu teie retsepte, tuleme varsti tagasi!</string>
     <string name="pref_category_sync">Sünkroonimine</string>
-    <string name="preftitle_enableSyncService">Retseptide sünkroonimine taustal</string>
+    <string name="pref_title_enableSyncService">Retseptide sünkroonimine taustal</string>
     <string name="prefkey_enableSyncService">sünkroonimisteenuselubamine</string>
 </resources>

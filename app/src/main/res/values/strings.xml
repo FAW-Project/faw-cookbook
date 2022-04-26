@@ -91,11 +91,16 @@
    <string name="dir_chooser_error">Error: Root folder is not allowed!</string>
    <string name="prefkey_theme" translatable="false">theme_setting</string>
    <string name="preftitle_theme">Select Theme</string>
-
    <string name="prefkey_about" translatable="false">app_about</string>
-   <string name="about_title">About</string>
-   <string name="about_version">App version: %1$s</string>
-   <string name="about_summary">© 2020-2022 by MicMun. License under GPLv3.\n\nNextcloud Cookbook is an app for cookbook on nextcloud to manage recipes.</string>
+
+   <string name="pref_summary_keep_screen_alive">Dont lock the screen when viewing a recipe</string>
+   <string name="pref_title_keep_screen_alive">Keep the screen alive</string>
+
+   <string name="pref_category_sync">Synchronisation</string>
+   <string name="pref_title_enableSyncService">Background Synchronisation</string>
+
+   <string name="pref_title_sync_wifi_only">Sync on Wifi only</string>
+   <string name="pref_summary_sync_wifi_only" >This disables syncing when the device is only connected via mobile data.</string>
 
    <string-array name="theme_values" translatable="false">
       <item>0</item>
@@ -122,6 +127,28 @@
    <string name="sort_value_date_desc">Date published descending</string>
    <string name="sort_value_time_asc">Total time ascending</string>
    <string name="sort_value_time_desc">Total time descending</string>
+
+
+   <string name="sync_interval_name_off">Off</string>
+   <string name="sync_interval_name_1">Every Hour</string>
+   <string name="sync_interval_name_4">Every 4 Hours</string>
+   <string name="sync_interval_name_6">Every 6 Hours</string>
+   <string name="sync_interval_name_12">Every 12 Hours</string>
+   <string name="sync_interval_name_24">Every 24 Hours</string>
+
+   <string-array name="sync_interval_values" translatable="false">
+      <item>0</item>
+      <item>1</item>
+      <item>4</item>
+      <item>6</item>
+      <item>12</item>
+      <item>24</item>
+   </string-array>
+
+   <string name="prefkey_keep_screen_alive" translatable="false">keep_screen_alive</string>
+   <string name="prefkey_sync_wifi_only" translatable="false">sync_wifi_only</string>
+   <string name="prefkey_enableSyncService" translatable="false">enableSyncService</string>
+
 
    <!-- permissions -->
    <string name="permission_granted" translatable="false">granted</string>
@@ -160,15 +187,14 @@
    <string name="label_source">Quelle:</string>
    <string name="recipe_no_timer">This Recipe does not have a timer!</string>
    <string name="search_in_all">Search...</string>
-   <string name="prefkey_keep_screen_alive" translatable="false">keep_screen_alive</string>
-   <string name="prefkey_keep_screen_alive_summary">Dont lock the screen when viewing a recipe</string>
-   <string name="prefkey_keep_screen_alive_title">Keep the screen alive</string>
    <string name="sync_service_channel_name">Sync Service</string>
    <string name="sync_service_channel_description">Used for foreground notfiication when syncing recipes</string>
    <string name="sync_service_notification_title">Sync Recipes</string>
-   <string name="sync_service_notification_content">We are currently updating your recipes, we\'ll be back shortly!</string>
-   <string name="preftitle_enableSyncService">Sync Recipes in the Background</string>
-   <string name="prefkey_enableSyncService">enableSyncService</string>
-   <string name="pref_category_sync">Synchronisation</string>
-    <string name="manage_accounts">Accountmanagement</string>
+   <string name="sync_service_notification_content">We are currently updating your recipes, we\'ll be back shortly! You may hide this notification in the notification settings.</string>
+   <string name="manage_accounts">Accountmanagement</string>
+
+   <!-- About -->
+   <string name="about_title">About</string>
+   <string name="about_version">App version: %1$s</string>
+   <string name="about_summary">© 2020-2022 by MicMun. License under GPLv3.\n\nNextcloud Cookbook is an app for cookbook on nextcloud to manage recipes.</string>
 </resources>

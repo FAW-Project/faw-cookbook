@@ -113,7 +113,7 @@
     <string name="copy_ing_message">Složky zkopírované do schránky.</string>
     <string name="sync_service_channel_name">Služba Sync</string>
     <string name="sync_service_notification_content">V současné době aktualizujeme vaše recepty, brzy se vrátíme!</string>
-    <string name="preftitle_enableSyncService">Synchronizace receptů na pozadí</string>
+    <string name="pref_title_enableSyncService">Synchronizace receptů na pozadí</string>
     <string name="pref_category_sync">Synchronizace</string>
     <string name="sync_service_notification_title">Synchronizace receptů</string>
     <string name="prefkey_enableSyncService">povolitSlužbuSync</string>

@@ -108,5 +108,5 @@
    <string name="sync_service_channel_name">Sinkronizazio Zerbitzua</string>
    <string name="sync_service_channel_description">Aurreko planoaren jakinarazpenerako erabiltzen da errezetak sinkronizatzean</string>
    <string name="sync_service_notification_content">Zure errezeta prestatzen ari gara, laster itzuliko gara!</string>
-   <string name="preftitle_enableSyncService">Sinkronizatu Errezeta Atzeko planoan</string>
+   <string name="pref_title_enableSyncService">Sinkronizatu Errezeta Atzeko planoan</string>
 </resources>

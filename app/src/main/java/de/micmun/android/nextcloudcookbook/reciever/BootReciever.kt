@@ -13,7 +13,7 @@ class BootReciever : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if(intent.action== Intent.ACTION_BOOT_COMPLETED){
             Log.d(TAG, "BootReciever: Started SyncScheduling!")
-            SyncService.startServiceScheduling(context)
+            SyncService().startServiceScheduling(context)
         }
     }
 }

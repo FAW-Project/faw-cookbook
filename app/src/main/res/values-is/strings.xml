@@ -103,7 +103,7 @@
     <string name="copy_ing_message">Efni afrita að klemmuspjald.</string>
     <string name="copy_ingredients">Afrit efni</string>
     <string name="sync_service_notification_title">Samstilling Uppskriftir</string>
-    <string name="preftitle_enableSyncService">Samstilling Uppskriftir Í Bakgrunni</string>
+    <string name="pref_title_enableSyncService">Samstilling Uppskriftir Í Bakgrunni</string>
     <string name="pref_category_sync">Samstilling</string>
     <string name="prefkey_enableSyncService">VirkjaSamstillingarþjónustu</string>
     <string name="sync_service_channel_name">Samstilla Þjónusta</string>

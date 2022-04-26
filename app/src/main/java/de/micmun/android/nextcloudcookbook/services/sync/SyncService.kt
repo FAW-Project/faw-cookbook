@@ -13,6 +13,7 @@ import de.micmun.android.nextcloudcookbook.nextcloudapi.Accounts
 import de.micmun.android.nextcloudcookbook.nextcloudapi.Sync
 import de.micmun.android.nextcloudcookbook.notifications.NotificationChannelManager
 import de.micmun.android.nextcloudcookbook.notifications.NotificationChannelManager.Companion.SYNC_SERVICE_NOTIFICATION_ID
+import de.micmun.android.nextcloudcookbook.reciever.LocalBroadcastReceiver
 import de.micmun.android.nextcloudcookbook.settings.PreferenceData
 import java.util.*
 import java.util.concurrent.Executors
@@ -20,46 +21,50 @@ import java.util.concurrent.Executors
 
 class SyncService : IntentService("SyncService") {
 
-   private var mLocalBroadcastManager = LocalBroadcastManager.getInstance(this)
-
    companion object {
       val TAG = SyncService::class.java.toString()
+      private const val SECOND = 1000
+      private const val MINUTE = SECOND * 60
+      private const val HOUR = MINUTE * 60
+      private const val PENDINGINTENT_ID = 33559911
+
       const val SYNC_SERVICE_START_BROADCAST = "SYNC_SERVICE_START_BROADCAST"
       const val SYNC_SERVICE_UPDATE_BROADCAST = "SYNC_SERVICE_UPDATE_BROADCAST"
       const val SYNC_SERVICE_UPDATE_STATUS = "SYNC_SERVICE_UPDATE_STATUS"
       const val SYNC_SERVICE_UPDATE_STATUS_START = "SYNC_SERVICE_UPDATE_STATUS_START"
       const val SYNC_SERVICE_UPDATE_STATUS_END = "SYNC_SERVICE_UPDATE_STATUS_END"
-      private const val SYNC_INTERVAL_MINUTES = 24 * 60
+      const val SYNC_SERVICE_INTERVAL_DEFAULT = 24
+      const val SYNC_SERVICE_WIFI_ONLY_DEFAULT = true
+   }
 
-      fun startServiceScheduling(context: Context) {
+   fun startServiceScheduling(context: Context) {
 
-         if (Accounts(context).getCurrentAccount() == null) {
-            //no sso, dont schedule
-            return
-         }
-
-         if (!PreferenceData.getInstance().isSyncServiceEnabled()) {
-            // Sync disabled. Dont schedule.
-            return
-         }
-
-         val myIntent = Intent(context.applicationContext, SyncService::class.java)
-         val pendingIntent = PendingIntent.getService(context, 0, myIntent, PendingIntent.FLAG_IMMUTABLE)
-
-         val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
-         val calendar: Calendar = Calendar.getInstance()
-         calendar.timeInMillis = System.currentTimeMillis()
-         calendar.set(Calendar.SECOND, 0)
-         calendar.set(Calendar.MINUTE, 0)
-         calendar.set(Calendar.HOUR_OF_DAY, 1)
-         alarmManager.cancel(pendingIntent)
-         alarmManager.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            (1000 * 60 * SYNC_INTERVAL_MINUTES).toLong(),
-            pendingIntent
-         )
+      if (Accounts(context).getCurrentAccount() == null) {
+         //no sso, dont schedule
+         return
       }
+
+      if (!PreferenceData.getInstance().isSyncServiceEnabled()) {
+         // Sync disabled. Dont schedule.
+         return
+      }
+
+      val broadcastIntent = Intent(context, LocalBroadcastReceiver::class.java)
+      broadcastIntent.action = SYNC_SERVICE_START_BROADCAST
+      val pendingIntent = PendingIntent.getBroadcast(context, PENDINGINTENT_ID, broadcastIntent, PendingIntent.FLAG_IMMUTABLE)
+
+      val interval = PreferenceData.getInstance().getSyncServiceInterval()
+      val rightNow = Calendar.getInstance()
+      rightNow.set(Calendar.MINUTE, 0)
+      rightNow.add(Calendar.HOUR, 1)
+
+      val alarms = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+      alarms.setRepeating(
+         AlarmManager.RTC_WAKEUP,
+         rightNow.timeInMillis,
+         (HOUR * interval).toLong(),
+         pendingIntent
+      )
    }
 
    @Deprecated("Deprecated in Java")
@@ -112,13 +117,13 @@ class SyncService : IntentService("SyncService") {
    private fun sendSyncStartEvent() {
       val intent = Intent(SYNC_SERVICE_UPDATE_BROADCAST)
       intent.putExtra(SYNC_SERVICE_UPDATE_STATUS, SYNC_SERVICE_UPDATE_STATUS_START)
-      mLocalBroadcastManager.sendBroadcast(intent)
+      LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
 
    }
 
    private fun sendSyncEndEvent() {
       val intent = Intent(SYNC_SERVICE_UPDATE_BROADCAST)
       intent.putExtra(SYNC_SERVICE_UPDATE_STATUS, SYNC_SERVICE_UPDATE_STATUS_END)
-      mLocalBroadcastManager.sendBroadcast(intent)
+      LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
    }
 }

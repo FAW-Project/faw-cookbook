@@ -105,7 +105,7 @@
     <string name="sync_service_channel_name">Synkronointipalvelu</string>
     <string name="sync_service_channel_description">Käytetään tulosilmoitukseen reseptejä synkronoitaessa</string>
     <string name="sync_service_notification_title">Synkronoi Reseptit</string>
-    <string name="preftitle_enableSyncService">Synkronoi Reseptit taustalla</string>
+    <string name="pref_title_enableSyncService">Synkronoi Reseptit taustalla</string>
     <string name="pref_category_sync">Synkronointi</string>
     <string name="prefkey_enableSyncService">mahdollistasyncservice</string>
     <string name="sync_service_notification_content">Päivitämme parhaillaan reseptejäsi, palaamme pian!</string>

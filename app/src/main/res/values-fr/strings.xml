@@ -111,7 +111,7 @@
     <string name="dir_chooser_error">Erreur : Le dossier racine n\'est pas autorisé !</string>
     <string name="copy_ing_message">Ingrédients copiés dans le presse-papiers.</string>
     <string name="copy_ingredients">Copier les ingrédients</string>
-    <string name="preftitle_enableSyncService">Synchroniser les recettes en arrière-plan</string>
+    <string name="pref_title_enableSyncService">Synchroniser les recettes en arrière-plan</string>
     <string name="pref_category_sync">Synchronicité</string>
     <string name="prefkey_enableSyncService">activerServiceSync</string>
     <string name="sync_service_channel_name">Service de Synchronisation</string>

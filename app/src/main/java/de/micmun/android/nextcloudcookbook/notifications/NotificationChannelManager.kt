@@ -42,6 +42,7 @@ class NotificationChannelManager {
             .setContentTitle(context.getString(R.string.sync_service_notification_title))
             .setContentText(context.getString(R.string.sync_service_notification_content))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(context.getString(R.string.sync_service_notification_content)))
             .setAutoCancel(true)
       }
 

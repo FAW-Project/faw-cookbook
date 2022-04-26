@@ -104,7 +104,7 @@
     <string name="copy_ing_message">Ingredienser kopieret til udklipsholderen.</string>
     <string name="sync_service_notification_title">Synkroniser opskrifter</string>
     <string name="sync_service_notification_content">Vi er i øjeblikket ved at opdatere dine opskrifter, vi vender tilbage om kort tid!</string>
-    <string name="preftitle_enableSyncService">Synkroniser opskrifter i baggrunden</string>
+    <string name="pref_title_enableSyncService">Synkroniser opskrifter i baggrunden</string>
     <string name="prefkey_enableSyncService">aktivereSynkroniseringstjenesten</string>
     <string name="pref_category_sync">Synkronisering</string>
     <string name="sync_service_channel_name">Synkroniseringstjeneste</string>

@@ -14,6 +14,7 @@ import de.micmun.android.nextcloudcookbook.MainApplication
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService.Companion.SYNC_SERVICE_INTERVAL_DEFAULT
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService.Companion.SYNC_SERVICE_WIFI_ONLY_DEFAULT
+import de.micmun.android.nextcloudcookbook.ui.MainActivity.Companion.THEME_PREFERENCE_DEFAULT
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -77,17 +78,17 @@ class PreferenceData private constructor() {
    fun getTheme(): Flow<Int> {
       return MainApplication.AppContext.dataStore.data
          .map { preferences ->
-            preferences[themeKey] ?: 0
+            preferences[themeKey] ?: THEME_PREFERENCE_DEFAULT
          }
    }
 
    fun getThemeSync(): Int {
-      var theme = 0
+      var theme = THEME_PREFERENCE_DEFAULT
 
       runBlocking {
          theme = MainApplication.AppContext.dataStore.data
             .map { preferences ->
-               preferences[themeKey] ?: 0
+               preferences[themeKey] ?: THEME_PREFERENCE_DEFAULT
             }
             .first()
       }
@@ -122,17 +123,17 @@ class PreferenceData private constructor() {
    }
 
    fun isSyncServiceEnabled(): Boolean {
-      if(getSyncServiceInterval() > 0) {
+      if (getSyncServiceInterval() > 0) {
          return true
       }
       return false
    }
 
-   fun setSyncServiceEnabled(){
+   fun setSyncServiceEnabled() {
       setSyncServiceInterval(SYNC_SERVICE_INTERVAL_DEFAULT)
    }
 
-   fun setSyncServiceInterval(interval: Int){
+   fun setSyncServiceInterval(interval: Int) {
       runBlocking {
          MainApplication.AppContext.dataStore.edit { preferences ->
             preferences[isSyncServiceEnabled] = interval
@@ -141,7 +142,7 @@ class PreferenceData private constructor() {
       }
    }
 
-   fun setWifiOnly(enable: Boolean){
+   fun setWifiOnly(enable: Boolean) {
       runBlocking {
          MainApplication.AppContext.dataStore.edit { preferences ->
             preferences[isSyncWifiOnly] = enable
@@ -204,7 +205,6 @@ class PreferenceData private constructor() {
 
       return keepAlive
    }
-
 
    /**
     * Migrates the current sharedPreferences to Datastore.

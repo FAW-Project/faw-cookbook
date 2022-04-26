@@ -92,10 +92,6 @@
           android:id="@+id/ingredientsView"
           android:layout_width="match_parent"
           android:layout_height="0dp"
-          android:layout_marginStart="32dp"
-          android:layout_marginTop="16dp"
-          android:layout_marginEnd="32dp"
-          android:layout_marginBottom="16dp"
           android:orientation="vertical"
           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
           app:layout_constraintBottom_toBottomOf="parent"
@@ -105,16 +101,17 @@
           app:layout_constraintTop_toBottomOf="@id/servingsLayout" />
 
       <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/cpIngredientsBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:contentDescription="@string/copy_ingredients"
-            android:src="@drawable/ic_content_copy"
-            app:layout_constraintBottom_toBottomOf="@id/ingredientsView"
-            app:layout_constraintEnd_toEndOf="@id/ingredientsView" />
+          android:id="@+id/cpIngredientsBtn"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end|bottom"
+          android:layout_marginEnd="32dp"
+          android:layout_marginBottom="32dp"
+          android:contentDescription="@string/copy_ingredients"
+          android:src="@drawable/ic_content_copy"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:tint="@color/textColorLight" />
 
    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

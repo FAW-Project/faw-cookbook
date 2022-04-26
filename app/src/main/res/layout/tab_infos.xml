@@ -29,14 +29,15 @@
                android:layout_height="wrap_content"
                android:adjustViewBounds="true"
                android:contentDescription="Header image"
-               android:paddingLeft="72dp"
-               android:paddingRight="72dp"
+               android:paddingLeft="100dp"
+               android:paddingTop="20dp"
+               android:paddingRight="80dp"
                android:scaleType="centerCrop"
                app:layout_constraintEnd_toEndOf="parent"
                app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintTop_toTopOf="parent"
                app:recipeHeaderImage="@{recipe}"
-               app:srcCompat="@drawable/ic_food"
+               app:srcCompat="@drawable/kettle_steam"
                tools:ignore="HardcodedText" />
 
          <TextView

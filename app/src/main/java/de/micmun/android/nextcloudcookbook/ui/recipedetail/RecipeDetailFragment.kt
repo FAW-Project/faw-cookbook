@@ -1,6 +1,8 @@
 package de.micmun.android.nextcloudcookbook.ui.recipedetail
 
+import android.content.Context
 import android.os.Bundle
+import android.os.PowerManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,10 +25,7 @@ import de.micmun.android.nextcloudcookbook.settings.PreferenceData
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
 import de.micmun.android.nextcloudcookbook.ui.MainActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+
 
 /**
  * Fragment for detail of a recipe.
@@ -93,20 +92,19 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
       var parent = (activity as MainActivity?)!!
       binding.backButton.setOnClickListener {
          requireActivity().onBackPressed()
-         parent.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+         allowScreenSleep()
       }
 
       parent.showToolbar(false)
 
-      if(PreferenceData.getInstance().getScreenKeepalive()){
-         parent.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-      }
+      keepScreenAlive()
 
       return binding.root
    }
 
    override fun onStop() {
       (activity as MainActivity?)!!.showToolbar(true)
+      allowScreenSleep()
       super.onStop()
    }
    /**
@@ -138,21 +136,6 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
             }
          }
       }.attach()
-
-      binding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-         override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            currentPage = position
-
-            val type = adapter!!.getItemViewType(position)
-
-            if (type == ViewPagerAdapter.TYPE_INSTRUCTIONS || type == ViewPagerAdapter.TYPE_INGRED_AND_INSTRUCT) {
-               activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            } else {
-               activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-            }
-         }
-      })
    }
 
    override fun onSaveInstanceState(outState: Bundle) {
@@ -161,12 +144,13 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
    }
 
    override fun onPause() {
-      activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
       super.onPause()
+      allowScreenSleep()
    }
 
    override fun onResume() {
       super.onResume()
+      keepScreenAlive()
       (activity as MainActivity?)!!.showToolbar(false)
       if (adapter != null) {
          val type = adapter!!.getItemViewType(currentPage)
@@ -197,5 +181,16 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
      } else {
         Toast.makeText(requireContext(), getString(R.string.recipe_no_timer), Toast.LENGTH_SHORT).show()
      }
+   }
+
+   private fun keepScreenAlive() {
+      if(PreferenceData.getInstance().getScreenKeepalive()){
+         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+      }
+   }
+   private fun allowScreenSleep() {
+      if(PreferenceData.getInstance().getScreenKeepalive()){
+         activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+      }
    }
 }

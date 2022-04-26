@@ -29,7 +29,6 @@
    <string name="text_categories">Category:</string>
    <string name="text_yield">Yield:</string>
    <string name="text_author">Author:</string>
-   <string name="text_url">Source:</string>
    <string name="text_no_keywords">No keywords.</string>
    <string name="text_keywords">Keywords:</string>
    <string name="text_date_published">Date published: %1$s</string>

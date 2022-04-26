@@ -5,14 +5,12 @@
  */
 package de.micmun.android.nextcloudcookbook.ui
 
-import android.content.res.TypedArray
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Build
-import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.BindingAdapter
 import com.anggrayudi.storage.extension.launchOnUiThread
 import com.anggrayudi.storage.file.getAbsolutePath
@@ -30,7 +28,7 @@ import java.util.stream.Collectors
  * Utilities for binding data to view.
  *
  * @author MicMun
- * @version 2.5, 27.11.21
+ * @version 2.6, 23.04.22
  */
 
 // Overview list
@@ -44,7 +42,7 @@ fun ImageView.setRecipeImage(item: DbRecipePreview?) {
          // required, because internal storage may contain special chars that are
          // encoded and will result in unreadable images
          var img = item.thumbImageUrl
-         if(img.startsWith("file://${context.filesDir}")){
+         if (img.startsWith("file://${context.filesDir}")) {
             img = img.replace("file://", "")
             img = URLDecoder.decode(img, "UTF-8")
             setImageURI(Uri.fromFile(File(img)))
@@ -90,11 +88,11 @@ fun ImageView.setRecipeHeaderImage(item: DbRecipe?) {
       if (recipeCore.fullImageUrl.isEmpty()) {
          setImageURI(null)
       } else {
-         setPadding(0,0,0,0)
+         setPadding(0, 0, 0, 0)
          // required, because internal storage may contain special chars that are
          // encoded and will result in unreadable images
          var img = recipeCore.fullImageUrl
-         if(img.startsWith("file://${context.filesDir}")){
+         if (img.startsWith("file://${context.filesDir}")) {
             img = img.replace("file://", "")
             img = URLDecoder.decode(img, "UTF-8")
             setImageURI(Uri.fromFile(File(img)))
@@ -133,13 +131,14 @@ fun TextView.setPrepTime(item: DbRecipe?) {
    }
 }
 
+@SuppressLint("SetTextI18n")
 @BindingAdapter("recipeCookTime")
 fun TextView.setCookTime(item: DbRecipe?) {
    item?.let {
-      if (it.recipeCore.cookTime.isEmpty()){
-         text = "00:00"
+      text = if (it.recipeCore.cookTime.isEmpty()) {
+         "00:00"
       } else {
-         text = DurationUtils.formatStringToDuration(it.recipeCore.cookTime)
+         DurationUtils.formatStringToDuration(it.recipeCore.cookTime)
       }
       // timer icon
       setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_timer, 0, 0, 0)
@@ -222,11 +221,11 @@ fun TextView.setRecipeYield(item: DbRecipe?) {
 
 @BindingAdapter("recipeTools")
 fun TextView.setTools(item: DbRecipe?) {
-   item?.let {
-      if (it.tool.isNullOrEmpty()) {
+   item?.let { recipe ->
+      if (recipe.tool.isNullOrEmpty()) {
          visibility = View.GONE
       } else {
-         val tools = it.tool.stream().map { it.tool }.collect(Collectors.toList()).joinToString(", ")
+         val tools = recipe.tool.stream().map { it.tool }.collect(Collectors.toList()).joinToString(", ")
 
          @Suppress("DEPRECATION")
          text = tools

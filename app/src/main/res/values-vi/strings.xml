@@ -11,11 +11,10 @@
     <string name="tab_ingredients_title">Nguyên liệu</string>
     <string name="tab_nutritions_title">Dinh dưỡng</string>
     <string name="text_uncategorized">Chưa phân loại</string>
-    <string name="text_categories"><strong>Thể loại:</strong><br/> %1$s</string>
-    <string name="text_author">Tác giả: %1$s</string>
-    <string name="text_url">Nguồn: %1$s</string>
-    <string name="text_no_keywords">Không có từ khoá.</string>
-    <string name="text_keywords"><strong>Từ khoá:</strong><br/> %1$s</string>
+    <string name="text_categories">Thể loại:</string>
+    <string name="text_author">Tác giả:</string>
+   <string name="text_no_keywords">Không có từ khoá.</string>
+    <string name="text_keywords">Từ khoá:</string>
     <string name="text_date_published">Ngày xuất bản: %1$s</string>
     <string name="nutrition_calories">Calo: %1$s</string>
     <string name="nutrition_carbohydrate_content">Cacbohiđrat: %1$s</string>
@@ -63,11 +62,11 @@
     <string name="folder_pick_cancel" tools:ignore="MissingTranslation">Trình chọn thư mục đã bị người dùng huỷ.</string>
     <string name="folder_pick_success" tools:ignore="MissingTranslation">Đã chọn thư mục %1$s.</string>
     <string name="app_logo_desc">Biểu tượng ứng dụng trên launcher hiển thị một biểu tượng quyển sách nấu ăn</string>
-    <string name="text_tools"><strong>Công cụ cần thiết:</strong><br/> %1$s</string>
+    <string name="text_tools">Công cụ cần thiết:</string>
     <string name="empty_list">Không có công thức.</string>
     <string name="tab_instructions_title">Hướng dẫn</string>
     <string name="nutrition_unsaturated_fat_content">Chất béo không bão hoà: %1$s</string>
-    <string name="text_yield"><strong>Khẩu phần:</strong> %1$s</string>
+    <string name="text_yield">Khẩu phần:</string>
     <string name="menu_sort_title">Sắp xếp</string>
     <string name="form_search_title">Tìm kiếm nâng cao</string>
     <string name="form_type_ingredients">Tìm kiếm theo nguyên liệu</string>

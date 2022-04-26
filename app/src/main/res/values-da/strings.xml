@@ -11,11 +11,10 @@
     <string name="tab_info_title">Info</string>
     <string name="tab_nutritions_title">Ernæring</string>
     <string name="text_uncategorized">Ikke kategoriseret</string>
-    <string name="text_yield"><strong>Udbytte:</strong> %1$s</string>
-    <string name="text_author">Forfatter: %1$s</string>
-    <string name="text_url">Kilde: %1$s</string>
-    <string name="text_no_keywords">Ingen søgeord.</string>
-    <string name="text_keywords"><strong>nøgleord:</strong><br/> %1$s</string>
+    <string name="text_yield">Udbytte:</string>
+    <string name="text_author">Forfatter:</string>
+   <string name="text_no_keywords">Ingen søgeord.</string>
+    <string name="text_keywords">nøgleord:</string>
     <string name="text_date_published">Dato offentliggjort: %1$s</string>
     <string name="nutrition_calories">Kalorier: %1$s</string>
     <string name="nutrition_cholesterol_content">Kolesterolindhold: %1$s</string>
@@ -54,7 +53,7 @@
     <string name="permissions_error_message">Adgang nægtet! App har brug for lageradgang, skal du aktivere i indstillingerne.</string>
     <string name="tooltip_cook_time">Madlavning</string>
     <string name="tab_instructions_title">Vejledning</string>
-    <string name="text_categories"><strong> Kategori: </strong> <br/> %1$s</string>
+    <string name="text_categories"> Kategori:</string>
     <string name="nutrition_carbohydrate_content">Kulhydratindhold: %1$s</string>
     <string name="nutrition_trans_fat_content">Transfedtindhold: %1$s</string>
     <string name="form_search_title">Avanceret Søgning</string>
@@ -78,7 +77,7 @@
     <string name="permission_ok_message" tools:ignore="MissingTranslation">Der er blevet givet lageradgang til %1$s.</string>
     <string name="permission_canceled" tools:ignore="MissingTranslation">Aflyst af brugeren</string>
     <string name="permission_select_root" tools:ignore="MissingTranslation">Vælg venligst %1$s.</string>
-    <string name="text_tools"><strong>Nødvendigt værktøj:</strong><br/> %1$s</string>
+    <string name="text_tools">Nødvendigt værktøj:</string>
     <string name="folder_pick_success" tools:ignore="MissingTranslation">Mappe %1$s valgt.</string>
     <string name="folder_pick_cancel" tools:ignore="MissingTranslation">Mappevælgeren er annulleret af brugeren.</string>
     <string name="form_download_title">Hent opskrift</string>

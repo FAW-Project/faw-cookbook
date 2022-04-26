@@ -198,8 +198,8 @@ class DbRecipeRepository private constructor(application: Application) {
 
    private fun getOrderBy(sort: SortValue): String {
       return "starred DESC, " + when (sort) {
-         SortValue.NAME_A_Z -> "name asc"
-         SortValue.NAME_Z_A -> "name desc"
+         SortValue.NAME_A_Z -> "LOWER(name) asc"
+         SortValue.NAME_Z_A -> "LOWER(name) desc"
          SortValue.DATE_ASC -> "datePublished asc"
          SortValue.DATE_DESC -> "datePublished desc"
          SortValue.TOTAL_TIME_ASC -> "totalTime asc"

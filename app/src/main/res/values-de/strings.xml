@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="no_information">Keine Angabe.</string>
     <string name="app_logo_desc">Launcher-Icon der App zeigt ein Kochbuch-Symbol</string>
     <!-- recipe list -->
@@ -7,7 +7,6 @@
     <string name="recipe_list_image_desc">Bildvorschau des Rezepts</string>
     <!-- recipe detail -->
     <string name="img_desc_logo">Logo des Rezepts</string>
-    <string name="list_symbol">•</string>
     <string name="title_duration">Dauer in HH:MM</string>
     <string name="tooltip_prep_time">Vorbereitung</string>
     <string name="tooltip_cook_time">Kochen</string>
@@ -20,14 +19,13 @@
     <!-- tab infos -->
     <string name="header_image_desc">Header-Bild des Rezepts</string>
     <string name="text_uncategorized">Unkategorisiert</string>
-    <string name="text_categories"><![CDATA[<strong>Kategorie:</strong><br/> ]]> %1$s</string>
-    <string name="text_yield"><![CDATA[<strong>Portionen:</strong>]]> %1$s</string>
-    <string name="text_author">Autor: %1$s</string>
-    <string name="text_url">Quelle: %1$s</string>
+    <string name="text_categories">Kategorie:</string>
+    <string name="text_yield">Portionen:</string>
+    <string name="text_author">Autor:</string>
     <string name="text_no_keywords">Keine Schlüsselwörter.</string>
-    <string name="text_keywords"><![CDATA[<strong>Schlüsselwörter:</strong><br/> ]]> %1$s</string>
+    <string name="text_keywords">Schlüsselwörter:</string>
     <string name="text_date_published">Veröffentlichungsdatum: %1$s</string>
-    <string name="text_tools"><![CDATA[<strong>Benötigte Werkzeuge:</strong><br/> ]]> %1$s</string>
+    <string name="text_tools">Benötigte Werkzeuge:</string>
     <!-- Nutritions -->
     <string name="nutrition_calories">Kalorien: %1$s</string>
     <string name="nutrition_carbohydrate_content">Kohlenhydratgehalt: %1$s</string>
@@ -73,7 +71,7 @@
     <string name="preftitle_theme">Wähle ein Theme</string>
     <string name="about_title">Über</string>
     <string name="about_version">Anwendungsversion: %1$s</string>
-    <string name="about_summary">© 2020-2022 by MicMun. Lizenziert unter GPLv3.\n\nNextcloud Cookbook ist eine App für Cookbook auf Nextcloud (ein Kochbuch für Nextcloud), um Rezepte zu verwalten.</string>
+    <string name="about_summary" tools:ignore="TypographyDashes">© 2020-2022 by MicMun. Lizenziert unter GPLv3.\n\nNextcloud Cookbook ist eine App für Cookbook auf Nextcloud (ein Kochbuch für Nextcloud), um Rezepte zu verwalten.</string>
     <string name="theme_name_light">Hell</string>
     <string name="theme_name_dark">Dunkel</string>
     <string name="theme_name_system">System</string>

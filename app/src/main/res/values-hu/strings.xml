@@ -19,12 +19,11 @@
     <string name="tab_nutritions_title">Táplálékok</string>
     <!-- tab infos -->
     <string name="text_uncategorized">Nem kategorizált</string>
-    <string name="text_categories"><strong> Kategória: </strong> <br/> %1$s</string>
-    <string name="text_yield"><strong>hozam:</strong> %1$s</string>
-    <string name="text_author">Szerző: %1$s</string>
-    <string name="text_url">Forrás: %1$s</string>
-    <string name="text_no_keywords">Nincsenek Kulcsszavak.</string>
-    <string name="text_keywords"><strong>kulcsszavak:</strong><br/> %1$s</string>
+    <string name="text_categories"> Kategória:</string>
+    <string name="text_yield">hozam:</string>
+    <string name="text_author">Szerző:</string>
+   <string name="text_no_keywords">Nincsenek Kulcsszavak.</string>
+    <string name="text_keywords">kulcsszavak:</string>
     <string name="text_date_published">Megjelenési dátum: %1$s</string>
     <!-- Nutritions -->
     <string name="nutrition_calories">Kalória: %1$s</string>
@@ -80,7 +79,7 @@
     <string name="sort_value_date_desc">Megjelent dátum csökkenő</string>
     <string name="sort_value_time_asc">Teljes idő növekvő</string>
     <string name="sort_value_time_desc">Teljes idő csökkenő</string>
-    <string name="text_tools"><strong> Szükséges eszközök: </strong> <br/> %1$s</string>
+    <string name="text_tools"> Szükséges eszközök:</string>
     <string name="header_image_desc">A recept fejlécképe</string>
     <string name="permission_please_grant" tools:ignore="MissingTranslation">Adjon meg tárolási engedélyeket.</string>
     <string name="permission_canceled" tools:ignore="MissingTranslation">Felhasználó törölte</string>

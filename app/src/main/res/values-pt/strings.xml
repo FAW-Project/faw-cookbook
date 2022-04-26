@@ -10,14 +10,13 @@
     <string name="tab_ingredients_title">Componente</string>
     <string name="tab_instructions_title">Instrucao</string>
     <string name="tab_nutritions_title">Nutricao</string>
-    <string name="text_author">Autor: %1$s</string>
-    <string name="text_url">Fonte: %1$s</string>
-    <string name="text_no_keywords">Sem palavras-chave.</string>
+    <string name="text_author">Autor:</string>
+   <string name="text_no_keywords">Sem palavras-chave.</string>
     <string name="tooltip_total_time">completo</string>
     <string name="tab_info_title">Informações</string>
     <string name="text_uncategorized">Categoria</string>
-    <string name="text_categories"><strong>Categoria:</strong><br/> %1$s</string>
-    <string name="text_yield"><strong>Rendimento:</strong> %1$s</string>
+    <string name="text_categories">Categoria:</string>
+    <string name="text_yield">Rendimento:</string>
     <string name="text_date_published">Data publicação: %1$s</string>
     <string name="nutrition_calories">Calorias: %1$s</string>
     <string name="nutrition_cholesterol_content">Conteúdo colesterol: %1$s</string>
@@ -64,14 +63,14 @@
     <string name="form_types">Digite para pesquisar</string>
     <string name="img_desc_logo">Logótipo da receita</string>
     <string name="form_search_options">Opções de procura</string>
-    <string name="text_keywords"><strong>Palavras-chave:</strong> <br/>%1$s</string>
+    <string name="text_keywords">Palavras-chave:</string>
     <string name="menu_all_categories">Mostrar todas as categorias</string>
     <string name="nutrition_carbohydrate_content">Conteúdo carboidratos: %1$s</string>
     <string name="nutrition_fiberContent">Conteúdo de fibra: %1$s</string>
     <string name="about_summary">© 2020-2022 por MicMun. Licença ao abrigo da GPLv3.
 \n
 \nNextcloud Cookbook é uma aplicação para livros de receitas na nextcloud para gerir receitas.</string>
-    <string name="text_tools"><strong>Ferramentas de alimentação:</strong><br/> %1$s</string>
+    <string name="text_tools">Ferramentas de alimentação:</string>
     <string name="header_image_desc">Imagem do cabeçalho da receita</string>
     <string name="permission_canceled" tools:ignore="MissingTranslation">Cancelado pelo utilizador</string>
     <string name="permission_select_root" tools:ignore="MissingTranslation">Por favor seleccione %1$s.</string>

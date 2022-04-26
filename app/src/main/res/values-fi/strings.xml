@@ -11,11 +11,10 @@
     <string name="tab_instructions_title">Ohje</string>
     <string name="tab_nutritions_title">Ravitsemus</string>
     <string name="text_uncategorized">Luokittelematon</string>
-    <string name="text_categories"><strong> Luokka: </strong> <br/> %1$s</string>
-    <string name="text_yield"><strong>Tuotto:</strong> %1$s</string>
-    <string name="text_author">Kirjoittaja: %1$s</string>
-    <string name="text_url">Lähde: %1$s</string>
-    <string name="text_keywords"><strong>avainsanat:</strong> <br/> %1$s</string>
+    <string name="text_categories"> Luokka:</string>
+    <string name="text_yield">Tuotto:</string>
+    <string name="text_author">Kirjoittaja:</string>
+   <string name="text_keywords">avainsanat:</string>
     <string name="text_date_published">Julkaistu: %1$s</string>
     <string name="nutrition_calories">Kalorit: %1$s</string>
     <string name="nutrition_cholesterol_content">Kolesterolipitoisuus: %1$s</string>
@@ -71,7 +70,7 @@
     <string name="about_summary">© 2020-2022 MicMun. Lisenssin GPLv3.
 \n
 \nNextcloud keittokirja on sovellus keittokirja nextcloud hallita reseptejä.</string>
-    <string name="text_tools"><strong>Tarvittavat työkalut:</strong><br/> %1$s</string>
+    <string name="text_tools">Tarvittavat työkalut:</string>
     <string name="header_image_desc">Reseptin otsikkokuva</string>
     <string name="folder_pick_success" tools:ignore="MissingTranslation">Kansio %1$s valittu.</string>
     <string name="folder_pick_cancel" tools:ignore="MissingTranslation">Käyttäjä peruuttaa kansiovalinnan.</string>

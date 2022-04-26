@@ -19,13 +19,13 @@ import de.micmun.android.nextcloudcookbook.db.model.*
 @Dao
 interface RecipeDataDao {
    @Transaction
-   @Query("SELECT ${DbRecipePreview.DbFields} FROM recipes ORDER BY starred DESC, name ASC")
+   @Query("SELECT ${DbRecipePreview.DbFields} FROM recipes ORDER BY starred DESC, LOWER(name) ASC")
    fun getAllRecipePreviews(): LiveData<List<DbRecipePreview>>
 
    @Transaction
    @Query("SELECT ${DbRecipePreview.DbFields} FROM recipes ORDER BY starred DESC, " +
-          "CASE WHEN :isAsc = 1 THEN name END ASC," +
-          "CASE WHEN :isAsc = 0 THEN name END DESC")
+          "CASE WHEN :isAsc = 1 THEN LOWER(name) END ASC," +
+          "CASE WHEN :isAsc = 0 THEN LOWER(name) END DESC")
    fun sortByName(isAsc: Boolean): LiveData<List<DbRecipePreview>>
 
    @Transaction

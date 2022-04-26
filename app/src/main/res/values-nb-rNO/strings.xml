@@ -14,8 +14,7 @@
     <string name="header_image_desc">Overskriftsbilde av oppskrift</string>
     <string name="text_uncategorized">Ukategorisert</string>
     <string name="text_no_keywords">Ingen nøkkelord.</string>
-    <string name="text_url">Kilde: %1$s</string>
-    <string name="text_date_published">Publiseringsdato: %1$s</string>
+   <string name="text_date_published">Publiseringsdato: %1$s</string>
     <string name="nutrition_calories">Kalorier: %1$s</string>
     <string name="nutrition_carbohydrate_content">Sukkerarter: %1$s</string>
     <string name="nutrition_cholesterol_content">Kolesterolinnhold: %1$s</string>
@@ -30,7 +29,7 @@
     <string name="nutrition_unsaturated_fat_content">Umettet fettinhold: %1$s</string>
     <string name="menu_settings_title">Innstillinger</string>
     <string name="menu_sort_title">Sorter</string>
-    <string name="text_yield"><strong>Utbytte:</strong> %1$s</string>
+    <string name="text_yield">Utbytte:</string>
     <string name="menu_refresh_tooltip">Gjenoppfrisk oppskrifter</string>
     <string name="menu_search_tooltip">Søk etter oppskrift</string>
     <string name="menu_download_tooltip">last ned oppskrift</string>
@@ -78,14 +77,14 @@
     <string name="permissions_error_message">Ingen tilgang! Appen trenger lagring tilgang, kan du aktivere innstillingene.</string>
     <string name="app_logo_desc">Oppstarter-ikon for programmet som viser et kokeboksymbol</string>
     <string name="title_duration">Varighet i TT:MM</string>
-    <string name="text_author">Forfatter: %1$s</string>
-    <string name="text_keywords"><strong>Nøkkelord:</strong><br/> %1$s</string>
-    <string name="text_tools"><strong>Nødvendige remedier:</strong><br/> %1$s</string>
+    <string name="text_author">Forfatter:</string>
+    <string name="text_keywords">Nøkkelord:</string>
+    <string name="text_tools">Nødvendige remedier:</string>
     <string name="nutrition_sugar_content">Sukkerinnhold: %1$s</string>
     <string name="menu_download_title">Last ned</string>
     <string name="preftitle_recipeDir">Oppskriftsmappe</string>
     <string name="about_version">Programversjon: %1$s</string>
-    <string name="text_categories"><strong>Kategori:</strong><br/> %1$s</string>
+    <string name="text_categories">Kategori:</string>
     <string name="about_summary">© 2020–2022 by MicMun. Lisensiert GPLv3.
 \n
 \nNextcloud Cookbook er et Nextcloud-kokebokprogram for håndtering av oppskrifter.</string>

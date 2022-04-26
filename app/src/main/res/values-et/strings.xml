@@ -12,9 +12,8 @@
     <string name="tab_instructions_title">Juhised</string>
     <string name="tab_nutritions_title">Toitained</string>
     <string name="text_uncategorized">Kategooriateta</string>
-    <string name="text_categories"><strong> Kategooria: </strong> <br/> %1$s</string>
-    <string name="text_yield"><strong>Saagikus:</strong> %1$s</string>
-    <string name="text_url">Allikas: %1$s</string>
+    <string name="text_categories"> Kategooria:</string>
+    <string name="text_yield">Saagikus:</string>
     <string name="text_no_keywords">Märksõnu pole.</string>
     <string name="text_date_published">Avaldamise kuupäev: %1$s</string>
     <string name="nutrition_calories">Kalorid: %1$s</string>
@@ -28,10 +27,10 @@
     <string name="nutrition_sugar_content">Suhkrusisaldus: %1$s</string>
     <string name="nutrition_trans_fat_content">Transrasvade sisaldus: %1$s</string>
     <string name="tab_info_title">informatsioon</string>
-    <string name="text_author">Autor: %1$s</string>
+    <string name="text_author">Autor:</string>
     <string name="app_logo_desc">Rakenduse käivitusikoon, millel on kokaraamatu sümbol</string>
     <string name="img_desc_logo">Retsepti logo</string>
-    <string name="text_keywords"><strong>Märksõnad:</strong><br/> %1$s</string>
+    <string name="text_keywords">Märksõnad:</string>
     <string name="nutrition_protein_content">Valgusisaldus: %1$s</string>
     <string name="nutrition_unsaturated_fat_content">Küllastumata rasvasisaldus: %1$s</string>
     <string name="menu_search_title">Täpsem otsing</string>
@@ -80,7 +79,7 @@
     <string name="permission_warning_nowrite" tools:ignore="MissingTranslation">Teil ei ole sellele salvestusruumile kirjutamisõigust, seega on selle kausta valimine kasutu.
 \nKas soovite sellele kaustale juurdepääsu anda\?.</string>
     <string name="permission_canceled" tools:ignore="MissingTranslation">Tühistatud kasutaja poolt</string>
-    <string name="text_tools"><strong>Vajalikud tööriistad:</strong><br/> %1$s</string>
+    <string name="text_tools">Vajalikud tööriistad:</string>
     <string name="form_download_folder">Alista sihtkaust</string>
     <string name="menu_download_tooltip">lae retsept alla</string>
     <string name="menu_download_title">Lae alla</string>

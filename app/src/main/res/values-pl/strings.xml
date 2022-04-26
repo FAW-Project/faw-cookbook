@@ -19,12 +19,11 @@
     <string name="tab_nutritions_title">Pisma</string>
     <!-- tab infos -->
     <string name="text_uncategorized">Niekategoryzowane</string>
-    <string name="text_categories"><strong>Kategoria:</strong><br/> %1$s</string>
-    <string name="text_yield"><strong>Porcje:</strong> %1$s</string>
-    <string name="text_author">Autor: %1$s</string>
-    <string name="text_url">Źródło: %1$s</string>
-    <string name="text_no_keywords">Żadnych słów kluczowych.</string>
-    <string name="text_keywords"><strong>Słowa Kluczowe:</strong><br/> %1$s</string>
+    <string name="text_categories">Kategoria:</string>
+    <string name="text_yield">Porcje:</string>
+    <string name="text_author">Autor:</string>
+   <string name="text_no_keywords">Żadnych słów kluczowych.</string>
+    <string name="text_keywords">Słowa Kluczowe:</string>
     <string name="text_date_published">Data publikacji: %1$s</string>
     <!-- Nutritions -->
     <string name="nutrition_calories">Kalorie: %1$s</string>
@@ -89,7 +88,7 @@
     <string name="permission_warning_nowrite" tools:ignore="MissingTranslation">Nie masz dostępu do zapisu w tym magazynie, więc wybór tego folderu jest bezużyteczny.
 \nCzy chcesz przyznać dostęp do tego folderu\?.</string>
     <string name="header_image_desc">Zdjęcie nagłówka przepisu</string>
-    <string name="text_tools"><strong>Potrzebne narzędzia:</strong><br/> %1$s</string>
+    <string name="text_tools">Potrzebne narzędzia:</string>
     <string name="form_download_folder">Zastąp folder docelowy</string>
     <string name="form_download_commit">Pobierz</string>
     <string name="menu_download_title">Pobierz</string>

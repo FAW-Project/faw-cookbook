@@ -19,12 +19,11 @@
     <string name="tab_nutritions_title">Nutrition</string>
     <!-- tab infos -->
     <string name="text_uncategorized">Non classé</string>
-    <string name="text_categories"><strong>Catégorie :</strong><br/> %1$s</string>
-    <string name="text_yield"><strong>Rendement :</strong> %1$s</string>
-    <string name="text_author">Auteur : %1$s</string>
-    <string name="text_url">Source : %1$s</string>
-    <string name="text_no_keywords">Aucun mot-clé.</string>
-    <string name="text_keywords"><strong>Mots-clés :</strong><br/> %1$s</string>
+    <string name="text_categories">Catégorie:</string>
+    <string name="text_yield">Rendement:</string>
+    <string name="text_author">Auteur:</string>
+   <string name="text_no_keywords">Aucun mot-clé.</string>
+    <string name="text_keywords">Mots-clés:</string>
     <string name="text_date_published">Date de publication : %1$s</string>
     <!-- Nutritions -->
     <string name="nutrition_calories">Calories : %1$s</string>
@@ -81,7 +80,7 @@
     <string name="sort_value_time_asc">Temps total croissant</string>
     <string name="sort_value_time_desc">Temps total descendant</string>
     <string name="permission_canceled" tools:ignore="MissingTranslation">Annulé par l\'utilisateur</string>
-    <string name="text_tools"><strong>Ustensiles nécessaires :</strong><br/> %1$s</string>
+    <string name="text_tools">Ustensiles nécessaires:</string>
     <string name="permission_select_root" tools:ignore="MissingTranslation">Veuillez choisir %1$s.</string>
     <string name="header_image_desc">Image d\'en-tête de la recette</string>
     <string name="permission_please_grant" tools:ignore="MissingTranslation">Veuillez accorder des autorisations de stockage.</string>

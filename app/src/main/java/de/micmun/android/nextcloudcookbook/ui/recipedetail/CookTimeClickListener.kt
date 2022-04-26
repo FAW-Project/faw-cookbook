@@ -17,7 +17,7 @@ interface CookTimeClickListener {
    /**
     * Handle click on the cook time.
     *
-    * @param DbRecipe with the data of recipe.
+    * @param recipe with the data of recipe.
     */
    fun onClick(recipe: DbRecipe)
 }

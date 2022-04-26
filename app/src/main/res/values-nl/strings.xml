@@ -19,12 +19,11 @@
     <string name="tab_nutritions_title">Voedingsmiddelen</string>
     <!-- tab infos -->
     <string name="text_uncategorized">Ongecategoriseerd</string>
-    <string name="text_categories"><strong>Categorie:</strong><br/> %1$s</string>
-    <string name="text_yield"><strong>Opbrengst:</strong> %1$s</string>
-    <string name="text_author">Auteur: %1$s</string>
-    <string name="text_url">Bron: %1$s</string>
-    <string name="text_no_keywords">Geen sleutelwoorden.</string>
-    <string name="text_keywords"><strong>Trefwoorden:</strong><br/> %1$s</string>
+    <string name="text_categories">Categorie:</string>
+    <string name="text_yield">Opbrengst:</string>
+    <string name="text_author">Auteur:</string>
+   <string name="text_no_keywords">Geen sleutelwoorden.</string>
+    <string name="text_keywords">Trefwoorden:</string>
     <string name="text_date_published">Datum publicatie: %1$s</string>
     <!-- Nutritions -->
     <string name="nutrition_calories">Calorieën: %1$s</string>
@@ -87,7 +86,7 @@
     <string name="folder_pick_success" tools:ignore="MissingTranslation">Map %1$s geselecteerd.</string>
     <string name="folder_pick_cancel" tools:ignore="MissingTranslation">Map kiezer geannuleerd door gebruiker.</string>
     <string name="permission_please_grant" tools:ignore="MissingTranslation">Geef opslagrechten.</string>
-    <string name="text_tools"><strong>Nodig gereedschap:</strong><br/> %1$s</string>
+    <string name="text_tools">Nodig gereedschap:</string>
     <string name="permission_warning_nowrite" tools:ignore="MissingTranslation">U heeft geen schrijftoegang tot deze opslag, dus het selecteren van deze map is zinloos.
 \nWilt u toegang verlenen tot deze map\?.</string>
     <string name="form_download_folder">Doelmap opheffen</string>

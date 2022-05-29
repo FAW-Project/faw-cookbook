@@ -23,7 +23,7 @@ import java.util.stream.Collectors
  * ViewModel for list of recipes.
  *
  * @author MicMun
- * @version 1.9, 27.11.21
+ * @version 2.0, 29.05.22
  */
 class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) {
    // coroutines
@@ -63,7 +63,7 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
 
       runBlocking(Dispatchers.IO) {
          recipes =
-            if(filter != null) {
+            if (filter != null) {
                recipeRepository.filterAll(sort, filter!!)
             } else {
                if (catFilter.type == CategoryFilter.CategoryFilterOption.ALL_CATEGORIES && sort == SortValue.NAME_A_Z) {
@@ -88,11 +88,11 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
       val dir = if (path.isEmpty()) recipeDir else path
 
       if (dir.isEmpty()) {
-         if(!hidden) isUpdating.postValue(false)
+         if (!hidden) isUpdating.postValue(false)
          return
       }
 
-      if(!hidden) isUpdating.postValue(true)
+      if (!hidden) isUpdating.postValue(true)
 
       uiScope.launch {
          val list = getRecipesFromRepo(dir)
@@ -102,7 +102,7 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
          recipeRepository.insertAll(dbList)
 
          isLoaded.postValue(true)
-         if(!hidden)  isUpdating.postValue(false)
+         if (!hidden) isUpdating.postValue(false)
       }
    }
 
@@ -113,10 +113,10 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
          val repositoryRecipes = JsonRecipeRepository.getInstance()
             .getAllRecipes(app, path, recipeRepository.getAllFileInfos())
 
-         for (recipeInfo in recipeRepository.getAllFileInfos()){
-            if(!File(recipeInfo.filePath).exists()){
+         for (recipeInfo in recipeRepository.getAllFileInfos()) {
+            if (!File(recipeInfo.filePath).exists()) {
                var filename = recipeInfo.filePath.substring(0, recipeInfo.filePath.lastIndexOf("/"))
-               filename = filename.substring(filename.lastIndexOf("/")+1, filename.length)
+               filename = filename.substring(filename.lastIndexOf("/") + 1, filename.length)
                recipeRepository.deleteRecipe(filename)
             }
          }
@@ -126,7 +126,7 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
 
    // category filter
    fun filterRecipesByCategory(catFilter: CategoryFilter?) {
-      if(catFilter==null) {
+      if (catFilter == null) {
          this.catFilter = CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
       } else {
          this.catFilter = catFilter
@@ -136,6 +136,7 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
    fun sortList(sort: SortValue) {
       this.sort = sort
    }
+
    fun search(filter: RecipeFilter?) {
       this.filter = filter
    }
@@ -152,7 +153,7 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
 
 class RecipeListViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
    @Suppress("UNCHECKED_CAST")
-   override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+   override fun <T : ViewModel> create(modelClass: Class<T>): T {
       if (modelClass.isAssignableFrom(RecipeListViewModel::class.java)) {
          return RecipeListViewModel(application) as T
       }

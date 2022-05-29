@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider
  * @version 1.0, 26.01.21
  */
 class CurrentSettingViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
-   override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+   override fun <T : ViewModel> create(modelClass: Class<T>): T {
       if (modelClass.isAssignableFrom(CurrentSettingViewModel::class.java)) {
          @Suppress("UNCHECKED_CAST")
          return CurrentSettingViewModel(application) as T

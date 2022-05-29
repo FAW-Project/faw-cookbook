@@ -7,7 +7,6 @@ package de.micmun.android.nextcloudcookbook.ui
 
 import android.app.SearchManager
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -51,18 +50,16 @@ import de.micmun.android.nextcloudcookbook.services.sync.SyncService
 import de.micmun.android.nextcloudcookbook.settings.PreferenceData
 import de.micmun.android.nextcloudcookbook.ui.recipelist.RecipeSearchCallback
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
 
-
 /**
  * Main Activity of the app.
  *
  * @author MicMun
- * @version 1.8, 27.11.21
+ * @version 1.9, 29.05.22
  */
 class MainActivity : AppCompatActivity() {
 
@@ -112,35 +109,22 @@ class MainActivity : AppCompatActivity() {
 
       // settings
       val factory = CurrentSettingViewModelFactory(MainApplication.AppContext)
-      currentSettingViewModel =
-         ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
-      binding.navView.setNavigationItemSelectedListener { item ->
-         val currentCat = when (item.itemId) {
-            R.id.menu_all_categories -> CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
-            R.id.menu_uncategorized -> CategoryFilter(CategoryFilter.CategoryFilterOption.UNCATEGORIZED)
-            else -> CategoryFilter(CategoryFilter.CategoryFilterOption.CATEGORY, item.title.toString())
-         }
-         handleNavigationDrawerSelection(item.itemId)
-         currentSettingViewModel.setNewCategory(currentCat)
-         drawerLayout.closeDrawers()
-         true
-      }
+      val context = this
 
-      var context = this
       with(binding) {
          currentSettingViewModel =
-           ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
+            ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
          navView.setNavigationItemSelectedListener { item ->
-           val currentCat = when (item.itemId) {
-              R.id.menu_all_categories -> CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
-              R.id.menu_uncategorized -> CategoryFilter(CategoryFilter.CategoryFilterOption.UNCATEGORIZED)
-              else -> CategoryFilter(CategoryFilter.CategoryFilterOption.CATEGORY, item.title.toString())
-           }
-           handleNavigationDrawerSelection(item.itemId)
-           currentSettingViewModel.setNewCategory(currentCat)
-           drawerLayout.closeDrawers()
-           true
-        }
+            val currentCat = when (item.itemId) {
+               R.id.menu_all_categories -> CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
+               R.id.menu_uncategorized -> CategoryFilter(CategoryFilter.CategoryFilterOption.UNCATEGORIZED)
+               else -> CategoryFilter(CategoryFilter.CategoryFilterOption.CATEGORY, item.title.toString())
+            }
+            handleNavigationDrawerSelection(item.itemId)
+            currentSettingViewModel.setNewCategory(currentCat)
+            drawerLayout.closeDrawers()
+            true
+         }
 
 
          searchText.setOnClickListener {
@@ -149,26 +133,27 @@ class MainActivity : AppCompatActivity() {
             searchbar.isIconified = false
          }
 
-         backButton.setOnClickListener{
+         backButton.setOnClickListener {
             searchToolbar.visibility = View.GONE
             normalToolbar.visibility = View.VISIBLE
          }
 
-         sortorder.setOnClickListener{
+         sortorder.setOnClickListener {
             mRecipeSearchCallback?.showSortSelector()
          }
 
-         accountSwitcher.setOnClickListener{
+         accountSwitcher.setOnClickListener {
             Accounts(context).openAccountChooser(context)
          }
 
          searchbar.setOnQueryTextListener(object : OnQueryTextListener,
-            android.widget.SearchView.OnQueryTextListener {
+                                                   android.widget.SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(qString: String): Boolean {
                search(qString)
                return true
             }
+
             override fun onQueryTextSubmit(qString: String): Boolean {
                search(qString)
                return true
@@ -190,32 +175,31 @@ class MainActivity : AppCompatActivity() {
       handleIntent(intent)
    }
 
-   fun handleNavigationDrawerSelection(item: Int){
+   private fun handleNavigationDrawerSelection(item: Int) {
       val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
       val navController = navHostFragment.findNavController()
       when (item) {
          R.id.menu_search_extended -> {
             navController.navigate(R.id.searchFormFragment)
-            showToolbar(true, false)
+            showToolbar(showToolbar = true, showSearch = false)
          }
          R.id.app_import_recipe -> {
             navController.navigate(R.id.downloadFormFragment)
-            showToolbar(true, false)
+            showToolbar(showToolbar = true, showSearch = false)
          }
          R.id.app_settings -> {
             navController.navigate(R.id.preferenceFragment)
-            showToolbar(true, false)
+            showToolbar(showToolbar = true, showSearch = false)
          }
          R.id.menu_all_categories, R.id.menu_uncategorized -> {
             navController.navigate(R.id.recipeListFragment)
-            showToolbar(true, true)
+            showToolbar(showToolbar = true, showSearch = true)
          }
          else -> {
             navController.navigate(R.id.recipeListFragment)
-            showToolbar(true, true)
+            showToolbar(showToolbar = true, showSearch = true)
          }
       }
-
    }
 
    override fun onNewIntent(intent: Intent?) {
@@ -233,7 +217,7 @@ class MainActivity : AppCompatActivity() {
    }
 
    private fun setupToolbars() {
-      binding.menuButton.setOnClickListener { v ->
+      binding.menuButton.setOnClickListener {
          binding.drawerLayout.openDrawer(
             GravityCompat.START
          )
@@ -286,24 +270,23 @@ class MainActivity : AppCompatActivity() {
    }
 
    fun showToolbar(showToolbar: Boolean, showSearch: Boolean = true) {
-      if(showToolbar) {
+      if (showToolbar) {
          binding.appBar.visibility = View.VISIBLE
       } else {
          binding.appBar.visibility = View.GONE
       }
-      if(showSearch) {
+      if (showSearch) {
          binding.searchText.visibility = View.VISIBLE
       } else {
          binding.searchText.visibility = View.INVISIBLE
       }
-
-
    }
 
    fun setRecipeSearchCallback(callback: RecipeSearchCallback?) {
       mRecipeSearchCallback = callback
    }
 
+   @Deprecated("Deprecated in Java")
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
       super.onActivityResult(requestCode, resultCode, data)
       try {
@@ -327,7 +310,7 @@ class MainActivity : AppCompatActivity() {
                UiExceptionManager.showDialogForException(context, e)
             }
             SingleAccountHelper.setCurrentAccount(context, ssoAccount!!.name)
-            var username = ssoAccount!!.name
+            val username = ssoAccount.name
             val file = File(this.filesDir, "recipes/$username/")
             val prefs = PreferenceData.getInstance()
             runBlocking {
@@ -337,10 +320,11 @@ class MainActivity : AppCompatActivity() {
             }
             PreferenceData.getInstance().setSyncServiceEnabled()
 
-            updateProfilePicture();
+            updateProfilePicture()
             startService(Intent(this, SyncService::class.java))
          }
-      } catch (e: AccountImportCancelledException) {}
+      } catch (e: AccountImportCancelledException) {
+      }
    }
 
    override fun onRequestPermissionsResult(
@@ -352,7 +336,7 @@ class MainActivity : AppCompatActivity() {
       AccountImporter.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
    }
 
-   fun updateProfilePicture() {
+   private fun updateProfilePicture() {
       try {
 
          val ssoAccount = SingleAccountHelper.getCurrentSingleSignOnAccount(applicationContext)
@@ -363,22 +347,19 @@ class MainActivity : AppCompatActivity() {
             .error(R.drawable.ic_baseline_account_circle_24)
             .apply(RequestOptions.circleCropTransform())
             .into(binding.accountSwitcher)
+      } catch (e: NextcloudFilesAppAccountNotFoundException) {
+      } catch (e: NoCurrentAccountSelectedException) {
       }
-      catch (e : NextcloudFilesAppAccountNotFoundException) {}
-      catch (e: NoCurrentAccountSelectedException) {}
    }
 
-
-   fun setSortIcon(sort: SortValue){
-      var id = R.drawable.sort_alphabetical_ascending;
-
-      when (sort) {
-         SortValue.NAME_A_Z -> id = R.drawable.sort_alphabetical_ascending
-         SortValue.NAME_Z_A -> id = R.drawable.sort_alphabetical_descending
-         SortValue.DATE_ASC -> id = R.drawable.sort_calendar_ascending
-         SortValue.DATE_DESC -> id = R.drawable.sort_calendar_descending
-         SortValue.TOTAL_TIME_ASC -> id = R.drawable.sort_clock_ascending_outline
-         SortValue.TOTAL_TIME_DESC -> id = R.drawable.sort_clock_descending_outline
+   fun setSortIcon(sort: SortValue) {
+      val id = when (sort) {
+         SortValue.NAME_A_Z -> R.drawable.sort_alphabetical_ascending
+         SortValue.NAME_Z_A -> R.drawable.sort_alphabetical_descending
+         SortValue.DATE_ASC -> R.drawable.sort_calendar_ascending
+         SortValue.DATE_DESC -> R.drawable.sort_calendar_descending
+         SortValue.TOTAL_TIME_ASC -> R.drawable.sort_clock_ascending_outline
+         SortValue.TOTAL_TIME_DESC -> R.drawable.sort_clock_descending_outline
       }
 
       binding.sortorder.setImageDrawable(ContextCompat.getDrawable(this, id))

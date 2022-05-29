@@ -4,7 +4,7 @@
    <item
        android:id="@+id/menu_search_extended"
        android:icon="@drawable/ic_search"
-       android:title="@string/form_exact_search" />
+       android:title="@string/menu_search_title" />
 
    <group android:visible="true">
       <item

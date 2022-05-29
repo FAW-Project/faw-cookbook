@@ -24,14 +24,13 @@ import de.micmun.android.nextcloudcookbook.data.RecipeFilter
 import de.micmun.android.nextcloudcookbook.databinding.FragmentSearchFormBinding
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
-import de.micmun.android.nextcloudcookbook.ui.MainActivity
 import java.util.stream.Collectors
 
 /**
  * Fragment for advanced search formular.
  *
  * @author MicMun
- * @version 1.5, 23.11.21
+ * @version 1.6, 29.05.22
  */
 class SearchFormFragment : Fragment(), SearchClickListener {
    private lateinit var binding: FragmentSearchFormBinding
@@ -47,19 +46,19 @@ class SearchFormFragment : Fragment(), SearchClickListener {
       settingViewModel =
          ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
 
-      settingViewModel.category.observe(viewLifecycleOwner, {
+      settingViewModel.category.observe(viewLifecycleOwner) {
          category = it ?: CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
-      })
+      }
 
       searchFormViewModel = ViewModelProvider(this).get(SearchFormViewModel::class.java)
-      searchFormViewModel.keywords.observe(viewLifecycleOwner, {
+      searchFormViewModel.keywords.observe(viewLifecycleOwner) {
          it?.let { keywords ->
             val keywordsString = keywords.stream().map { k -> k.keyword }.collect(Collectors.toList())
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, keywordsString)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.searchKeyWord.adapter = adapter
          }
-      })
+      }
 
       binding.searchTypes.setOnCheckedChangeListener { _, checkedId ->
          if (checkedId == R.id.typeKeyword) {
@@ -76,25 +75,25 @@ class SearchFormFragment : Fragment(), SearchClickListener {
          }
       }
 
-      searchFormViewModel.searchType.observe(viewLifecycleOwner, {
+      searchFormViewModel.searchType.observe(viewLifecycleOwner) {
          it?.let { binding.searchTypes.check(it) }
-      })
+      }
 
-      searchFormViewModel.currentKeyword.observe(viewLifecycleOwner, {
+      searchFormViewModel.currentKeyword.observe(viewLifecycleOwner) {
          it?.let { binding.searchKeyWord.setSelection(it) }
-      })
+      }
 
-      searchFormViewModel.currentQuery.observe(viewLifecycleOwner, {
+      searchFormViewModel.currentQuery.observe(viewLifecycleOwner) {
          it?.let { binding.searchTxt.setText(it, TextView.BufferType.EDITABLE) }
-      })
+      }
 
-      searchFormViewModel.caseSensitive.observe(viewLifecycleOwner, {
+      searchFormViewModel.caseSensitive.observe(viewLifecycleOwner) {
          it?.let { binding.ignoreCaseChkBox.isChecked = it }
-      })
+      }
 
-      searchFormViewModel.exactSearch.observe(viewLifecycleOwner, {
+      searchFormViewModel.exactSearch.observe(viewLifecycleOwner) {
          it?.let { binding.exactSearchChkBox.isChecked = it }
-      })
+      }
 
       return binding.root
    }

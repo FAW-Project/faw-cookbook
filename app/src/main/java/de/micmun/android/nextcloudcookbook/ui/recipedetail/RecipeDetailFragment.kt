@@ -1,9 +1,6 @@
 package de.micmun.android.nextcloudcookbook.ui.recipedetail
 
-import android.content.Context
 import android.os.Bundle
-import android.os.PowerManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +12,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import de.micmun.android.nextcloudcookbook.MainApplication
 import de.micmun.android.nextcloudcookbook.R
@@ -26,12 +22,11 @@ import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
 import de.micmun.android.nextcloudcookbook.ui.MainActivity
 
-
 /**
  * Fragment for detail of a recipe.
  *
  * @author MicMun
- * @version 2.1, 28.08.21
+ * @version 2.2, 29.05.22
  */
 class RecipeDetailFragment : Fragment(), CookTimeClickListener {
    private lateinit var binding: FragmentDetailBinding
@@ -54,10 +49,8 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
       val args = RecipeDetailFragmentArgs.fromBundle(requireArguments())
       if (savedInstanceState != null) {
          currentPage = savedInstanceState[KEY_CURRENT_PAGE] as Int
-         recipeId = args.recipeId
-      } else {
-         recipeId = args.recipeId
       }
+      recipeId = args.recipeId
       isServiceStarted = args.isServiceStarted
    }
 
@@ -107,6 +100,7 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
       allowScreenSleep()
       super.onStop()
    }
+
    /**
     * Initialise the view pager and tablayout with the current recipe.
     *
@@ -174,22 +168,23 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
    }
 
    override fun onClick(recipe: DbRecipe) {
-     if(!recipe.recipeCore.cookTime.isEmpty()){
-        findNavController()
-           .navigate(
-              RecipeDetailFragmentDirections.actionRecipeDetailFragmentToCooktimerFragment(recipe.recipeCore.id))
-     } else {
-        Toast.makeText(requireContext(), getString(R.string.recipe_no_timer), Toast.LENGTH_SHORT).show()
-     }
+      if (!recipe.recipeCore.cookTime.isEmpty()) {
+         findNavController()
+            .navigate(
+               RecipeDetailFragmentDirections.actionRecipeDetailFragmentToCooktimerFragment(recipe.recipeCore.id))
+      } else {
+         Toast.makeText(requireContext(), getString(R.string.recipe_no_timer), Toast.LENGTH_SHORT).show()
+      }
    }
 
    private fun keepScreenAlive() {
-      if(PreferenceData.getInstance().getScreenKeepalive()){
+      if (PreferenceData.getInstance().getScreenKeepalive()) {
          activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
       }
    }
+
    private fun allowScreenSleep() {
-      if(PreferenceData.getInstance().getScreenKeepalive()){
+      if (PreferenceData.getInstance().getScreenKeepalive()) {
          activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
       }
    }

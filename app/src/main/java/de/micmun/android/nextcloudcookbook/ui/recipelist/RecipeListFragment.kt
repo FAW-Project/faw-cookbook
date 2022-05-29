@@ -5,18 +5,18 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.postDelayed
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import de.micmun.android.nextcloudcookbook.MainApplication
@@ -26,7 +26,6 @@ import de.micmun.android.nextcloudcookbook.data.RecipeFilter
 import de.micmun.android.nextcloudcookbook.data.SortValue
 import de.micmun.android.nextcloudcookbook.databinding.FragmentRecipelistBinding
 import de.micmun.android.nextcloudcookbook.db.DbRecipeRepository
-import de.micmun.android.nextcloudcookbook.nextcloudapi.Sync
 import de.micmun.android.nextcloudcookbook.reciever.LocalBroadcastReceiver
 import de.micmun.android.nextcloudcookbook.services.sync.SyncService
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
@@ -34,15 +33,13 @@ import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
 import de.micmun.android.nextcloudcookbook.ui.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-
 
 /**
  * Fragment for list of recipes.
  *
  * @author MicMun
- * @version 2.5, 27.11.21
+ * @version 2.6, 29.05.22
  */
 class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, RecipeSearchCallback {
    private lateinit var binding: FragmentRecipelistBinding
@@ -99,6 +96,9 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
       return binding.root
    }
 
+   @Deprecated("Deprecated in Java",
+               ReplaceWith("@Suppress(\"DEPRECATION\") super.onActivityCreated(savedInstanceState)",
+                                          "androidx.fragment.app.Fragment"))
    override fun onActivityCreated(savedInstanceState: Bundle?) {
       @Suppress("DEPRECATION")
       super.onActivityCreated(savedInstanceState)
@@ -107,7 +107,6 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
    private fun initializeRecipeList() {
       binding.recipeListViewModel = recipesViewModel
       binding.lifecycleOwner = viewLifecycleOwner
-
 
       // data adapter
       adapter = RecipeListAdapter(RecipeListListener { recipeName -> recipesViewModel.onRecipeClicked(recipeName) },
@@ -177,7 +176,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
             menu.removeGroup(R.id.menu_categories_group)
             categories.forEach { category ->
                menu.add(R.id.menu_categories_group, category.hashCode(), order++, category)
-                  .setIcon(R.drawable.ic_food);
+                  .setIcon(R.drawable.ic_food)
             }
          }
       }
@@ -202,12 +201,21 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
       }
    }
 
+   /**
+    * Sets the category title.
+    *
+    * @param categoryFilter Filter of the category.
+    */
    private fun setCategoryTitle(categoryFilter: CategoryFilter) {
-      // set title in Actionbar
-      (activity as AppCompatActivity).supportActionBar?.title = when (categoryFilter.type) {
-         CategoryFilter.CategoryFilterOption.ALL_CATEGORIES -> getString(R.string.app_name)
-         CategoryFilter.CategoryFilterOption.UNCATEGORIZED -> getString(R.string.text_uncategorized)
-         else -> categoryFilter.name
+      // set title in text view headline
+      val catTitle = binding.categoryTitle
+      if (categoryFilter.type == CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
+         catTitle.visibility = View.GONE
+      else {
+         catTitle.visibility = View.VISIBLE
+         catTitle.text = if (categoryFilter.type == CategoryFilter.CategoryFilterOption.UNCATEGORIZED)
+            getString(R.string.text_uncategorized)
+         else categoryFilter.name
       }
    }
 
@@ -230,26 +238,26 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
 
    //todo: think about how to make this more elegant.
    //also it seems quickly refreshing breaks the database.
-   fun onRefreshAndReschedule() {
-      if(!mAutoRefreshList){
+   private fun onRefreshAndReschedule() {
+      if (!mAutoRefreshList) {
          return
       }
       Handler(Looper.getMainLooper()).postDelayed({
-         CoroutineScope(Dispatchers.Main).launch {
-            settingViewModel.storageAccessed.collect { storageAccessed ->
-               if (storageAccessed) {
-                  settingViewModel.recipeDirectory.collect { dir ->
-                     if (dir != recipesViewModel.getRecipeDir()) {
-                        recipesViewModel.initRecipes(dir, true)
-                     }else{
-                        recipesViewModel.initRecipes(hidden = true)
-                     }
-                  }
-               }
-            }
-         }
-         onRefreshAndReschedule();
-      }, 500)
+                                                     CoroutineScope(Dispatchers.Main).launch {
+                                                        settingViewModel.storageAccessed.collect { storageAccessed ->
+                                                           if (storageAccessed) {
+                                                              settingViewModel.recipeDirectory.collect { dir ->
+                                                                 if (dir != recipesViewModel.getRecipeDir()) {
+                                                                    recipesViewModel.initRecipes(dir, true)
+                                                                 } else {
+                                                                    recipesViewModel.initRecipes(hidden = true)
+                                                                 }
+                                                              }
+                                                           }
+                                                        }
+                                                     }
+                                                     onRefreshAndReschedule()
+                                                  }, 500)
    }
 
    override fun onRefresh() {
@@ -266,7 +274,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
    override fun onResume() {
       setupBroadcastListener()
       recipesViewModel.search(null)
-      recipesViewModel.filterRecipesByCategory(null)
+      //recipesViewModel.filterRecipesByCategory(null)
       loadData()
       super.onResume()
    }
@@ -292,14 +300,14 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
       // Dont use this for now.
       // onRefreshAndReschedule()
 
-      if(!updating){
+      if (!updating) {
          CoroutineScope(Dispatchers.Main).launch {
             settingViewModel.storageAccessed.collect { storageAccessed ->
                if (storageAccessed) {
                   settingViewModel.recipeDirectory.collect { dir ->
                      if (dir != recipesViewModel.getRecipeDir()) {
                         recipesViewModel.initRecipes(dir, true)
-                     }else{
+                     } else {
                         recipesViewModel.initRecipes(hidden = true)
                      }
                   }

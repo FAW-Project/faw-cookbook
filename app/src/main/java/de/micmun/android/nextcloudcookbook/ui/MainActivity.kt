@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
    private lateinit var currentSettingViewModel: CurrentSettingViewModel
    private lateinit var preferenceData: PreferenceData
 
+   private var asyncFilter: RecipeFilter? = null
    private var mRecipeSearchCallback: RecipeSearchCallback? = null
 
    override fun onCreate(savedInstanceState: Bundle?) {
@@ -241,6 +242,21 @@ class MainActivity : AppCompatActivity() {
    private fun search(query: String) {
       val filter = RecipeFilter(RecipeFilter.QueryType.QUERY_NAME, query)
       mRecipeSearchCallback?.searchRecipes(filter)
+   }
+
+   /**
+    * This filter will be applied the next time the recipe-list is opened.
+    * This is used for the advanced SearchFormFragment
+    */
+   fun setAsyncFilter(filter: RecipeFilter) {
+      asyncFilter = filter
+   }
+
+   /**
+    * Get the filter set. Returns null if no filter exists.
+    */
+   fun getAsyncFilter(): RecipeFilter? {
+      return asyncFilter
    }
 
    /**

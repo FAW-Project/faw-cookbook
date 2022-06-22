@@ -21,45 +21,45 @@
             android:layout_height="wrap_content">
 
          <Spinner
-               android:id="@+id/searchKeyWord"
-               android:layout_width="0dp"
-               android:layout_height="wrap_content"
-               android:layout_marginStart="16dp"
-               android:layout_marginTop="16dp"
-               android:layout_marginEnd="16dp"
-               app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toTopOf="parent" />
+             android:id="@+id/searchKeyWord"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="24dp"
+             android:layout_marginTop="24dp"
+             android:layout_marginEnd="24dp"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent" />
 
          <EditText
-               android:id="@+id/searchTxt"
-               android:layout_width="0dp"
-               android:layout_height="wrap_content"
-               android:layout_marginStart="16dp"
-               android:layout_marginTop="8dp"
-               android:layout_marginEnd="16dp"
-               android:autofillHints=""
-               android:hint="@string/form_search_hint"
-               android:inputType="text"
-               android:text=""
-               android:visibility="gone"
-               app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toBottomOf="@id/searchKeyWord" />
+             android:id="@+id/searchTxt"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="24dp"
+             android:layout_marginTop="24dp"
+             android:layout_marginEnd="24dp"
+             android:autofillHints=""
+             android:hint="@string/form_search_hint"
+             android:inputType="text"
+             android:text=""
+             android:visibility="gone"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/searchKeyWord" />
 
 
          <TextView
-               android:id="@+id/searchTypesLabel"
-               android:layout_width="0dp"
-               android:layout_height="wrap_content"
-               android:layout_marginStart="16dp"
-               android:layout_marginTop="8dp"
-               android:layout_marginEnd="16dp"
-               android:text="@string/form_types"
-               android:textStyle="bold"
-               app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toBottomOf="@id/searchTxt" />
+             android:id="@+id/searchTypesLabel"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="16dp"
+             android:layout_marginTop="24dp"
+             android:layout_marginEnd="16dp"
+             android:text="@string/form_types"
+             android:textStyle="bold"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/searchTxt" />
 
          <RadioGroup
                android:id="@+id/searchTypes"
@@ -140,6 +140,7 @@
                android:layout_marginEnd="16dp"
                android:onClick="@{() -> clickListener.doSearch()}"
                android:text="@string/form_search_commit"
+               android:textColor="@android:color/white"
                app:layout_constraintEnd_toEndOf="parent"
                app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintTop_toBottomOf="@id/exactSearchChkBox" />

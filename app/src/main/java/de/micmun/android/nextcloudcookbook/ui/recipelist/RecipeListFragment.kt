@@ -5,6 +5,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -91,7 +92,14 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
          }
       }
 
+      Log.e("TAG", "onCreateView")
       initializeRecipeList()
+
+      val asyncFilter = (activity as MainActivity?)?.getAsyncFilter()
+      if(asyncFilter!=null){
+         searchRecipes(asyncFilter)
+      }
+
       setupBroadcastListener()
       return binding.root
    }
@@ -105,6 +113,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
    }
 
    private fun initializeRecipeList() {
+      Log.e("TAG", "initializeRecipeList")
       binding.recipeListViewModel = recipesViewModel
       binding.lifecycleOwner = viewLifecycleOwner
 
@@ -243,21 +252,21 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
          return
       }
       Handler(Looper.getMainLooper()).postDelayed({
-                                                     CoroutineScope(Dispatchers.Main).launch {
-                                                        settingViewModel.storageAccessed.collect { storageAccessed ->
-                                                           if (storageAccessed) {
-                                                              settingViewModel.recipeDirectory.collect { dir ->
-                                                                 if (dir != recipesViewModel.getRecipeDir()) {
-                                                                    recipesViewModel.initRecipes(dir, true)
-                                                                 } else {
-                                                                    recipesViewModel.initRecipes(hidden = true)
-                                                                 }
-                                                              }
-                                                           }
-                                                        }
-                                                     }
-                                                     onRefreshAndReschedule()
-                                                  }, 500)
+         CoroutineScope(Dispatchers.Main).launch {
+            settingViewModel.storageAccessed.collect { storageAccessed ->
+               if (storageAccessed) {
+                  settingViewModel.recipeDirectory.collect { dir ->
+                     if (dir != recipesViewModel.getRecipeDir()) {
+                        recipesViewModel.initRecipes(dir, true)
+                     } else {
+                        recipesViewModel.initRecipes(hidden = true)
+                     }
+                  }
+               }
+            }
+         }
+         onRefreshAndReschedule()
+      }, 500)
    }
 
    override fun onRefresh() {
@@ -280,6 +289,13 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
    }
 
    override fun searchRecipes(filter: RecipeFilter) {
+      searchRecipes(filter, "local")
+   }
+
+   fun searchRecipes(filter: RecipeFilter, from: String) {
+      Log.e("TAG", "SEARCH $from")
+      Log.e("TAG", "SEARCH ${filter.query}")
+      Log.e("TAG", "SEARCH ${filter.type}")
       recipesViewModel.search(filter)
       loadData()
    }

@@ -112,6 +112,7 @@ class SearchFormFragment : Fragment(), SearchClickListener {
    }
 
    override fun doSearch() {
+
       /* hide keyboard */
       binding.searchTxt.onEditorAction(EditorInfo.IME_ACTION_DONE)
 
@@ -146,7 +147,10 @@ class SearchFormFragment : Fragment(), SearchClickListener {
       searchFormViewModel.setCaseSensitive(ignoreCase)
       searchFormViewModel.setExactSearch(exact)
 
+
       findNavController().navigate(SearchFormFragmentDirections.actionSearchFormFragmentToRecipeSearchFragment())
+
+      (activity as MainActivity?)?.setAsyncFilter(filter)
    }
 }
 

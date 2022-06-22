@@ -6,6 +6,7 @@
 package de.micmun.android.nextcloudcookbook.ui.recipelist
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import de.micmun.android.nextcloudcookbook.data.CategoryFilter
 import de.micmun.android.nextcloudcookbook.data.RecipeFilter
@@ -64,6 +65,7 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
       runBlocking(Dispatchers.IO) {
          recipes =
             if (filter != null) {
+               Log.e("TAG", "SEARCH ! $filter")
                recipeRepository.filterAll(sort, filter!!)
             } else {
                if (catFilter.type == CategoryFilter.CategoryFilterOption.ALL_CATEGORIES && sort == SortValue.NAME_A_Z) {
@@ -71,7 +73,7 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
                } else if (catFilter.type == CategoryFilter.CategoryFilterOption.ALL_CATEGORIES) {
                   recipeRepository.sort(sort)
                } else if (catFilter.type == CategoryFilter.CategoryFilterOption.UNCATEGORIZED) {
-                  recipeRepository.filterUncategorized(sort)
+                  recipeRepository.filterUncategorized(sort, filter)
                } else {
                   recipeRepository.filterCategory(sort, catFilter.name)
                }

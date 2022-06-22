@@ -118,6 +118,7 @@ class MainActivity : AppCompatActivity() {
          currentSettingViewModel =
             ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
          navView.setNavigationItemSelectedListener { item ->
+            setVisualSearchTerm("", false)
             val currentCat = when (item.itemId) {
                R.id.menu_all_categories -> CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
                R.id.menu_uncategorized -> CategoryFilter(CategoryFilter.CategoryFilterOption.UNCATEGORIZED)
@@ -265,12 +266,15 @@ class MainActivity : AppCompatActivity() {
       return asyncFilter
    }
 
-   fun setSearchTerm(value: String) {
+   fun setVisualSearchTerm(value: String, focus: Boolean) {
       //Disable and reenable query trigger
       mAllowSearchToTrigger = false
       binding.searchbar.setQuery(value, false)
       mAllowSearchToTrigger = true
-      binding.searchText.performClick()
+
+      if(focus) {
+         binding.searchText.performClick()
+      }
    }
 
    /**

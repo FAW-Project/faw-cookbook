@@ -102,7 +102,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
       val asyncFilter = (activity as MainActivity?)?.getAsyncFilter()
       if(asyncFilter!=null){
          searchRecipes(asyncFilter)
-         (activity as MainActivity?)?.setSearchTerm(asyncFilter.query)
+         (activity as MainActivity?)?.setVisualSearchTerm(asyncFilter.query, true)
          (activity as MainActivity?)?.setAsyncFilter(null)
       }
 

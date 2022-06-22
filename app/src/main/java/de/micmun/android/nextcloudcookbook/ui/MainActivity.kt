@@ -75,6 +75,8 @@ class MainActivity : AppCompatActivity() {
    private var asyncFilter: RecipeFilter? = null
    private var mRecipeSearchCallback: RecipeSearchCallback? = null
 
+   private var mAllowSearchToTrigger = true
+
    override fun onCreate(savedInstanceState: Bundle?) {
       preferenceData = PreferenceData.getInstance()
 
@@ -148,15 +150,19 @@ class MainActivity : AppCompatActivity() {
          }
 
          searchbar.setOnQueryTextListener(object : OnQueryTextListener,
-                                                   android.widget.SearchView.OnQueryTextListener {
+            android.widget.SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(qString: String): Boolean {
-               search(qString)
+               if(mAllowSearchToTrigger){
+                  search(qString)
+               }
                return true
             }
 
             override fun onQueryTextSubmit(qString: String): Boolean {
-               search(qString)
+               if(mAllowSearchToTrigger){
+                  search(qString)
+               }
                return true
             }
          })
@@ -257,6 +263,14 @@ class MainActivity : AppCompatActivity() {
     */
    fun getAsyncFilter(): RecipeFilter? {
       return asyncFilter
+   }
+
+   fun setSearchTerm(value: String) {
+      //Disable and reenable query trigger
+      mAllowSearchToTrigger = false
+      binding.searchbar.setQuery(value, false)
+      mAllowSearchToTrigger = true
+      binding.searchText.performClick()
    }
 
    /**

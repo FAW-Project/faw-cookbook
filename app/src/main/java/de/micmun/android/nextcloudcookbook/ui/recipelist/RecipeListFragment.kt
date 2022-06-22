@@ -92,12 +92,18 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
          }
       }
 
-      Log.e("TAG", "onCreateView")
+      (activity as MainActivity?)?.showToolbar(
+         showToolbar = true,
+         showSearch = true,
+         showSort = true
+      )
+
       initializeRecipeList()
 
       val asyncFilter = (activity as MainActivity?)?.getAsyncFilter()
       if(asyncFilter!=null){
          searchRecipes(asyncFilter)
+         (activity as MainActivity?)?.setSearchTerm(asyncFilter.query)
       }
 
       setupBroadcastListener()
@@ -113,7 +119,6 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
    }
 
    private fun initializeRecipeList() {
-      Log.e("TAG", "initializeRecipeList")
       binding.recipeListViewModel = recipesViewModel
       binding.lifecycleOwner = viewLifecycleOwner
 
@@ -282,20 +287,14 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
 
    override fun onResume() {
       setupBroadcastListener()
-      recipesViewModel.search(null)
-      //recipesViewModel.filterRecipesByCategory(null)
       loadData()
       super.onResume()
    }
 
-   override fun searchRecipes(filter: RecipeFilter) {
-      searchRecipes(filter, "local")
-   }
-
-   fun searchRecipes(filter: RecipeFilter, from: String) {
-      Log.e("TAG", "SEARCH $from")
-      Log.e("TAG", "SEARCH ${filter.query}")
-      Log.e("TAG", "SEARCH ${filter.type}")
+   override fun searchRecipes(filter: RecipeFilter)  {
+      if(filter.type == RecipeFilter.QueryType.QUERY_NAME && filter.query == "") {
+         setCategoryTitle(CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES))
+      }
       recipesViewModel.search(filter)
       loadData()
    }

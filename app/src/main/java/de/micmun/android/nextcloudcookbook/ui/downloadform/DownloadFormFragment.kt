@@ -78,6 +78,12 @@ class DownloadFormFragment : Fragment(), DownloadClickListener {
          binding.downloadBtn.isEnabled = !isDownloading
       })
 
+      (activity as MainActivity?)?.showToolbar(
+         showToolbar = true,
+         showSearch = false,
+         showSort = false
+      )
+
       return binding.root
    }
 

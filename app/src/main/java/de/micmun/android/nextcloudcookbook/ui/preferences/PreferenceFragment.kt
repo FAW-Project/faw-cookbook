@@ -103,6 +103,12 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
          }
       }
 
+      (activity as MainActivity?)?.showToolbar(
+         showToolbar = true,
+         showSearch = false,
+         showSort = false
+      )
+
       return super.onCreateView(inflater, container, savedInstanceState)
    }
 

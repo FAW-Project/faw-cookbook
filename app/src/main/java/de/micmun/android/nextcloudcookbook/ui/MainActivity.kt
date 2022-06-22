@@ -269,7 +269,7 @@ class MainActivity : AppCompatActivity() {
          .check()
    }
 
-   fun showToolbar(showToolbar: Boolean, showSearch: Boolean = true) {
+   fun showToolbar(showToolbar: Boolean, showSearch: Boolean = true, showSort: Boolean = true) {
       if (showToolbar) {
          binding.appBar.visibility = View.VISIBLE
       } else {
@@ -279,6 +279,11 @@ class MainActivity : AppCompatActivity() {
          binding.searchText.visibility = View.VISIBLE
       } else {
          binding.searchText.visibility = View.INVISIBLE
+      }
+      if (showSort) {
+         binding.sortorder.visibility = View.VISIBLE
+      } else {
+         binding.sortorder.visibility = View.INVISIBLE
       }
    }
 

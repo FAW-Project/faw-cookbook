@@ -24,6 +24,8 @@ import de.micmun.android.nextcloudcookbook.data.RecipeFilter
 import de.micmun.android.nextcloudcookbook.databinding.FragmentSearchFormBinding
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
+import de.micmun.android.nextcloudcookbook.ui.MainActivity
+import kotlinx.coroutines.NonDisposableHandle.parent
 import java.util.stream.Collectors
 
 /**
@@ -95,6 +97,11 @@ class SearchFormFragment : Fragment(), SearchClickListener {
          it?.let { binding.exactSearchChkBox.isChecked = it }
       }
 
+      (activity as MainActivity?)?.showToolbar(
+         showToolbar = true,
+         showSearch = false,
+         showSort = false
+      )
       return binding.root
    }
 

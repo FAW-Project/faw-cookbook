@@ -5,7 +5,6 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -104,6 +103,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
       if(asyncFilter!=null){
          searchRecipes(asyncFilter)
          (activity as MainActivity?)?.setSearchTerm(asyncFilter.query)
+         (activity as MainActivity?)?.setAsyncFilter(null)
       }
 
       setupBroadcastListener()

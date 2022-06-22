@@ -254,7 +254,7 @@ class MainActivity : AppCompatActivity() {
     * This filter will be applied the next time the recipe-list is opened.
     * This is used for the advanced SearchFormFragment
     */
-   fun setAsyncFilter(filter: RecipeFilter) {
+   fun setAsyncFilter(filter: RecipeFilter?) {
       asyncFilter = filter
    }
 

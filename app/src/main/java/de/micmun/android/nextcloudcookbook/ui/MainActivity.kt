@@ -72,7 +72,10 @@ class MainActivity : AppCompatActivity() {
    private lateinit var currentSettingViewModel: CurrentSettingViewModel
    private lateinit var preferenceData: PreferenceData
 
+   private var asyncFilter: RecipeFilter? = null
    private var mRecipeSearchCallback: RecipeSearchCallback? = null
+
+   private var mAllowSearchToTrigger = true
 
    override fun onCreate(savedInstanceState: Bundle?) {
       preferenceData = PreferenceData.getInstance()
@@ -115,6 +118,7 @@ class MainActivity : AppCompatActivity() {
          currentSettingViewModel =
             ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
          navView.setNavigationItemSelectedListener { item ->
+            setVisualSearchTerm("", false)
             val currentCat = when (item.itemId) {
                R.id.menu_all_categories -> CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
                R.id.menu_uncategorized -> CategoryFilter(CategoryFilter.CategoryFilterOption.UNCATEGORIZED)
@@ -147,15 +151,19 @@ class MainActivity : AppCompatActivity() {
          }
 
          searchbar.setOnQueryTextListener(object : OnQueryTextListener,
-                                                   android.widget.SearchView.OnQueryTextListener {
+            android.widget.SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(qString: String): Boolean {
-               search(qString)
+               if(mAllowSearchToTrigger){
+                  search(qString)
+               }
                return true
             }
 
             override fun onQueryTextSubmit(qString: String): Boolean {
-               search(qString)
+               if(mAllowSearchToTrigger){
+                  search(qString)
+               }
                return true
             }
          })
@@ -244,6 +252,32 @@ class MainActivity : AppCompatActivity() {
    }
 
    /**
+    * This filter will be applied the next time the recipe-list is opened.
+    * This is used for the advanced SearchFormFragment
+    */
+   fun setAsyncFilter(filter: RecipeFilter?) {
+      asyncFilter = filter
+   }
+
+   /**
+    * Get the filter set. Returns null if no filter exists.
+    */
+   fun getAsyncFilter(): RecipeFilter? {
+      return asyncFilter
+   }
+
+   fun setVisualSearchTerm(value: String, focus: Boolean) {
+      //Disable and reenable query trigger
+      mAllowSearchToTrigger = false
+      binding.searchbar.setQuery(value, false)
+      mAllowSearchToTrigger = true
+
+      if(focus) {
+         binding.searchText.performClick()
+      }
+   }
+
+   /**
     * Handles the default storage permissions.
     */
    private fun storagePermissions() {
@@ -269,7 +303,7 @@ class MainActivity : AppCompatActivity() {
          .check()
    }
 
-   fun showToolbar(showToolbar: Boolean, showSearch: Boolean = true) {
+   fun showToolbar(showToolbar: Boolean, showSearch: Boolean = true, showSort: Boolean = true) {
       if (showToolbar) {
          binding.appBar.visibility = View.VISIBLE
       } else {
@@ -279,6 +313,11 @@ class MainActivity : AppCompatActivity() {
          binding.searchText.visibility = View.VISIBLE
       } else {
          binding.searchText.visibility = View.INVISIBLE
+      }
+      if (showSort) {
+         binding.sortorder.visibility = View.VISIBLE
+      } else {
+         binding.sortorder.visibility = View.INVISIBLE
       }
    }
 

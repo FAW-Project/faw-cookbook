@@ -24,6 +24,7 @@ import de.micmun.android.nextcloudcookbook.data.RecipeFilter
 import de.micmun.android.nextcloudcookbook.databinding.FragmentSearchFormBinding
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModel
 import de.micmun.android.nextcloudcookbook.ui.CurrentSettingViewModelFactory
+import de.micmun.android.nextcloudcookbook.ui.MainActivity
 import java.util.stream.Collectors
 
 /**
@@ -95,6 +96,11 @@ class SearchFormFragment : Fragment(), SearchClickListener {
          it?.let { binding.exactSearchChkBox.isChecked = it }
       }
 
+      (activity as MainActivity?)?.showToolbar(
+         showToolbar = true,
+         showSearch = false,
+         showSort = false
+      )
       return binding.root
    }
 
@@ -105,6 +111,7 @@ class SearchFormFragment : Fragment(), SearchClickListener {
    }
 
    override fun doSearch() {
+
       /* hide keyboard */
       binding.searchTxt.onEditorAction(EditorInfo.IME_ACTION_DONE)
 
@@ -127,18 +134,8 @@ class SearchFormFragment : Fragment(), SearchClickListener {
       val ignoreCase = binding.ignoreCaseChkBox.isChecked
       val exact = binding.exactSearchChkBox.isChecked
 
-      val filter = RecipeFilter(type, query, ignoreCase, exact)
-
-      // save search values
-      when (type) {
-         RecipeFilter.QueryType.QUERY_KEYWORD -> searchFormViewModel.setCurrentKeyword(
-            binding.searchKeyWord.selectedItemPosition)
-         else -> searchFormViewModel.setCurrentQuery(query)
-      }
-      searchFormViewModel.setSearchType(binding.searchTypes.checkedRadioButtonId)
-      searchFormViewModel.setCaseSensitive(ignoreCase)
-      searchFormViewModel.setExactSearch(exact)
-
+      var filter = RecipeFilter(type, query, ignoreCase, exact)
+      (activity as MainActivity?)?.setAsyncFilter(filter)
       findNavController().navigate(SearchFormFragmentDirections.actionSearchFormFragmentToRecipeSearchFragment())
    }
 }

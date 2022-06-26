@@ -91,7 +91,21 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
          }
       }
 
+      (activity as MainActivity?)?.showToolbar(
+         showToolbar = true,
+         showSearch = true,
+         showSort = true
+      )
+
       initializeRecipeList()
+
+      val asyncFilter = (activity as MainActivity?)?.getAsyncFilter()
+      if(asyncFilter!=null){
+         searchRecipes(asyncFilter)
+         (activity as MainActivity?)?.setVisualSearchTerm(asyncFilter.query, true)
+         (activity as MainActivity?)?.setAsyncFilter(null)
+      }
+
       setupBroadcastListener()
       return binding.root
    }
@@ -243,21 +257,21 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
          return
       }
       Handler(Looper.getMainLooper()).postDelayed({
-                                                     CoroutineScope(Dispatchers.Main).launch {
-                                                        settingViewModel.storageAccessed.collect { storageAccessed ->
-                                                           if (storageAccessed) {
-                                                              settingViewModel.recipeDirectory.collect { dir ->
-                                                                 if (dir != recipesViewModel.getRecipeDir()) {
-                                                                    recipesViewModel.initRecipes(dir, true)
-                                                                 } else {
-                                                                    recipesViewModel.initRecipes(hidden = true)
-                                                                 }
-                                                              }
-                                                           }
-                                                        }
-                                                     }
-                                                     onRefreshAndReschedule()
-                                                  }, 500)
+         CoroutineScope(Dispatchers.Main).launch {
+            settingViewModel.storageAccessed.collect { storageAccessed ->
+               if (storageAccessed) {
+                  settingViewModel.recipeDirectory.collect { dir ->
+                     if (dir != recipesViewModel.getRecipeDir()) {
+                        recipesViewModel.initRecipes(dir, true)
+                     } else {
+                        recipesViewModel.initRecipes(hidden = true)
+                     }
+                  }
+               }
+            }
+         }
+         onRefreshAndReschedule()
+      }, 500)
    }
 
    override fun onRefresh() {
@@ -273,13 +287,14 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
 
    override fun onResume() {
       setupBroadcastListener()
-      recipesViewModel.search(null)
-      //recipesViewModel.filterRecipesByCategory(null)
       loadData()
       super.onResume()
    }
 
-   override fun searchRecipes(filter: RecipeFilter) {
+   override fun searchRecipes(filter: RecipeFilter)  {
+      if(filter.type == RecipeFilter.QueryType.QUERY_NAME && filter.query == "") {
+         setCategoryTitle(CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES))
+      }
       recipesViewModel.search(filter)
       loadData()
    }

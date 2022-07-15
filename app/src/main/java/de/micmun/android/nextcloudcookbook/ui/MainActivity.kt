@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
       with(binding) {
          currentSettingViewModel =
-            ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
+            ViewModelProvider(MainApplication.AppContext, factory)[CurrentSettingViewModel::class.java]
          navView.setNavigationItemSelectedListener { item ->
             setVisualSearchTerm("", false)
             val currentCat = when (item.itemId) {
@@ -151,17 +151,17 @@ class MainActivity : AppCompatActivity() {
          }
 
          searchbar.setOnQueryTextListener(object : OnQueryTextListener,
-            android.widget.SearchView.OnQueryTextListener {
+                                                   android.widget.SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(qString: String): Boolean {
-               if(mAllowSearchToTrigger){
+               if (mAllowSearchToTrigger) {
                   search(qString)
                }
                return true
             }
 
             override fun onQueryTextSubmit(qString: String): Boolean {
-               if(mAllowSearchToTrigger){
+               if (mAllowSearchToTrigger) {
                   search(qString)
                }
                return true
@@ -272,7 +272,7 @@ class MainActivity : AppCompatActivity() {
       binding.searchbar.setQuery(value, false)
       mAllowSearchToTrigger = true
 
-      if(focus) {
+      if (focus) {
          binding.searchText.performClick()
       }
    }
@@ -327,6 +327,7 @@ class MainActivity : AppCompatActivity() {
 
    @Deprecated("Deprecated in Java")
    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+      @Suppress("DEPRECATION")
       super.onActivityResult(requestCode, resultCode, data)
       try {
          AccountImporter.onActivityResult(

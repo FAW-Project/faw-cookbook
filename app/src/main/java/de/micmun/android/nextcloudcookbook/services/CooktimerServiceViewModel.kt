@@ -60,7 +60,7 @@ class CooktimerServiceViewModel(application: Application) : AndroidViewModel(app
 
 class CooktimerServiceViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
    @Suppress("UNCHECKED_CAST")
-   override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+   override fun <T : ViewModel> create(modelClass: Class<T>): T {
       if (modelClass.isAssignableFrom(CooktimerServiceViewModel::class.java)) {
          return CooktimerServiceViewModel(application) as T
       }

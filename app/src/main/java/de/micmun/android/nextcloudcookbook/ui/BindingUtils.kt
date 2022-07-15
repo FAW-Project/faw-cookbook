@@ -136,15 +136,20 @@ fun TextView.setPrepTime(item: DbRecipe?) {
 fun TextView.setCookTime(item: DbRecipe?) {
    item?.let {
       text = if (it.recipeCore.cookTime.isEmpty()) {
-         "00:00"
+         ""
       } else {
          DurationUtils.formatStringToDuration(it.recipeCore.cookTime)
       }
-      // timer icon
-      setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_timer, 0, 0, 0)
-      // tooltip
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-         tooltipText = context.getString(R.string.cooktime_tooltip)
+
+      if (text.isNotEmpty()) {
+         // timer icon
+         setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_timer, 0, 0, 0)
+         // tooltip
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            tooltipText = context.getString(R.string.cooktime_tooltip)
+         }
+      } else {
+         setBackgroundColor(android.R.color.transparent)
       }
    }
 }

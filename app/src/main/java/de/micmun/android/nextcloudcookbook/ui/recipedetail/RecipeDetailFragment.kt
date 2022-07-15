@@ -48,6 +48,7 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
       super.onCreate(savedInstanceState)
       val args = RecipeDetailFragmentArgs.fromBundle(requireArguments())
       if (savedInstanceState != null) {
+         @Suppress("DEPRECATION")
          currentPage = savedInstanceState[KEY_CURRENT_PAGE] as Int
       }
       recipeId = args.recipeId
@@ -82,8 +83,9 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
          }
       }
 
-      var parent = (activity as MainActivity?)!!
+      val parent = (activity as MainActivity?)!!
       binding.backButton.setOnClickListener {
+         @Suppress("DEPRECATION")
          requireActivity().onBackPressed()
          allowScreenSleep()
       }
@@ -154,6 +156,7 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
       }
    }
 
+   @Deprecated("Deprecated in Java")
    @Suppress("DEPRECATION")
    override fun onActivityCreated(savedInstanceState: Bundle?) {
       super.onActivityCreated(savedInstanceState)
@@ -168,7 +171,7 @@ class RecipeDetailFragment : Fragment(), CookTimeClickListener {
    }
 
    override fun onClick(recipe: DbRecipe) {
-      if (!recipe.recipeCore.cookTime.isEmpty()) {
+      if (recipe.recipeCore.cookTime.isNotEmpty()) {
          findNavController()
             .navigate(
                RecipeDetailFragmentDirections.actionRecipeDetailFragmentToCooktimerFragment(recipe.recipeCore.id))

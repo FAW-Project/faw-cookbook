@@ -29,7 +29,7 @@
              android:text="@string/menu_all_categories"
              android:textAlignment="center"
              android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-             android:visibility="visible" />
+             android:visibility="gone" />
 
          <ViewSwitcher
                android:id="@+id/switcher"

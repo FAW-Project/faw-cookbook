@@ -12,9 +12,6 @@
       <action
             android:id="@+id/action_recipeListFragment_to_recipeDetailFragment"
             app:destination="@id/recipeDetailFragment" />
-      <action
-            android:id="@+id/action_recipeListFragment_to_recipeSearchFragment"
-            app:destination="@id/recipeSearchFragment" />
    </fragment>
    <fragment
          android:id="@+id/preferenceFragment"
@@ -36,24 +33,11 @@
             app:destination="@id/cooktimerFragment" />
    </fragment>
    <fragment
-         android:id="@+id/recipeSearchFragment"
-         android:name="de.micmun.android.nextcloudcookbook.ui.recipesearch.RecipeSearchFragment"
-         android:label="fragment_recipesearch"
-         tools:layout="@layout/fragment_recipesearch">
-      <action
-            android:id="@+id/action_recipeSearchFragment_to_recipeDetailFragment"
-            app:destination="@id/recipeDetailFragment" />
-      <argument
-            android:name="filter"
-            app:argType="de.micmun.android.nextcloudcookbook.data.RecipeFilter" />
-
-   </fragment>
-   <fragment
          android:id="@+id/searchFormFragment"
          android:name="de.micmun.android.nextcloudcookbook.ui.searchform.SearchFormFragment"
          android:label="SearchFormFragment">
       <action
-          android:id="@+id/action_searchFormFragment_to_recipeSearchFragment"
+          android:id="@+id/action_searchFormFragment_to_recipeListFragment"
           app:destination="@id/recipeListFragment" />
    </fragment>
    <fragment

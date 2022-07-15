@@ -56,6 +56,7 @@ class PreferenceFragment : PreferenceFragmentCompat(), Preference.OnPreferenceCh
    }
    private var currentDirectory: String = ""
 
+   @Deprecated("Deprecated in Java")
    override fun onActivityCreated(savedInstanceState: Bundle?) {
       @Suppress("DEPRECATION")
       super.onActivityCreated(savedInstanceState)

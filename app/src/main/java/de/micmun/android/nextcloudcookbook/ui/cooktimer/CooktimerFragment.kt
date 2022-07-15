@@ -92,6 +92,7 @@ class CooktimerFragment : Fragment() {
       vibrator.stop()
    }
 
+   @Deprecated("Deprecated in Java")
    override fun onActivityCreated(savedInstanceState: Bundle?) {
       @Suppress("DEPRECATION")
       super.onActivityCreated(savedInstanceState)

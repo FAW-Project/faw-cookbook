@@ -10,6 +10,9 @@
    <dimen name="header_image_height">150dp</dimen>
    <dimen name="instruction_counter_size">35dp</dimen>
 
+   <!-- Margins for floating button to copy ingredients -->
+   <dimen name="btn_cpin_margin_end">32dp</dimen>
+   <dimen name="btn_cpin_margin_bottom">32dp</dimen>
 
    <!-- Dimensions taken from Nextcloud Notes - Android app -->
    <!-- Default screen margins, per the Android Design guidelines. -->

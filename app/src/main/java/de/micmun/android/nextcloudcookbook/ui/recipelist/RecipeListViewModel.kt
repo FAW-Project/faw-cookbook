@@ -65,7 +65,7 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
       runBlocking(Dispatchers.IO) {
          recipes =
             if (filter != null) {
-               Log.e("TAG", "SEARCH ! $filter")
+               Log.d("RecipeListViewModel", "SEARCH ! $filter")
                recipeRepository.filterAll(sort, filter!!)
             } else {
                if (catFilter.type == CategoryFilter.CategoryFilterOption.ALL_CATEGORIES && sort == SortValue.NAME_A_Z) {
@@ -87,7 +87,7 @@ class RecipeListViewModel(private val app: Application) : AndroidViewModel(app) 
       if (path.isNotEmpty()) {
          recipeDir = path
       }
-      val dir = if (path.isEmpty()) recipeDir else path
+      val dir = path.ifEmpty { recipeDir }
 
       if (dir.isEmpty()) {
          if (!hidden) isUpdating.postValue(false)

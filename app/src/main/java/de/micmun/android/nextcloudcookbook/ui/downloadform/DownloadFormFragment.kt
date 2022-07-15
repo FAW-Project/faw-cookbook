@@ -87,6 +87,7 @@ class DownloadFormFragment : Fragment(), DownloadClickListener {
       return binding.root
    }
 
+   @Deprecated("Deprecated in Java")
    override fun onActivityCreated(savedInstanceState: Bundle?) {
       @Suppress("DEPRECATION")
       super.onActivityCreated(savedInstanceState)

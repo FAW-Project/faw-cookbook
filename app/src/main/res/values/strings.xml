@@ -60,7 +60,7 @@
 
    <!-- search formular -->
    <string name="form_search_title">Advanced Search</string>
-   <string name="form_search_hint">Search...</string>
+   <string name="form_search_hint">Search…</string>
    <string name="form_ignore_case">Ignore case?</string>
    <string name="form_exact_search">Do an exact search?</string>
    <string name="form_types">Type to search</string>

@@ -5,6 +5,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -63,10 +64,10 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
 
       binding.swipeContainer.setOnRefreshListener(this)
       val recipeListViewModelFactory = RecipeListViewModelFactory(requireActivity().application)
-      recipesViewModel = ViewModelProvider(this, recipeListViewModelFactory).get(RecipeListViewModel::class.java)
+      recipesViewModel = ViewModelProvider(this, recipeListViewModelFactory)[RecipeListViewModel::class.java]
       val factory = CurrentSettingViewModelFactory(MainApplication.AppContext)
       settingViewModel =
-         ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
+         ViewModelProvider(MainApplication.AppContext, factory)[CurrentSettingViewModel::class.java]
       binding.lifecycleOwner = viewLifecycleOwner
 
 
@@ -100,10 +101,12 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
       initializeRecipeList()
 
       val asyncFilter = (activity as MainActivity?)?.getAsyncFilter()
-      if(asyncFilter!=null){
+      if (asyncFilter != null) {
          searchRecipes(asyncFilter)
          (activity as MainActivity?)?.setVisualSearchTerm(asyncFilter.query, true)
          (activity as MainActivity?)?.setAsyncFilter(null)
+      } else {
+         searchCategory(CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES))
       }
 
       setupBroadcastListener()
@@ -112,7 +115,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
 
    @Deprecated("Deprecated in Java",
                ReplaceWith("@Suppress(\"DEPRECATION\") super.onActivityCreated(savedInstanceState)",
-                                          "androidx.fragment.app.Fragment"))
+                           "androidx.fragment.app.Fragment"))
    override fun onActivityCreated(savedInstanceState: Bundle?) {
       @Suppress("DEPRECATION")
       super.onActivityCreated(savedInstanceState)
@@ -187,10 +190,12 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
             val activity = requireActivity() as MainActivity
             val menu = activity.getMenu().findItem(R.id.submenu_item).subMenu
 
-            menu.removeGroup(R.id.menu_categories_group)
-            categories.forEach { category ->
-               menu.add(R.id.menu_categories_group, category.hashCode(), order++, category)
-                  .setIcon(R.drawable.ic_food)
+            if (menu != null) {
+               menu.removeGroup(R.id.menu_categories_group)
+               categories.forEach { category ->
+                  menu.add(R.id.menu_categories_group, category.hashCode(), order++, category)
+                     .setIcon(R.drawable.ic_food)
+               }
             }
          }
       }
@@ -221,6 +226,7 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
     * @param categoryFilter Filter of the category.
     */
    private fun setCategoryTitle(categoryFilter: CategoryFilter) {
+      Log.d("RecipeListFragment", "setCategoryTitle: categoryFilter= $categoryFilter")
       // set title in text view headline
       val catTitle = binding.categoryTitle
       if (categoryFilter.type == CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
@@ -257,21 +263,21 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
          return
       }
       Handler(Looper.getMainLooper()).postDelayed({
-         CoroutineScope(Dispatchers.Main).launch {
-            settingViewModel.storageAccessed.collect { storageAccessed ->
-               if (storageAccessed) {
-                  settingViewModel.recipeDirectory.collect { dir ->
-                     if (dir != recipesViewModel.getRecipeDir()) {
-                        recipesViewModel.initRecipes(dir, true)
-                     } else {
-                        recipesViewModel.initRecipes(hidden = true)
-                     }
-                  }
-               }
-            }
-         }
-         onRefreshAndReschedule()
-      }, 500)
+                                                     CoroutineScope(Dispatchers.Main).launch {
+                                                        settingViewModel.storageAccessed.collect { storageAccessed ->
+                                                           if (storageAccessed) {
+                                                              settingViewModel.recipeDirectory.collect { dir ->
+                                                                 if (dir != recipesViewModel.getRecipeDir()) {
+                                                                    recipesViewModel.initRecipes(dir, true)
+                                                                 } else {
+                                                                    recipesViewModel.initRecipes(hidden = true)
+                                                                 }
+                                                              }
+                                                           }
+                                                        }
+                                                     }
+                                                     onRefreshAndReschedule()
+                                                  }, 500)
    }
 
    override fun onRefresh() {
@@ -291,8 +297,8 @@ class RecipeListFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, Rec
       super.onResume()
    }
 
-   override fun searchRecipes(filter: RecipeFilter)  {
-      if(filter.type == RecipeFilter.QueryType.QUERY_NAME && filter.query == "") {
+   override fun searchRecipes(filter: RecipeFilter) {
+      if (filter.type == RecipeFilter.QueryType.QUERY_NAME && filter.query == "") {
          setCategoryTitle(CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES))
       }
       recipesViewModel.search(filter)

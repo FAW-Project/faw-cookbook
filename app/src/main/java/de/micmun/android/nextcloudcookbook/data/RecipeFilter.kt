@@ -33,11 +33,11 @@ class RecipeFilter(val type: QueryType, val query: String, val ignoreCase: Boole
       QUERY_YIELD
    }
 
-   override fun writeToParcel(dest: Parcel?, flags: Int) {
-      dest?.writeString(type.name)
-      dest?.writeString(query)
-      dest?.writeByte(if (ignoreCase) 1 else 0)
-      dest?.writeByte(if (exact) 1 else 0)
+   override fun writeToParcel(dest: Parcel, flags: Int) {
+      dest.writeString(type.name)
+      dest.writeString(query)
+      dest.writeByte(if (ignoreCase) 1 else 0)
+      dest.writeByte(if (exact) 1 else 0)
    }
 
    override fun describeContents(): Int {

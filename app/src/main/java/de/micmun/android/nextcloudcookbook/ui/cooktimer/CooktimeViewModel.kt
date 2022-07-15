@@ -108,7 +108,7 @@ class CooktimeViewModel(id: Long, app: Application) : AndroidViewModel(app) {
  */
 class CooktimeViewModelFactory(private val id: Long, private val application: Application)
    : ViewModelProvider.Factory {
-   override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+   override fun <T : ViewModel> create(modelClass: Class<T>): T {
       if (modelClass.isAssignableFrom(CooktimeViewModel::class.java)) {
          @Suppress("UNCHECKED_CAST")
          return CooktimeViewModel(id, application) as T

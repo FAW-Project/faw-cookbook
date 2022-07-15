@@ -45,13 +45,13 @@ class SearchFormFragment : Fragment(), SearchClickListener {
 
       val factory = CurrentSettingViewModelFactory(MainApplication.AppContext)
       settingViewModel =
-         ViewModelProvider(MainApplication.AppContext, factory).get(CurrentSettingViewModel::class.java)
+         ViewModelProvider(MainApplication.AppContext, factory)[CurrentSettingViewModel::class.java]
 
       settingViewModel.category.observe(viewLifecycleOwner) {
          category = it ?: CategoryFilter(CategoryFilter.CategoryFilterOption.ALL_CATEGORIES)
       }
 
-      searchFormViewModel = ViewModelProvider(this).get(SearchFormViewModel::class.java)
+      searchFormViewModel = ViewModelProvider(this)[SearchFormViewModel::class.java]
       searchFormViewModel.keywords.observe(viewLifecycleOwner) {
          it?.let { keywords ->
             val keywordsString = keywords.stream().map { k -> k.keyword }.collect(Collectors.toList())
@@ -104,6 +104,7 @@ class SearchFormFragment : Fragment(), SearchClickListener {
       return binding.root
    }
 
+   @Deprecated("Deprecated in Java")
    override fun onActivityCreated(savedInstanceState: Bundle?) {
       @Suppress("DEPRECATION")
       super.onActivityCreated(savedInstanceState)
@@ -134,9 +135,9 @@ class SearchFormFragment : Fragment(), SearchClickListener {
       val ignoreCase = binding.ignoreCaseChkBox.isChecked
       val exact = binding.exactSearchChkBox.isChecked
 
-      var filter = RecipeFilter(type, query, ignoreCase, exact)
+      val filter = RecipeFilter(type, query, ignoreCase, exact)
       (activity as MainActivity?)?.setAsyncFilter(filter)
-      findNavController().navigate(SearchFormFragmentDirections.actionSearchFormFragmentToRecipeSearchFragment())
+      findNavController().navigate(SearchFormFragmentDirections.actionSearchFormFragmentToRecipeListFragment())
    }
 }
 

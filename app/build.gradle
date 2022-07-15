@@ -15,13 +15,13 @@ apply plugin: "kotlin-kapt"
 apply plugin: 'kotlinx-serialization'
 
 android {
-   compileSdkVersion 32
-   buildToolsVersion "32.1.0-rc1"
+   compileSdkVersion 33
+   buildToolsVersion "33.0.0"
 
    defaultConfig {
       applicationId "de.micmun.android.nextcloudcookbook"
       minSdkVersion 23
-      targetSdkVersion 32
+      targetSdkVersion 33
       versionCode 270
       versionName "2.7.0"
 
@@ -48,7 +48,6 @@ android {
    }
    kotlinOptions {
       jvmTarget = JavaVersion.VERSION_11.toString()
-      useIR = true
    }
    buildFeatures {
       viewBinding true
@@ -63,9 +62,9 @@ dependencies {
    implementation fileTree(dir: "libs", include: ["*.jar"])
    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-   implementation group: 'org.jsoup', name: 'jsoup', version: '1.15.1'
+   implementation group: 'org.jsoup', name: 'jsoup', version: '1.15.2'
 
-   implementation "androidx.core:core-ktx:1.7.0"
+   implementation "androidx.core:core-ktx:1.8.0"
    implementation "androidx.legacy:legacy-support-v4:1.0.0"
    implementation "androidx.appcompat:appcompat:$version_appcompat"
    implementation "androidx.constraintlayout:constraintlayout:$version_constraintlayout"
@@ -98,12 +97,13 @@ dependencies {
    // Json parser
    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$version_serialization"
 
+   //noinspection GradleDependency
    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
    // permissions dexter
    implementation 'com.karumi:dexter:6.2.3'
    // simple storage
-   implementation 'com.anggrayudi:storage:1.3.0'
+   implementation 'com.anggrayudi:storage:1.4.0'
    implementation 'com.afollestad.material-dialogs:core:3.3.0'
 
    // timer view

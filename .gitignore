@@ -99,9 +99,9 @@ Session.vim
 .gradle
 /local.properties
 /build
-gradle/
-gradlew
-gradlew.bat
+#gradle/
+#gradlew
+#gradlew.bat
 
 ##### rest
 /captures
